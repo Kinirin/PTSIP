@@ -38,8 +38,8 @@ func TestCentralRegistryRegistersPlanRootWithoutItsChildren(t *testing.T) {
 	for _, key := range []string{"RA_list", "RAC_list", "AEC_list"} {
 		entry := storage[key].(object)
 		schema := readObject(t, filepath.Join(productRoot(t), "schemas", filepath.FromSlash(entry["path"].(string))))
-		if schema["$id"] != entry["$id"] {
-			t.Errorf("resource identity differs for %s", key)
+		if schema["$id"] != entry["$id"] || schema["version"] != "SCH.1.00" || entry["version"] != schema["version"] {
+			t.Errorf("resource identity or schema version differs for %s", key)
 		}
 	}
 	plan := plans[registry.PlanDocumentURN].(object)
@@ -56,15 +56,25 @@ func TestCentralRegistryRegistersPlanRootWithoutItsChildren(t *testing.T) {
 	if issues := v.StructureIssues(registry.PlanDocumentURN, instance); len(issues) != 0 {
 		t.Fatalf("valid Plan rejected: %+v", issues)
 	}
-	instance["work_unit_item"] = array{
-		object{"work_unit_id": "WU-AB-001", "task_id": array{}},
-		object{"work_unit_id": "WU-CD-002", "task_id": array{}},
+	instance["work_unit"] = array{
+		object{"id": "WU-AB-001", "task_id": array{}},
+		object{"id": "WU-CD-002", "task_id": array{}},
 	}
-	wantPath := []any{"work_unit_item", 1, "work_unit_id"}
+	wantPath := []any{"work_unit", 1, "id"}
 	if issues := v.StructureIssues(registry.PlanDocumentURN, instance); len(issues) != 1 || !reflect.DeepEqual(issues[0].Path, wantPath) {
 		t.Fatalf("expected mixed-prefix work unit diagnostic at %v: %+v", wantPath, issues)
 	}
-	delete(instance, "work_unit_item")
+	delete(instance, "work_unit")
+	instance["policy_refs"] = array{"SFP-CNTR-0009#SFP-CNTR-0009/R-02"}
+	if issues := v.StructureIssues(registry.PlanDocumentURN, instance); len(issues) != 0 {
+		t.Fatalf("Plan with the registered Policy/Rule pair rejected: %+v", issues)
+	}
+	instance["policy_refs"] = array{"SFP-CNTR-0009#unknown"}
+	if issues := v.StructureIssues(registry.PlanDocumentURN, instance); len(issues) != 1 ||
+		issues[0].Code != "POLICY_RULE_REFERENCE" || !reflect.DeepEqual(issues[0].Path, []any{"policy_refs", 0}) {
+		t.Fatalf("expected unresolved reference diagnostic: %+v", issues)
+	}
+	delete(instance, "policy_refs")
 	identity["plan_id"] = "plan-AA"
 	if issues := v.StructureIssues(registry.PlanDocumentURN, instance); len(issues) == 0 {
 		t.Fatal("Plan registration failed to validate the Identity child")

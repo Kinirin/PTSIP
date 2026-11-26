@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -38,7 +39,7 @@ router = scripts / (request["router"] + suffix)
 assert router.is_file(), "installed Go router is missing"
 with root.joinpath("VERSION").open("rb") as stream:
     tool_version = tomllib.load(stream)["tool"]["version"]
-version = subprocess.check_output([str(scripts / ("ptsip" + suffix)), "--version"], text=True, timeout=10).strip()
+version = subprocess.check_output([str(scripts / ("ptsip" + suffix)), "--version", str(root)], text=True, timeout=10).strip()
 assert version == f"PTSIP Tool {tool_version}", "installed Tool version differs from packaged VERSION"
 app_version = subprocess.check_output([str(scripts / ("ptsip-app" + suffix)), "--version"], text=True, timeout=10).strip()
 assert app_version == f"PTSIP App {tool_version}", "installed App version differs from packaged VERSION"
@@ -77,6 +78,7 @@ assert completed.returncode == 0, f"Profile discovery failed: {completed.stderr}
 profile = json.loads(completed.stdout)
 assert profile["status"] == "PASS" and profile["output"]["allowed"] is True, profile
 assert profile["output"]["version"] == request["profile"], "installed Profile routing differs from registered current version"
+sys.stdout.buffer.write(str(common_path.with_name(common["binary"])).encode("utf-8"))
 `
 
 func verifyInstalled(file io.ReadSeeker, artifact, python, wheelhouse string, contract buildContract, assets registeredAssets, digest string) error {
@@ -123,9 +125,10 @@ func verifyInstalled(file io.ReadSeeker, artifact, python, wheelhouse string, co
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
 	defer cancel()
-	run := func(executable string, args ...string) error {
+	run := func(executable string, input []byte, args ...string) ([]byte, error) {
 		cmd := exec.CommandContext(ctx, executable, args...)
 		cmd.Dir = directory
+		cmd.Stdin = bytes.NewReader(input)
 		for _, variable := range os.Environ() {
 			key, _, _ := strings.Cut(variable, "=")
 			switch key := strings.ToUpper(key); {
@@ -134,14 +137,17 @@ func verifyInstalled(file io.ReadSeeker, artifact, python, wheelhouse string, co
 			}
 			cmd.Env = append(cmd.Env, variable)
 		}
-		output, err := cmd.CombinedOutput()
+		output, err := cmd.Output()
 		if err != nil {
-			return fmt.Errorf("isolated installed verification: %w: %s", err, output)
+			if failure, ok := err.(*exec.ExitError); ok {
+				return nil, fmt.Errorf("isolated installed verification: %w: %s%s", err, output, failure.Stderr)
+			}
+			return nil, fmt.Errorf("isolated installed verification: %w", err)
 		}
-		return nil
+		return output, nil
 	}
 	venv := filepath.Join(directory, "venv")
-	if err := run(python, "-I", "-m", "venv", venv); err != nil {
+	if _, err := run(python, nil, "-I", "-m", "venv", venv); err != nil {
 		return err
 	}
 	isolated := filepath.Join(venv, "bin", "python")
@@ -152,7 +158,7 @@ func verifyInstalled(file io.ReadSeeker, artifact, python, wheelhouse string, co
 	if wheelhouse != "" {
 		args = append(args, "--no-index", "--find-links", wheelhouse)
 	}
-	if err := run(isolated, append(args, wheel)...); err != nil {
+	if _, err := run(isolated, nil, append(args, wheel)...); err != nil {
 		return err
 	}
 	assetDigests := map[string]string{}
@@ -176,5 +182,64 @@ func verifyInstalled(file io.ReadSeeker, artifact, python, wheelhouse string, co
 	if err != nil {
 		return err
 	}
-	return run(isolated, "-I", "-c", installedSmoke, string(options))
+	binary, err := run(isolated, nil, "-I", "-c", installedSmoke, string(options))
+	if err != nil {
+		return err
+	}
+	return verifyInstalledPolicyAndPlan(string(binary), run)
+}
+
+func verifyInstalledPolicyAndPlan(binary string, run func(string, []byte, ...string) ([]byte, error)) error {
+	const policy = "urn:ptsip:contract:public-structure-policy:v4"
+	const plan = "urn:ptsip:contract:plan:public-structure"
+	const version = "SCH.1.00"
+	checks := []struct {
+		name, urn, want string
+		instance        map[string]any
+	}{
+		{
+			name: "Policy schema and user version", urn: policy, want: "VALID",
+			instance: map[string]any{"Policy_Identity": map[string]any{"SchemaVersion": version, "Version": "v1.2.3"}},
+		},
+		{
+			name: "Plan with exact rule reference", urn: plan, want: "VALID",
+			instance: map[string]any{
+				"SchemaVersion": version,
+				"work_unit":     []any{map[string]any{"id": "WU-AB-001", "task_id": []any{}}},
+				"Plan_lifecycle": map[string]any{
+					"status": "Draft.Proposed", "Creation_date": "2026-11-26T09:00:00+09:00", "completion_date": nil,
+				},
+				"policy_refs": []string{"SFP-CNTR-0009#SFP-CNTR-0009/R-02"},
+			},
+		},
+		{
+			name: "Plan with a rule outside the owning policy", urn: plan, want: "UNRESOLVED",
+			instance: map[string]any{"SchemaVersion": version, "policy_refs": []string{"SFP-CNTR-0001#SFP-CNTR-0009/R-02"}},
+		},
+	}
+	for _, check := range checks {
+		request, err := json.Marshal(map[string]any{
+			"format": "ptsip-common-contract/v1", "operation": "validate", "urn": check.urn, "instance": check.instance,
+		})
+		if err != nil {
+			return err
+		}
+		output, err := run(binary, request)
+		if err != nil {
+			return err
+		}
+		var response struct {
+			Status   string `json:"status"`
+			Contract struct {
+				Version string `json:"version"`
+			} `json:"contract"`
+		}
+		if err := json.Unmarshal(output, &response); err != nil {
+			return fmt.Errorf("invalid installed common contract output: %w", err)
+		}
+		if response.Status != check.want || response.Contract.Version != version {
+			return fmt.Errorf("installed %s expected %s at %s: %s", check.name, check.want, version, output)
+		}
+	}
+	return nil
 }

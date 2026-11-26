@@ -18,6 +18,7 @@ import (
 
 	usercontracts "github.com/Kinirin/PTSIP/src/ptsip/common_contract/user_contracts"
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/versionsource"
+	specification "github.com/Kinirin/PTSIP/src/ptsip/ptsip_specification"
 )
 
 const engineIndex = "engines/index.json"
@@ -435,18 +436,32 @@ func doctor(target string) error {
 	return nil
 }
 
-const usage = "Usage: ptsip help | --version | doctor <directory> | pilot [path] [--report file] | operations <ptsip-root> | engine <ptsip-root> <scripts-dir> <operation-id> | engine-serve <ptsip-root> <scripts-dir> <operation-id>\nEngine commands pass versioned JSON requests to the registered native CLI; engine-serve keeps a caller-owned JSON-lines session available until stdin EOF."
+const usage = "Usage: ptsip help | --version [<ptsip-root>] | doctor <directory> | pilot [path] [--report file] | operations <ptsip-root> | engine <ptsip-root> <scripts-dir> <operation-id> | engine-serve <ptsip-root> <scripts-dir> <operation-id>\nEngine commands pass versioned JSON requests to the registered native CLI; engine-serve keeps a caller-owned JSON-lines session available until stdin EOF."
 
 func run(args []string) error {
 	if len(args) == 0 || (len(args) == 1 && (args[0] == "help" || args[0] == "--help" || args[0] == "-h")) {
 		_, err := fmt.Fprintln(os.Stdout, usage)
 		return err
 	}
-	if len(args) == 1 && args[0] == "--version" {
-		if toolVersion == "" {
+	if len(args) <= 2 && args[0] == "--version" {
+		declared := toolVersion
+		if len(args) == 2 {
+			spec, err := specification.OpenInstalled(args[1])
+			if err != nil {
+				return err
+			}
+			if err := spec.VerifyRegisteredSchemas(); err != nil {
+				return err
+			}
+			declared = spec.Versions().ToolVersion
+			if toolVersion != "" && declared != toolVersion {
+				return errors.New("installed VERSION differs from the embedded Tool version")
+			}
+		}
+		if declared == "" {
 			return errors.New("Tool version is not embedded in this build")
 		}
-		_, err := fmt.Fprintln(os.Stdout, "PTSIP Tool", toolVersion)
+		_, err := fmt.Fprintln(os.Stdout, "PTSIP Tool", declared)
 		return err
 	}
 	if len(args) == 2 && args[0] == "doctor" {

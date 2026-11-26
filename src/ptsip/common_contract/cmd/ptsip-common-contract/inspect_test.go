@@ -71,20 +71,26 @@ func TestCanonicalPlanContractValidatesIndependentFields(t *testing.T) {
 		{"superseded lifecycle status", func(_, _, lifecycle, _ record) { lifecycle["status"] = "Implementation.In_progress" }},
 		{"misplaced schema version", func(_, _, lifecycle, _ record) { lifecycle["SchemaVersion"] = "SCH.1.00" }},
 		{"empty completion date", func(_, _, lifecycle, _ record) { lifecycle["completion_date"] = "" }},
+		{"non-string completion date", func(_, _, lifecycle, _ record) { lifecycle["completion_date"] = 12 }},
+		{"timezone missing", func(_, _, lifecycle, _ record) { lifecycle["Creation_date"] = "2026-11-26T09:00:00" }},
+		{"invalid calendar date", func(_, _, lifecycle, _ record) { lifecycle["last_modified_date"] = "2026-02-30T00:00:00Z" }},
 		{"independent approval field", func(_, _, lifecycle, _ record) { lifecycle["approval_ref"] = "example" }},
-		{"invalid work unit ID", func(_, _, _, unit record) { unit["work_unit_id"] = "WU-aa-007" }},
-		{"mixed work unit prefix", func(_, _, _, unit record) { unit["work_unit_id"] = "WU-CD-007" }},
+		{"invalid work unit ID", func(_, _, _, unit record) { unit["id"] = "WU-aa-007" }},
+		{"mixed work unit prefix", func(_, _, _, unit record) { unit["id"] = "WU-CD-007" }},
+		{"superseded work unit item ID", func(_, _, _, unit record) { unit["work_unit_id"] = unit["id"] }},
+		{"superseded work unit container", func(doc, _, _, _ record) { doc["work_unit_item"] = doc["work_unit"] }},
 		{"non-array work unit value", func(_, _, _, unit record) { unit["value"] = "user data" }},
 		{"work unit session", func(_, _, _, unit record) { unit["session_id"] = "example" }},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			identity := record{"plan_id": "plan-Ab90", "revision": "consumer-owned revision"}
-			lifecycle := record{"status": "Approval.In_progress", "completion_date": nil}
-			unit := record{"work_unit_id": "WU-AB-007", "task_id": []any{}, "value": []any{nil, "free-form", true}}
+			lifecycle := record{"status": "Approval.In_progress", "Creation_date": "2026-11-26T09:00:00+09:00",
+				"last_modified_date": "2026-11-26T00:00:01Z", "completion_date": nil}
+			unit := record{"id": "WU-AB-007", "task_id": []any{}, "value": []any{nil, "free-form", true}}
 			doc := record{
 				"SchemaVersion": "SCH.1.00", "Plan_Identity": identity,
 				"Plan_lifecycle": lifecycle,
-				"work_unit_item": []any{record{"work_unit_id": "WU-AB-000", "task_id": []any{}}, unit},
+				"work_unit":      []any{record{"id": "WU-AB-000", "task_id": []any{}}, unit},
 			}
 			expected := "VALID"
 			if tc.change != nil {
@@ -101,17 +107,48 @@ func TestCanonicalPlanContractValidatesIndependentFields(t *testing.T) {
 	}
 }
 
+func TestCanonicalPlanRuleReferences(t *testing.T) {
+	root := filepath.Join("..", "..")
+	for _, tc := range []struct {
+		name, status string
+		ref          any
+	}{
+		{"owned exact rule", "VALID", "SFP-CNTR-0009#SFP-CNTR-0009/R-02"},
+		{"rule in another policy", "UNRESOLVED", "SFP-CNTR-0001#SFP-CNTR-0009/R-02"},
+		{"unknown policy", "UNRESOLVED", "no-owner#SFP-CNTR-0009/R-02"},
+		{"unknown rule", "UNRESOLVED", "SFP-CNTR-0009#no-rule"},
+		{"case differs", "UNRESOLVED", "SFP-CNTR-0009#SFP-CNTR-0009/r-02"},
+		{"old tuple", "INVALID", []any{"SFP-CNTR-0009", "SFP-CNTR-0009/R-02"}},
+		{"missing rule", "INVALID", "SFP-CNTR-0009#"},
+		{"ambiguous separator", "INVALID", "SFP-CNTR-0009#SFP-CNTR-0009/R-02#extra"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			result := dispatch(record{
+				"format": protocol, "operation": "validate", "urn": registry.PlanDocumentURN,
+				"instance": record{"SchemaVersion": "SCH.1.00", "policy_refs": []any{tc.ref}},
+			}, root)
+			if result["status"] != tc.status {
+				t.Fatalf("expected %s: %#v", tc.status, result)
+			}
+			if tc.status == "UNRESOLVED" && !strings.Contains(result["reference_resolution"].(record)["problem"].(string), "policy_refs[0]") {
+				t.Fatalf("missing affected reference index: %#v", result)
+			}
+		})
+	}
+}
+
 func TestCanonicalPolicyContractValidatesReferencedFields(t *testing.T) {
 	root := filepath.Join("..", "..")
 	const urn = "urn:ptsip:contract:public-structure-policy:v4"
 	lookup := dispatch(record{"format": protocol, "operation": "lookup", "urn": urn}, root)
 	provenance, _ := lookup["provenance"].(record)
-	if lookup["status"] != "RESOLVED" || provenance["registry_revision"] != "v2" {
+	entry, _ := lookup["contract"].(registry.Entry)
+	if lookup["status"] != "RESOLVED" || provenance["registry_revision"] != "v2" || entry.Version != "SCH.1.00" {
 		t.Fatalf("canonical Policy lookup: %#v", lookup)
 	}
 	lifecycle := record{"status": "APPROVED.Default"}
 	instance := record{
-		"Policy_Identity":  record{"id": "example"},
+		"Policy_Identity":  record{"id": "example", "SchemaVersion": "SCH.1.00", "Version": "v1.2.3"},
 		"Policy_Lifecycle": lifecycle,
 		"Policy_Rules":     record{"rules": []any{record{"id": "example"}}},
 		"Policy_Content":   record{"items": []any{record{"id": "example", "value": true}}},
@@ -120,6 +157,17 @@ func TestCanonicalPolicyContractValidatesReferencedFields(t *testing.T) {
 	if report := dispatch(request, root); report["status"] != "VALID" {
 		t.Fatalf("valid canonical Policy: %#v", report)
 	}
+	identity := instance["Policy_Identity"].(record)
+	identity["SchemaVersion"] = "v4"
+	if report := dispatch(request, root); report["status"] != "INVALID" {
+		t.Fatalf("Policy URN suffix accepted as a SchemaVersion instance value: %#v", report)
+	}
+	identity["SchemaVersion"] = "SCH.1.00"
+	identity["version"] = "v1.2.3"
+	if report := dispatch(request, root); report["status"] != "INVALID" {
+		t.Fatalf("superseded Policy version field accepted: %#v", report)
+	}
+	delete(identity, "version")
 	lifecycle["status"] = "APPROVED"
 	if report := dispatch(request, root); report["status"] != "INVALID" {
 		t.Fatalf("unknown lifecycle status accepted: %#v", report)

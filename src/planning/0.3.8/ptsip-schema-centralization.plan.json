@@ -2751,8 +2751,8 @@
       ],
       "gate": "Registry JSON parses and only approved exact target paths are registered; unapproved target paths are excluded rather than silently generated, even if their source exists.",
       "priority": "ACTIVE_FOCUS_CENTRAL_CONFIG",
-      "execution_status": "APPROVED_REGISTRY_SCOPE_IMPLEMENTED_VERIFIED",
-      "current_result": "Approved Policy/RBAC/Profile resources and 21 native owner-local schema routes are implemented; denied targets remain absent.",
+      "execution_status": "COORDINATED_SCHEMA_VERSION_PROJECTIONS_IMPLEMENTED",
+      "current_result": "src/VERSION, schemas/config.json and the Common Contract registry now agree on the approved Policy, Plan and RA/RAC/AEC schema versions. Schema IDs, registered paths and Profile lifecycle/history remain unchanged. The Go version checker reported IN_SYNC.",
       "implementation_approval": {
         "state": "APPROVED",
         "scope": "ALL_POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
@@ -2874,8 +2874,8 @@
       ],
       "gate": "Four field contracts fully scoped; Content path approved; Rule evaluation nested; separate refs compile",
       "priority": "ACTIVE_FOCUS_POLICY_V4",
-      "execution_status": "POLICY_V4_APPROVED_STRUCTURE_IMPLEMENTED_VERIFIED",
-      "current_result": "Existing approved four-field Policy v4 and user-contract behavior passed current Go regression/native validation checks.",
+      "execution_status": "POLICY_V4_SCHEMA_AND_USER_VERSIONS_SEPARATED",
+      "current_result": "Policy_Identity uses the PTSIP SchemaVersion SCH.1.00 and independent user Version. Existing user version validation is used for Version. The Policy root version, registry metadata, digest and Go consumer tests were updated while retaining the existing Policy root URN and the other child contracts.",
       "implementation_approval": {
         "state": "APPROVED",
         "scope": "ALL_POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
@@ -2981,8 +2981,8 @@
         "LATEST USER 2026-11-26: apply decisions_0015 to public-structure-plan.schema.json, plan-unit.schema.json, plan-lifecycle.schema.json and actual active consumers/registry/tests. work_unit[].id replaces work_unit_item[].work_unit_id; policy_refs items are single Policy_ID#Rule_ID strings; all lifecycle date fields use RFC3339 timezone date-time strings with explicit null unrecorded completion. Preserve approved ID patterns, shared prefix, task_id and free-form value; do not invent requiredness. Prior contradictory tuple, field-name and date-format requirements are superseded. Update affected consumer tests and verify exact registered contract closure; no publication."
       ],
       "gate": "LATEST_USER_20261126: WORK_UNIT_CONTAINER_AND_ID, SINGLE_COMBINED_POLICY_RULE_REFERENCE, RFC3339_DATE_TIME_APPROVED_FOR_IMPLEMENTATION; PRESERVE_UNRELATED_UNRESOLVED_TASK_LIFECYCLE_REQUIREDNESS_AUTHORITY_AND_REFERENCE_LOCATOR_GATES; VERIFY_EXISTING_CONSUMERS_AND_CONTRACT_CLOSURE",
-      "execution_status": "REGISTERED_PLAN_CONTRACTS_EXIST_FINAL_FIELD_MIGRATION_APPROVED_PENDING_IMPLEMENTATION",
-      "current_result": "The current public Plan root is independently registered at SCH.1.00; its three child schemas resolve through fixed ID-to-resource bindings. Existing Plan ID, Task IDs, free-form values, user-owned Revision and explicit null completion_date remain supported. The Go source and packaged Common Contract validation now enforce the approved shared two-letter prefix on the current work_unit_item[].work_unit_id layout. Explicit consumer-repository bootstrap supplies Version_Contract_Structure.json with null policy and plan slots and the approved version recommendations, preserving prior user bytes. The focused Go tests cover same and mixed prefixes, pre-version bootstrap, read-only validation and existing user settings. Pending work-unit field layout, Policy Rule reference encoding, completion-date constraints and the 20261125 version revision retain their separate gates.",
+      "execution_status": "REGISTERED_PLAN_FINAL_FIELDS_IMPLEMENTED_AND_LOCALLY_VERIFIED",
+      "current_result": "The registered Plan now takes work_unit[].id, exact Policy_ID#Rule_ID references, and RFC3339 timezone date-times. Existing requiredness, shared Work Unit prefix, Task IDs, free-form values, user Revision and explicit null completion are preserved. The Go validator verifies exact Rule ownership against its Policy catalog and fails closed on missing or ambiguous references. Rust Validation tests passed for registered Plan dates and the installed Common Contract regression is part of the Wheel verifier.",
       "observed_progress_task_index_contract_ref": "wu04_observed_execution_and_task_index_contract",
       "schema_path_scaffold_execution": {
         "state": "FOUR_SEPARATE_PATH_SCAFFOLDS_CREATED_NOT_REGISTERED",
@@ -3028,7 +3028,7 @@
         "prior_reference_version_decision_ref": "current_user_decisions/Director_Decision/decisions_0011",
         "prior_id_registry_decision_ref": "current_user_decisions/Director_Decision/decisions_0008",
         "state": "USER_FINAL_FIELDS_APPROVED_IMPLEMENTATION_AUTHORIZED",
-        "actual_schema_state": "REGISTERED_PLAN_CONTRACTS_EXIST;FINAL_FIELD_MIGRATION_PENDING",
+        "actual_schema_state": "REGISTERED_PLAN_CONTRACTS_FINAL_FIELDS_IMPLEMENTED",
         "prior_decision_ref": "current_user_decisions/Director_Decision/decisions_0012",
         "implementation_authorized": true,
         "field_contract": {
@@ -3186,8 +3186,8 @@
       ],
       "gate": "every migrated profile variant selected by registered version; duplicate ID/name or mismatched condition fails; historical versions separately selected and current schema collision resolved; all three hybrid version fixtures validated by correct versioned schema, mismatched version rejected, pp1.00 not fabricated; RAC_name/AEC_name roles preserved and multi-ID name resolution decision approved before schema creation; condition contract locator schema must not be silently inferred from Rego source reference",
       "priority": "ACTIVE_FOCUS_STORAGE_RBAC",
-      "execution_status": "APPROVED_PROJECT_PROFILE_AND_RBAC_SCOPE_VERIFIED_OTHER_VARIANTS_BLOCKED",
-      "current_result": "Three current structural RBAC contracts and registered Project Profile resources are verified. The existing unregistered pp.2.00 candidate has its specific UP-04 relocation approval. The 77510354 consumer review found Candidate Profile inspection in discovery.profile.candidates and its Go pilot consumer, historical Source Profile resolution in source_compat/reader.go, and DEFAULT as the sole official pp.3.00 mode. The User Profile extension contract remains unresolved. This review did not identify a separately approved new Profile contract.",
+      "execution_status": "RBAC_SCHEMA_VERSION_PROJECTION_IMPLEMENTED_PROFILE_EXTENSIONS_OPEN",
+      "current_result": "RA/RAC/AEC schema metadata and registered versions are SCH.1.00 as independent schemas. The RBAC system version ver.1.0 is declared only in src/VERSION and is not a schema or instance field. Go Wheel resource verification and the Rust shared RBAC conformance test passed. The separately governed User Profile extension remains unresolved.",
       "implementation_approval": {
         "state": "APPROVED",
         "scope": "ALL_POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
@@ -3538,8 +3538,8 @@
         "LATEST USER 2026-11-26: implement approved flat historical Profile validators/index under src/tests/ptsip/history/profile/ exactly as decisions_0016; preserve 12 Git-source JSON fixture evidence, map each original to its version, reuse registered test entry, validate positive and cross-version negative cases. No per-version directories. No restoration of retired Profile tree."
       ],
       "acceptance": "Historical pp.1.01/pp.1.02/pp.2.00 exact schema blobs, IDs and version selectors remain unchanged with lookup paths under schemas/history/profile/. New direct official pp.3.00 core and native version support pass focused independent conformance. No pp.1.00 source fabricated. WU14 latest design-trigger exception controls removal of the 22 legacy Profile files; fixture and distribution obligations continue after deletion.",
-      "execution_status": "THREE_VERSION_SCHEMA_DERIVATION_AND_YAML_CONFORMANCE_VERIFIED;FIXTURE_LAYOUT_APPROVED_IMPLEMENTATION_PENDING",
-      "current_result": "pp.1.01/pp.1.02/pp.2.00 canonical resources and selected pp2 source are verified. User approved src/tests/ JSON fixture root on 2026-11-24; exact leaf allocation and materialization remain pending. No pp.1.00 schema is required or fabricated.",
+      "execution_status": "THREE_VERSION_JSON_FIXTURES_MATERIALIZED_AND_VERIFIED",
+      "current_result": "The twelve fixture documents from Git revision 0cb9745113ca87de4c59924b9ac8d4f62d1fc21d are materialized in src/tests/ptsip/history/profile/index.json. The registered Go runner verifies each embedded JSON fixture, original path/blob/size, semantic equality with the source YAML, matching schema acceptance, and rejection by both other historical schemas. TestProjectProfileRecordedFixtureEvidence, TestProjectProfileHistoricalContractSelection and TestProjectProfileHistoricalContractsRetainImmutableIdentity passed. The original Profile schema blobs and registered selectors are preserved.",
       "pp300_followup": {
         "status": "OFFICIAL_CORE_IMPLEMENTATION_AUTHORIZED_BY_LATEST_USER",
         "plan_ref": "project_profile_pp300_contract_redesign",
@@ -3570,9 +3570,9 @@
         "json_fixture_data": "PRESERVE_TWELVE_ORIGINAL_FIXTURES_AND_IMMUTABLE_GIT_EVIDENCE;JSON_DATA_REPRESENTATION_AND_EXACT_MAPPING_PLAN_DERIVED_WITHIN_APPROVED_LAYOUT;NO_NEW_VERSION_DIRECTORIES",
         "source_git_object": "0cb9745113ca87de4c59924b9ac8d4f62d1fc21d",
         "go_test_entry": "INTEGRATE_APPROVED_GO_VALIDATOR_FILES_WITH_EXISTING_REGISTERED_TEST_RUNNER;DO_NOT_TREAT_NON_TEST_GO_FILENAME_AS_GO_TEST_ENTRY",
-        "materialized": false,
+        "materialized": true,
         "implementation_authorized": true,
-        "implementation_status": "APPROVED_PENDING_IMPLEMENTATION_AND_VERIFICATION",
+        "implementation_status": "MATERIALIZED_AND_VERIFIED",
         "preserve_retired_profile_tree_absence": true
       },
       "implementation_approval": {
@@ -3804,7 +3804,7 @@
         {
           "id": "PROFILE_JSON_FIXTURE_PATHS_OR_ALTERNATIVE_EVIDENCE",
           "kind": "POST_DELETION_ACCEPTANCE",
-          "state": "EXACT_GO_VALIDATOR_AND_INDEX_PATHS_APPROVED;FIXTURE_MATERIALIZATION_AND_VERIFICATION_PENDING_WU10"
+          "state": "WU10_JSON_FIXTURES_MATERIALIZED_AND_VERIFIED"
         },
         {
           "id": "USER_PROFILE_SOURCE_DISPOSITION",
@@ -4248,7 +4248,7 @@
       "latest_fixture_decision": {
         "decision_ref": "current_user_decisions/Director_Decision/decisions_0016",
         "dependency": "WU-10",
-        "state": "APPROVED_LAYOUT_PENDING_FIXTURE_IMPLEMENTATION_AND_VERIFICATION"
+        "state": "WU10_JSON_FIXTURES_MATERIALIZED_AND_VERIFIED"
       }
     }
   ],

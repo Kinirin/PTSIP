@@ -15,7 +15,7 @@ import (
 const (
 	Dialect        = "https://json-schema.org/draft/2020-12/schema"
 	PolicyKey      = "ptsip.policy.v4"
-	VersionTarget  = "Policy_Identity.version"
+	VersionTarget  = "Policy_Identity.Version"
 	CategoryTarget = "Policy_Identity.Policy_Category"
 )
 

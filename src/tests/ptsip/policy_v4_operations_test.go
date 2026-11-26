@@ -165,7 +165,7 @@ func operationInput(t *testing.T, operation string) object {
 	t.Helper()
 	documents := rbacDocuments()
 	policy := rulePolicy()
-	policy["Policy_Identity"] = object{"id": "policy", "title": "Policy", "version": "v1.2.3"}
+	policy["Policy_Identity"] = object{"id": "policy", "title": "Policy", "SchemaVersion": "SCH.1.00", "Version": "v1.2.3"}
 	documents["policy"] = policy
 	if strings.HasPrefix(operation, "validation.policy.") {
 		return object{"policy": policy}
@@ -212,7 +212,7 @@ func TestRegisteredOperationsThroughGoRustAndSameGoWorker(t *testing.T) {
 			input = operationInput(t, operation)
 			switch operation {
 			case "validation.policy.identity":
-				input["policy"].(object)["Policy_Identity"].(object)["version"] = "not-a-version"
+				input["policy"].(object)["Policy_Identity"].(object)["Version"] = "not-a-version"
 			case "validation.policy.rules":
 				input["policy"].(object)["Policy_Content"] = object{"items": array{}}
 			case "validation.rbac.references":
@@ -239,7 +239,7 @@ func TestRegisteredOperationsThroughGoRustAndSameGoWorker(t *testing.T) {
 	t.Run("scoped-subdomains", func(t *testing.T) {
 		input := operationInput(t, "validation.policy.rules")
 		policy := input["policy"].(object)
-		policy["Policy_Identity"] = object{"version": "invalid"}
+		policy["Policy_Identity"] = object{"Version": "invalid"}
 		policy["Policy_Lifecycle"] = object{"future_field": true}
 		response, _, code := invoke(t, installed, "validation.policy.rules", input)
 		if code != 0 {

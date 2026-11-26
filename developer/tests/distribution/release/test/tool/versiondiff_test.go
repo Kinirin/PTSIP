@@ -23,9 +23,7 @@ version = "0.3.8-b7"
 [tool]
 version = "T.0.3.8.b2"
 [RBAC]
-RA_list = "v.1"
-RAC_list = "v.1"
-AEC_list = "v.1"
+version = "ver.1.0"
 [common_contract]
 registry_revision = "v2"
 [engines]
@@ -36,7 +34,11 @@ projection = "0.2.2"
 storage = "0.3.2"
 validation = "0.3.4"
 [schemas]
-"ptsip.policy.v4" = "v4"
+"ptsip.policy.v4" = "SCH.1.00"
+"urn:ptsip:contract:plan:public-structure" = "SCH.1.00"
+RA_list = "SCH.1.00"
+RAC_list = "SCH.1.00"
+AEC_list = "SCH.1.00"
 "ptsip.project-profile" = "pp.3.00"
 `
 
@@ -207,9 +209,23 @@ func TestVersionsDifferentReadsHistoricalDeclarationsOnlyAtAnExactEarlierCommit(
 	if err != nil || len(changes) != 1 || changes[0].Component != "profile" || changes[0].Version != "pp.3.00" {
 		t.Fatalf("expected only the historical Profile transition: %v, %v", changes, err)
 	}
+	previousSectioned := strings.Replace(currentVersionFixture, `version = "ver.1.0"`, `RA_list = "v.1"
+RAC_list = "v.1"
+AEC_list = "v.1"`, 1)
+	previousSectioned = strings.Replace(previousSectioned, `"ptsip.policy.v4" = "SCH.1.00"
+"urn:ptsip:contract:plan:public-structure" = "SCH.1.00"
+RA_list = "SCH.1.00"
+RAC_list = "SCH.1.00"
+AEC_list = "SCH.1.00"`, `"ptsip.policy.v4" = "v4"`, 1)
+	root, base, _ = versionTestRepoWithVersions(t, previousSectioned, currentVersionFixture)
+	versions, err = releaseversion.VersionsAtCommit(root, base)
+	if err != nil || versions["engine.validation"] != "0.3.4" || versions["profile"] != "pp.3.00" {
+		t.Fatalf("former six-table Git revision not preserved: %v, %v", versions, err)
+	}
 
 	for _, test := range []struct{ name, source string }{
 		{"legacy", oldVersionFixture},
+		{"former six tables", previousSectioned},
 		{"missing common contract", strings.Replace(currentVersionFixture, "[common_contract]\nregistry_revision = \"v2\"\n", "", 1)},
 	} {
 		t.Run(test.name, func(t *testing.T) {
@@ -282,5 +298,58 @@ func TestVersionsDifferentDeveloperMainEntrypoint(t *testing.T) {
 	}
 	if _, err = os.Stat(filepath.Join(developerRoot, "release", "cmd", "versions-different", "main.go")); !os.IsNotExist(err) {
 		t.Fatalf("standalone version command still exists: %v", err)
+	}
+}
+
+func TestEngineVersionSuggestionsUseOnePublicationInterval(t *testing.T) {
+	const base = "2.4.6"
+	for _, tc := range []struct {
+		name, current, want string
+		triggers            []releaseversion.EngineVersionTrigger
+	}{
+		{"standalone responsibility deletion is patch", base, "2.4.7", []releaseversion.EngineVersionTrigger{releaseversion.StandaloneResponsibilityDeletion}},
+		{"repeated patch", "2.4.7", "2.4.7", []releaseversion.EngineVersionTrigger{releaseversion.ContractOnlyChange}},
+		{"patch promotes to minor from publication", "2.4.7", "2.5.0", []releaseversion.EngineVersionTrigger{releaseversion.NewEngineFunctionAddition}},
+		{"transfer out is minor", base, "2.5.0", []releaseversion.EngineVersionTrigger{releaseversion.ResponsibilityTransferOut}},
+		{"transfer in is minor", base, "2.5.0", []releaseversion.EngineVersionTrigger{releaseversion.ResponsibilityTransferIn}},
+		{"minor promotes to major from publication", "2.5.0", "3.0.0", []releaseversion.EngineVersionTrigger{releaseversion.ResponsibilityCompatibilityBreak}},
+		{"major remains fixed", "3.0.0", "3.0.0", []releaseversion.EngineVersionTrigger{releaseversion.ResponsibilityCompatibilityBreak, releaseversion.ExistingEngineFunctionChange}},
+		{"combination uses highest class", base, "3.0.0", []releaseversion.EngineVersionTrigger{releaseversion.FunctionCompatibilityBreak, releaseversion.ResponsibilityCompatibilityBreak, releaseversion.ContractOnlyChange}},
+		{"declaration without contract is unchanged", base, base, []releaseversion.EngineVersionTrigger{releaseversion.NewDomainWithoutRelatedContract, releaseversion.ResponsibilityScopeChangeWithoutCode}},
+		{"entire engine removal freezes final version", "2.5.0", "2.5.0", []releaseversion.EngineVersionTrigger{releaseversion.FullEngineRemoval, releaseversion.ResponsibilityCompatibilityBreak}},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			got, err := releaseversion.SuggestEngineVersion(base, tc.current, tc.triggers...)
+			if err != nil || got != tc.want {
+				t.Fatalf("got %s, %v; want %s", got, err, tc.want)
+			}
+		})
+	}
+	if _, err := releaseversion.SuggestEngineVersion("", base, releaseversion.ContractOnlyChange); err == nil {
+		t.Fatal("suggested a version without a publication baseline")
+	}
+	if _, err := releaseversion.SuggestEngineVersion(base, "2.4.8", releaseversion.ContractOnlyChange); err == nil {
+		t.Fatal("accepted a version outside the publication interval")
+	}
+	if _, err := releaseversion.SuggestEngineVersion(base, base, "undocumented reason"); err == nil {
+		t.Fatal("accepted an unknown trigger")
+	}
+	if got, err := releaseversion.SuggestEngineVersion("3.0.0", "3.0.0", releaseversion.ContractOnlyChange); err != nil || got != "3.0.1" {
+		t.Fatalf("confirmed publication did not reset the baseline: got %s, %v", got, err)
+	}
+}
+
+func TestSchemaPublicationClassAndIndependentRBACClassification(t *testing.T) {
+	if got, err := releaseversion.PublicationIntervalClass(releaseversion.VersionPatch, releaseversion.VersionMinor, releaseversion.VersionPatch); err != nil || got != releaseversion.VersionMinor {
+		t.Fatalf("publication interval did not preserve the highest established class: %v, %v", got, err)
+	}
+	if got, err := releaseversion.PublicationIntervalClass(releaseversion.VersionMajor, releaseversion.VersionPatch, releaseversion.VersionMinor); err != nil || got != releaseversion.VersionMajor {
+		t.Fatalf("publication interval did not preserve the fixed major class: %v, %v", got, err)
+	}
+	if got, err := releaseversion.ClassifyRBACSystemVersion(releaseversion.RBACListFieldAddition, releaseversion.RBACOrdinaryChange); err != nil || got != releaseversion.VersionMinor {
+		t.Fatalf("ordinary RBAC changes did not yield independent minor classification: %v, %v", got, err)
+	}
+	if got, err := releaseversion.ClassifyRBACSystemVersion(releaseversion.RBACOrdinaryChange, releaseversion.RBACInferenceFunctionChange); err == nil || got != releaseversion.VersionUnchanged {
+		t.Fatalf("RBAC major bypassed direct user decision: %v, %v", got, err)
 	}
 }

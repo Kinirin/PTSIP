@@ -20,10 +20,11 @@
     "Plan_lifecycle": {
       "$ref": "urn:ptsip:contract:plan:lifecycle"
     },
-    "work_unit_item": {
+    "work_unit": {
       "type": "array",
       "items": { "$ref": "urn:ptsip:contract:plan:unit" }
     },
+    "work_unit_item": false,
     "contract_vision": false,
     "contract_revision": false,
     "approval_ref": false,
@@ -31,18 +32,11 @@
     "publication_authorized": false,
     "blocked_reason": false,
     "policy_refs": {
-      "description": "Each reference identifies a Policy document and a rule owned by that document. The final rule reference encoding remains undecided.",
+      "description": "Each Policy_ID#Rule_ID reference identifies one Policy document and one exact rule ID declared by that document.",
       "type": "array",
       "items": {
-        "type": "array",
-        "prefixItems": [
-          {
-            "type": "string"
-          },
-          {}
-        ],
-        "minItems": 2,
-        "maxItems": 2
+        "type": "string",
+        "pattern": "^[^#]+#[^#]+$"
       }
     }
   },

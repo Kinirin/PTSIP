@@ -80,9 +80,7 @@ version = "0.3.8"
 [tool]
 version = "T.0.3.8.b3"
 [RBAC]
-RA_list = "v.1"
-RAC_list = "v.1"
-AEC_list = "v.1"
+version = "ver.1.0"
 [common_contract]
 registry_revision = "v2"
 [engines]
@@ -93,7 +91,11 @@ discovery = "0.2.0"
 execution = "0.2.0"
 projection = "0.2.0"
 [schemas]
-"ptsip.policy.v4" = "v4"
+"ptsip.policy.v4" = "SCH.1.00"
+"urn:ptsip:contract:plan:public-structure" = "SCH.1.00"
+RA_list = "SCH.1.00"
+RAC_list = "SCH.1.00"
+AEC_list = "SCH.1.00"
 "ptsip.project-profile" = "pp.3.00"
 `), 0644); err != nil {
 		t.Fatal(err)

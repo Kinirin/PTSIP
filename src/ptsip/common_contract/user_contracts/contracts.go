@@ -407,10 +407,14 @@ func (v *Validator) ValidateUserContracts(policy map[string]any, projectRoot str
 			continue
 		}
 		if !known && stringAnnotation {
+			// Existing authored version contracts follow the renamed user field.
+			if annotationText == "Policy_Identity.version" {
+				annotationText = VersionTarget
+			}
 			if targetPrefixes != nil {
 				declared[name] = []string{annotationText}
 			}
-			if v.targetExists(annotationText) && annotationText != "Policy_Rules.rules[].RA_id" {
+			if v.targetExists(annotationText) && annotationText != "Policy_Rules.rules[].RA_id" && annotationText != "Policy_Identity.SchemaVersion" {
 				targets = []string{annotationText}
 			}
 		}
@@ -473,7 +477,7 @@ func (v *Validator) ValidateUserContracts(policy map[string]any, projectRoot str
 			results[name] = reported(name, entry.targets, "INVALID", "CONTRACT_REFERENCE", "Ambiguous contract resource ID: "+alias)
 		}
 	}
-	compiler, err := compileDocuments(documents)
+	compiler, err := compileDocuments(documents, false)
 	if err != nil {
 		return nil, err
 	}

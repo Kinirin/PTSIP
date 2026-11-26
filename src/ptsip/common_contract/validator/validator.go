@@ -45,6 +45,9 @@ func Compile(g resolver.Graph) (*jsonschema.Schema, error) {
 	c.DefaultDraft(jsonschema.Draft2020)
 	c.UseLoader(closedLoader{})
 	c.UseRegexpEngine(compileRegexp)
+	if _, hasPlanLifecycle := g.Docs[registry.PlanLifecycleURN]; hasPlanLifecycle {
+		c.AssertFormat()
+	}
 	ids := make([]string, 0, len(g.Docs))
 	for id := range g.Docs {
 		ids = append(ids, id)
@@ -80,7 +83,7 @@ type PlanWorkUnitPrefixError struct {
 }
 
 func (err *PlanWorkUnitPrefixError) Error() string {
-	return fmt.Sprintf("work_unit_item[%d].work_unit_id must use the same two-letter prefix as the first work unit", err.Index)
+	return fmt.Sprintf("work_unit[%d].id must use the same two-letter prefix as the first work unit", err.Index)
 }
 
 // CheckPlanWorkUnitPrefixes compares IDs after a Plan passes schema validation.
@@ -88,11 +91,11 @@ func CheckPlanWorkUnitPrefixes(instance any) *PlanWorkUnitPrefixError {
 	const prefixStart = len("WU-")
 	const prefixEnd = prefixStart + 2
 	document, _ := instance.(map[string]any)
-	units, _ := document["work_unit_item"].([]any)
+	units, _ := document["work_unit"].([]any)
 	var prefix string
 	for index, raw := range units {
 		unit, _ := raw.(map[string]any)
-		id, _ := unit["work_unit_id"].(string)
+		id, _ := unit["id"].(string)
 		if len(id) < prefixEnd {
 			continue
 		}

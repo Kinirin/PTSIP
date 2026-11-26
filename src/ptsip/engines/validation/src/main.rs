@@ -253,6 +253,8 @@ mod tests {
             assert!(filename.ends_with(".schema.json") && !filename.contains(['/', '\\', ':']));
             let schema = read_json(relative);
             assert_eq!(schema["$id"], row["$id"]);
+            assert_eq!(row["version"], "SCH.1.00");
+            assert_eq!(schema["version"], row["version"]);
             assert_eq!(schema["$schema"], "https://json-schema.org/draft/2020-12/schema");
             (key, schema)
         });
@@ -283,6 +285,47 @@ mod tests {
                 "{name}"
             );
         }
+    }
+
+    #[test]
+    fn registered_plan_dates_require_rfc3339_timezone() {
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../schemas/plan");
+        let read = |name: &str| source::parse(&std::fs::read(root.join(name)).unwrap()).unwrap();
+        let lifecycle = read("plan-lifecycle.schema.json");
+        let test = |schema: &Value, instance: Value, resources: Option<&Value>, valid: bool| {
+            let (errors, _) = schema::validate_with_resolution(schema, &instance, resources, None)
+                .expect("registered Plan schema must compile");
+            assert_eq!(errors.is_empty(), valid, "{instance}: {errors:?}");
+        };
+        let mut instance = json!({
+            "status": "Approval.In_progress",
+            "Creation_date": "2026-11-26T09:30:00+09:00",
+            "last_modified_date": "2026-11-26T00:30:00Z",
+            "completion_date": null
+        });
+        test(&lifecycle, instance.clone(), None, true);
+        instance["completion_date"] = json!("2026-11-26");
+        test(&lifecycle, instance.clone(), None, false);
+        instance["completion_date"] = json!("2026-11-26T09:30:00+09:00");
+        let plan = read("public-structure-plan.schema.json");
+        let resources = json!([
+            lifecycle,
+            read("plan-identity.schema.json"),
+            read("plan-unit.schema.json")
+        ]);
+        test(
+            &plan,
+            json!({"SchemaVersion": "SCH.1.00", "Plan_lifecycle": instance}),
+            Some(&resources),
+            true,
+        );
+        instance["last_modified_date"] = json!("2026-11-26T09:30:00");
+        test(
+            &plan,
+            json!({"SchemaVersion": "SCH.1.00", "Plan_lifecycle": instance}),
+            Some(&resources),
+            false,
+        );
     }
 
     #[test]

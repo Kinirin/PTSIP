@@ -18,13 +18,15 @@ version = "0.3.8-b7"
 [tool]
 version = "T.0.3.8.b2"
 [RBAC]
-RA_list = "v.1"
-RAC_list = "v.1"
-AEC_list = "v.1"
+version = "ver.1.0"
 [common_contract]
 registry_revision = "v2"
 [schemas]
-"ptsip.policy.v4" = "v4"
+"ptsip.policy.v4" = "SCH.1.00"
+"urn:ptsip:contract:plan:public-structure" = "SCH.1.00"
+RA_list = "SCH.1.00"
+RAC_list = "SCH.1.00"
+AEC_list = "SCH.1.00"
 "ptsip.project-profile" = "pp.2.00"
 
 [engines]
@@ -81,8 +83,14 @@ func writeVersionFixture(t *testing.T, source, project string) string {
 	}
 	write("src/VERSION", source)
 	write("pyproject.toml", project)
-	write("src/ptsip/common_contract/registry/manifest.json", `{"revision":"v2"}`)
-	write(ProfileConfigPath, `{"Policy":{"ptsip.policy.v4":{"version":"v4"}},"storage":{"Responsibility-Authority":{"RA_list":{"version":"v.1"},"RAC_list":{"version":"v.1"},"AEC_list":{"version":"v.1"}},"profile":{"ptsip.project-profile":{
+	write("src/ptsip/common_contract/registry/manifest.json", `{"revision":"v2","contracts":[
+		{"field":"Policy_Document","urn":"urn:ptsip:contract:public-structure-policy:v4","version":"SCH.1.00","resource":"schemas/policy/public-structure-policy.schema.json"},
+		{"field":"Plan_Document","urn":"urn:ptsip:contract:plan:public-structure","version":"SCH.1.00","resource":"schemas/plan/public-structure-plan.schema.json"}
+	]}`)
+	write(ProfileConfigPath, `{
+		"Policy":{"ptsip.policy.v4":{"$id":"urn:ptsip:contract:public-structure-policy:v4","path":"policy/public-structure-policy.schema.json","version":"SCH.1.00"}},
+		"plan":{"urn:ptsip:contract:plan:public-structure":{"$id":"urn:ptsip:contract:plan:public-structure","path":"plan/public-structure-plan.schema.json","version":"SCH.1.00"}},
+		"storage":{"Responsibility-Authority":{"RA_list":{"version":"SCH.1.00"},"RAC_list":{"version":"SCH.1.00"},"AEC_list":{"version":"SCH.1.00"}},"profile":{"ptsip.project-profile":{
 		"$id":"urn:ptsip:storage:contract:profile:official",
 		"version":"pp.2.00",
 		"path":"storage/profile/project-profile.schema.json",
@@ -226,6 +234,11 @@ func TestVersionSyncRejectsInvalidOrMissingSource(t *testing.T) {
 		"0.3.8-b7\n",
 		strings.Replace(canonicalVersionFixture, "0.3.8-b7", "0.3.8b7", 1),
 		strings.Replace(canonicalVersionFixture, `version = "T.0.3.8.b2"`, `version = "0.3.8b2"`, 1),
+		strings.Replace(canonicalVersionFixture, `version = "ver.1.0"`, `version = "SCH.1.00"`, 1),
+		strings.Replace(canonicalVersionFixture, `version = "ver.1.0"`, `RA_list = "v.1"`, 1),
+		strings.Replace(canonicalVersionFixture, `"ptsip.policy.v4" = "SCH.1.00"`, `"ptsip.policy.v4" = "v4"`, 1),
+		strings.Replace(canonicalVersionFixture, `"urn:ptsip:contract:plan:public-structure" = "SCH.1.00"`, "", 1),
+		strings.Replace(canonicalVersionFixture, `RA_list = "SCH.1.00"`, `RA_list = "ver.1.0"`, 1),
 		strings.Replace(canonicalVersionFixture, `"ptsip.project-profile" = "pp.2.00"`, "", 1),
 		strings.Replace(canonicalVersionFixture, `context = "0.2.2"`, "", 1),
 		canonicalVersionFixture + "unknown = true\n",
@@ -243,6 +256,42 @@ func TestVersionSyncRejectsInvalidOrMissingSource(t *testing.T) {
 	os.Remove(filepath.Join(root, "src", "VERSION"))
 	if _, err := SyncPackageVersion(root, false); err == nil {
 		t.Fatal("missing canonical source accepted")
+	}
+}
+
+func TestVersionSyncKeepsRBACSystemAndRegisteredSchemaVersionsIndependent(t *testing.T) {
+	root := writeVersionFixture(t, canonicalVersionFixture, versionSyncFixture)
+	versions, err := versionsource.Read(root)
+	if err != nil || versions.RBACVersion != "ver.1.0" || len(versions.Schemas) != 6 || versions.Schemas["RA_list"] != "SCH.1.00" {
+		t.Fatalf("invalid independently owned versions: %+v, %v", versions, err)
+	}
+	if _, err := SyncPackageVersion(root, false); err != nil {
+		t.Fatal(err)
+	}
+	for _, tc := range []struct{ path, old, new, want string }{
+		{ProfileConfigPath, `"RA_list":{"version":"SCH.1.00"}`, `"RA_list":{"version":"ver.1.0"}`, "RA_list"},
+		{ProfileConfigPath, `"path":"plan/public-structure-plan.schema.json","version":"SCH.1.00"`, `"path":"plan/public-structure-plan.schema.json","version":"SCH.1.01"`, versionsource.PlanKey},
+		{"src/ptsip/common_contract/registry/manifest.json", `"version":"SCH.1.00","resource":"schemas/policy/`, `"version":"v4","resource":"schemas/policy/`, versionsource.PolicyKey},
+	} {
+		t.Run(tc.want, func(t *testing.T) {
+			root := writeVersionFixture(t, canonicalVersionFixture, versionSyncFixture)
+			name := filepath.Join(root, filepath.FromSlash(tc.path))
+			raw, err := os.ReadFile(name)
+			if err != nil || !strings.Contains(string(raw), tc.old) {
+				t.Fatalf("missing owner fixture %s: %v", tc.path, err)
+			}
+			changed := strings.Replace(string(raw), tc.old, tc.new, 1)
+			if err := os.WriteFile(name, []byte(changed), 0644); err != nil {
+				t.Fatal(err)
+			}
+			if _, err := SyncPackageVersion(root, false); err == nil || !strings.Contains(err.Error(), tc.want) {
+				t.Fatalf("version owner drift did not fail closed: %v", err)
+			}
+			project, err := os.ReadFile(filepath.Join(root, "pyproject.toml"))
+			if err != nil || string(project) != versionSyncFixture {
+				t.Fatalf("projection was written before detecting drift: %v", err)
+			}
+		})
 	}
 }
 

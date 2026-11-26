@@ -113,7 +113,7 @@ func (v *Validator) policyOperation(field string, input map[string]any) (Result,
 	for _, contract := range contracts {
 		isVersion := false
 		for _, target := range contract.Targets {
-			isVersion = isVersion || target == "Policy_Identity.version"
+			isVersion = isVersion || target == VersionTarget
 		}
 		if isVersion {
 			customVersion = customVersion || contract.Status == "VALID"
@@ -122,9 +122,9 @@ func (v *Validator) policyOperation(field string, input map[string]any) (Result,
 		}
 	}
 	if field == "Policy_Identity" {
-		if version, exists := object(policy[field])["version"]; exists && !customVersion && !v.OfficialVersionValid(version) {
+		if version, exists := object(policy[field])["Version"]; exists && !customVersion && !v.OfficialVersionValid(version) {
 			issues = append(issues, Issue{
-				Code: "VERSION", Path: []any{field, "version"},
+				Code: "VERSION", Path: []any{field, "Version"},
 				Message: "Version must match an official format or a configured user version contract",
 			})
 		}

@@ -14,7 +14,11 @@
       "type": "object",
       "description": "The user-authored category contract binds the category namespace and its definition to user-selected fields. It can also bind other namespace boundaries, category responsibilities, and excluded responsibilities."
     },
-    "version": {
+    "SchemaVersion": {
+      "description": "Version of the PTSIP-owned public Policy schema.",
+      "const": "SCH.1.00"
+    },
+    "Version": {
       "description": "When present, the dedicated user-contract validator checks the officialVersion definition or a user-authored version schema."
     }
   },

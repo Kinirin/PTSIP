@@ -86,6 +86,7 @@ func TestGoStagesRegisteredRBACWithoutDeveloperContracts(t *testing.T) {
 		key, field, value, problem string
 	}{
 		{"RA_list", "$id", "urn:ptsip:other", "identity mismatch"},
+		{"RAC_list", "version", "ver.1.0", "version mismatch"},
 		{"RA_list", "path", "../.ptsip/contracts/compile-sealed-rbac/candidate-index.json", "registered RBAC schema path"},
 		{"AEC_list", "path", catalog.Storage["Responsibility-Authority"]["RA_list"]["path"], "registered RBAC schema path"},
 	} {

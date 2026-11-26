@@ -265,7 +265,17 @@ pub fn prepare(
             .build(document)
             .map_err(|e| format!("INVALID_SCHEMA_RESOURCE: {e}"))?;
     }
-    let validator = jsonschema::options()
+    // The registered Plan contract treats its RFC3339 formats as assertions.
+    let options = jsonschema::options();
+    let options = if matches!(
+        root_uri.as_str(),
+        "urn:ptsip:contract:plan:public-structure" | "urn:ptsip:contract:plan:lifecycle"
+    ) {
+        options.should_validate_formats(true)
+    } else {
+        options
+    };
+    let validator = options
         .with_base_uri(base)
         .with_retriever(retriever)
         .build(schema)

@@ -1,0 +1,1126 @@
+{
+  "source_revision": "0cb9745113ca87de4c59924b9ac8d4f62d1fc21d",
+  "fixtures": [
+    {
+      "source_path": "src/ptsip/profiles/example.ptsip.yaml",
+      "source_blob": "ca0d29fbfdef82cc5100cfebe5aa0e2cec6df0ec",
+      "source_size": 3649,
+      "version": "pp.2.00",
+      "instance": {
+        "ptsip": {
+          "version": "pp.2.00",
+          "revision": "Rev.0001",
+          "profile_role": "DISTRIBUTED_EXAMPLE",
+          "specification": {
+            "source": "https://github.com/Kinirin/PTSIP",
+            "revision": "3c47816770d194ae42f98faedc911d980db0e62a"
+          }
+        },
+        "responsibility_map": {
+          "mode": "explicit"
+        },
+        "components": [
+          {
+            "id": "product-runtime",
+            "classification": "PRODUCT",
+            "roles": [
+              "IMPLEMENTATION"
+            ],
+            "include": [
+              "${PRODUCT_RUNTIME_ROOT}/**"
+            ],
+            "purpose": "product_runtime",
+            "shipped": true,
+            "runtime_required": true,
+            "executable": true,
+            "release_owner": "product",
+            "compatibility_owner": "product"
+          },
+          {
+            "id": "product-sdk",
+            "classification": "PRODUCT",
+            "roles": [
+              "IMPLEMENTATION"
+            ],
+            "include": [
+              "${PRODUCT_SDK_ROOT}/**"
+            ],
+            "purpose": "shipped_product_sdk",
+            "shipped": true,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "product",
+            "compatibility_owner": "product"
+          },
+          {
+            "id": "product-tests",
+            "classification": "PRODUCT",
+            "roles": [
+              "VERIFICATION"
+            ],
+            "include": [
+              "${PRODUCT_TEST_ROOT}/**"
+            ],
+            "purpose": "product_owned_quality_verification",
+            "shipped": false,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "product",
+            "compatibility_owner": "product"
+          },
+          {
+            "id": "development-toolkit",
+            "classification": "DEVELOPMENT_TOOLING",
+            "roles": [
+              "IMPLEMENTATION",
+              "VERIFICATION"
+            ],
+            "include": [
+              "${DEVELOPMENT_TOOLING_ROOT}/**"
+            ],
+            "purpose": "reusable_development_validation_and_generation",
+            "shipped": false,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "development_tooling",
+            "compatibility_owner": "development_tooling",
+            "analysis_inputs": [
+              "${PRODUCT_ROOT}/**",
+              "${CONTRACT_ROOT}/**"
+            ]
+          },
+          {
+            "id": "release-automation",
+            "classification": "DELIVERY",
+            "roles": [
+              "AUTOMATION"
+            ],
+            "include": [
+              "${RELEASE_AUTOMATION_FILE}"
+            ],
+            "purpose": "build_publish_and_deploy_release_targets",
+            "shipped": false,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "delivery",
+            "compatibility_owner": "delivery"
+          },
+          {
+            "id": "production-operations",
+            "classification": "OPERATIONS",
+            "roles": [
+              "AUTOMATION"
+            ],
+            "include": [
+              "${OPERATIONS_ROOT}/**"
+            ],
+            "purpose": "ongoing_production_health_recovery_and_maintenance",
+            "shipped": false,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "operations",
+            "compatibility_owner": "operations"
+          },
+          {
+            "id": "shared-contracts",
+            "classification": "NEUTRAL_CONTRACT",
+            "include": [
+              "${CONTRACT_ROOT}/**"
+            ],
+            "purpose": "lifecycle_independent_declarative_contracts",
+            "shipped": true,
+            "runtime_required": false,
+            "executable": false,
+            "release_owner": "contract",
+            "compatibility_owner": "contract"
+          }
+        ],
+        "associated_artifacts": [
+          {
+            "id": "development-toolkit-docs",
+            "anchor": "development-toolkit",
+            "include": [
+              "${DEVELOPMENT_TOOLING_DOCS_ROOT}/**"
+            ],
+            "purpose": "toolkit_owned_usage_and_authority_documentation"
+          }
+        ],
+        "relationships": [
+          {
+            "id": "product-tests-verify-runtime",
+            "from": "product-tests",
+            "to": "product-runtime",
+            "type": "VERIFIES"
+          },
+          {
+            "id": "toolkit-reads-contracts",
+            "from": "development-toolkit",
+            "to": "shared-contracts",
+            "type": "READS"
+          },
+          {
+            "id": "toolkit-docs-document-toolkit",
+            "from": "development-toolkit-docs",
+            "to": "development-toolkit",
+            "type": "DOCUMENTS"
+          },
+          {
+            "id": "release-builds-sdk",
+            "from": "release-automation",
+            "to": "product-sdk",
+            "type": "BUILDS"
+          },
+          {
+            "id": "release-publishes-sdk",
+            "from": "release-automation",
+            "to": "product-sdk",
+            "type": "PUBLISHES"
+          },
+          {
+            "id": "operations-manages-runtime",
+            "from": "production-operations",
+            "to": "product-runtime",
+            "type": "MANAGES"
+          }
+        ],
+        "policies": {
+          "product_to_nonproduct_runtime_dependency": "deny",
+          "nonproduct_in_product_package": "deny",
+          "independent_build_resolution": "required",
+          "shared_executable_cross_lifecycle": "deny",
+          "neutral_contract_sharing": "allow"
+        }
+      }
+    },
+    {
+      "source_path": "src/ptsip/profiles/history/pp.1.01/example.ptsip.yaml",
+      "source_blob": "69aa1b9b42bae7c767d5e5ed3aa0d808022bd610",
+      "source_size": 3515,
+      "version": "pp.1.01",
+      "instance": {
+        "ptsip": {
+          "version": "pp.1.01",
+          "specification": {
+            "family": "0.3.7-draft",
+            "source": "https://github.com/Kinirin/PTSIP",
+            "revision": "3c47816770d194ae42f98faedc911d980db0e62a"
+          }
+        },
+        "responsibility_map": {
+          "mode": "explicit"
+        },
+        "components": [
+          {
+            "id": "product-runtime",
+            "classification": "PRODUCT",
+            "roles": [
+              "IMPLEMENTATION"
+            ],
+            "include": [
+              "product/app/**"
+            ],
+            "purpose": "product_runtime",
+            "shipped": true,
+            "runtime_required": true,
+            "executable": true,
+            "release_owner": "product",
+            "compatibility_owner": "product"
+          },
+          {
+            "id": "product-sdk",
+            "classification": "PRODUCT",
+            "roles": [
+              "IMPLEMENTATION"
+            ],
+            "include": [
+              "product/sdk/**"
+            ],
+            "purpose": "shipped_product_sdk",
+            "shipped": true,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "product",
+            "compatibility_owner": "product"
+          },
+          {
+            "id": "product-tests",
+            "classification": "PRODUCT",
+            "roles": [
+              "VERIFICATION"
+            ],
+            "include": [
+              "tests/product/**"
+            ],
+            "purpose": "product_owned_quality_verification",
+            "shipped": false,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "product",
+            "compatibility_owner": "product"
+          },
+          {
+            "id": "development-toolkit",
+            "classification": "DEVELOPMENT_TOOLING",
+            "roles": [
+              "IMPLEMENTATION",
+              "VERIFICATION"
+            ],
+            "include": [
+              "tools/sdk/**"
+            ],
+            "purpose": "reusable_development_validation_and_generation",
+            "shipped": false,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "development_tooling",
+            "compatibility_owner": "development_tooling",
+            "analysis_inputs": [
+              "product/**",
+              "contracts/**"
+            ]
+          },
+          {
+            "id": "release-automation",
+            "classification": "DELIVERY",
+            "roles": [
+              "AUTOMATION"
+            ],
+            "include": [
+              ".github/workflows/release.yml"
+            ],
+            "purpose": "build_publish_and_deploy_release_targets",
+            "shipped": false,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "delivery",
+            "compatibility_owner": "delivery"
+          },
+          {
+            "id": "production-operations",
+            "classification": "OPERATIONS",
+            "roles": [
+              "AUTOMATION"
+            ],
+            "include": [
+              "ops/**"
+            ],
+            "purpose": "ongoing_production_health_recovery_and_maintenance",
+            "shipped": false,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "operations",
+            "compatibility_owner": "operations"
+          },
+          {
+            "id": "shared-contracts",
+            "classification": "NEUTRAL_CONTRACT",
+            "include": [
+              "contracts/**"
+            ],
+            "purpose": "lifecycle_independent_declarative_contracts",
+            "shipped": true,
+            "runtime_required": false,
+            "executable": false,
+            "release_owner": "contract",
+            "compatibility_owner": "contract"
+          }
+        ],
+        "associated_artifacts": [
+          {
+            "id": "development-toolkit-docs",
+            "anchor": "development-toolkit",
+            "include": [
+              "docs/toolkit/**"
+            ],
+            "purpose": "toolkit_owned_usage_and_authority_documentation"
+          }
+        ],
+        "relationships": [
+          {
+            "id": "product-tests-verify-runtime",
+            "from": "product-tests",
+            "to": "product-runtime",
+            "type": "VERIFIES"
+          },
+          {
+            "id": "toolkit-reads-contracts",
+            "from": "development-toolkit",
+            "to": "shared-contracts",
+            "type": "READS"
+          },
+          {
+            "id": "toolkit-docs-document-toolkit",
+            "from": "development-toolkit-docs",
+            "to": "development-toolkit",
+            "type": "DOCUMENTS"
+          },
+          {
+            "id": "release-builds-sdk",
+            "from": "release-automation",
+            "to": "product-sdk",
+            "type": "BUILDS"
+          },
+          {
+            "id": "release-publishes-sdk",
+            "from": "release-automation",
+            "to": "product-sdk",
+            "type": "PUBLISHES"
+          },
+          {
+            "id": "operations-manages-runtime",
+            "from": "production-operations",
+            "to": "product-runtime",
+            "type": "MANAGES"
+          }
+        ],
+        "policies": {
+          "product_to_nonproduct_runtime_dependency": "deny",
+          "nonproduct_in_product_package": "deny",
+          "independent_build_resolution": "required",
+          "shared_executable_cross_lifecycle": "deny",
+          "neutral_contract_sharing": "allow"
+        }
+      }
+    },
+    {
+      "source_path": "src/ptsip/profiles/history/pp.1.01/hybrid-python-package.ptsip.yaml",
+      "source_blob": "55d6d8b893ba46131b452a00aadb4eba1ff3d9ea",
+      "source_size": 1039,
+      "version": "pp.1.01",
+      "instance": {
+        "ptsip": {
+          "version": "pp.1.01",
+          "specification": {
+            "family": "0.3.7-draft",
+            "source": "https://github.com/Kinirin/PTSIP",
+            "revision": "3c47816770d194ae42f98faedc911d980db0e62a"
+          }
+        },
+        "responsibility_map": {
+          "mode": "hybrid",
+          "template": {
+            "id": "python-package-library",
+            "revision": "sha256:409acd1cd9907a60761a3cf26a051185d40b5e926e6952131b641b10bccc5c9b"
+          },
+          "overrides": {
+            "components": [
+              {
+                "id": "package",
+                "classification": "PRODUCT",
+                "roles": [
+                  "IMPLEMENTATION"
+                ],
+                "include": [
+                  "lib/**"
+                ],
+                "purpose": "custom_python_package_layout",
+                "shipped": true,
+                "runtime_required": true,
+                "executable": true
+              },
+              {
+                "id": "package-tests",
+                "classification": "PRODUCT",
+                "roles": [
+                  "VERIFICATION"
+                ],
+                "include": [
+                  "qa/**"
+                ],
+                "purpose": "custom_product_owned_verification_layout",
+                "shipped": false,
+                "runtime_required": false,
+                "executable": true
+              }
+            ]
+          }
+        },
+        "policies": {
+          "product_to_nonproduct_runtime_dependency": "deny",
+          "nonproduct_in_product_package": "deny",
+          "independent_build_resolution": "required"
+        }
+      }
+    },
+    {
+      "source_path": "src/ptsip/profiles/history/pp.1.01/template-python-package.ptsip.yaml",
+      "source_blob": "e374065259690865c72d66672f53bbe14dc6279d",
+      "source_size": 483,
+      "version": "pp.1.01",
+      "instance": {
+        "ptsip": {
+          "version": "pp.1.01",
+          "specification": {
+            "family": "0.3.7-draft",
+            "source": "https://github.com/Kinirin/PTSIP",
+            "revision": "3c47816770d194ae42f98faedc911d980db0e62a"
+          }
+        },
+        "responsibility_map": {
+          "mode": "template",
+          "template": {
+            "id": "python-package-library",
+            "revision": "sha256:409acd1cd9907a60761a3cf26a051185d40b5e926e6952131b641b10bccc5c9b"
+          }
+        },
+        "policies": {
+          "product_to_nonproduct_runtime_dependency": "deny",
+          "nonproduct_in_product_package": "deny",
+          "independent_build_resolution": "required"
+        }
+      }
+    },
+    {
+      "source_path": "src/ptsip/profiles/history/pp.1.02/example.ptsip.yaml",
+      "source_blob": "c7f502d09323db7d4388854cce89d4f3da64fc22",
+      "source_size": 3649,
+      "version": "pp.1.02",
+      "instance": {
+        "ptsip": {
+          "version": "pp.1.02",
+          "revision": "Rev.0001",
+          "profile_role": "DISTRIBUTED_EXAMPLE",
+          "specification": {
+            "source": "https://github.com/Kinirin/PTSIP",
+            "revision": "3c47816770d194ae42f98faedc911d980db0e62a"
+          }
+        },
+        "responsibility_map": {
+          "mode": "explicit"
+        },
+        "components": [
+          {
+            "id": "product-runtime",
+            "classification": "PRODUCT",
+            "roles": [
+              "IMPLEMENTATION"
+            ],
+            "include": [
+              "${PRODUCT_RUNTIME_ROOT}/**"
+            ],
+            "purpose": "product_runtime",
+            "shipped": true,
+            "runtime_required": true,
+            "executable": true,
+            "release_owner": "product",
+            "compatibility_owner": "product"
+          },
+          {
+            "id": "product-sdk",
+            "classification": "PRODUCT",
+            "roles": [
+              "IMPLEMENTATION"
+            ],
+            "include": [
+              "${PRODUCT_SDK_ROOT}/**"
+            ],
+            "purpose": "shipped_product_sdk",
+            "shipped": true,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "product",
+            "compatibility_owner": "product"
+          },
+          {
+            "id": "product-tests",
+            "classification": "PRODUCT",
+            "roles": [
+              "VERIFICATION"
+            ],
+            "include": [
+              "${PRODUCT_TEST_ROOT}/**"
+            ],
+            "purpose": "product_owned_quality_verification",
+            "shipped": false,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "product",
+            "compatibility_owner": "product"
+          },
+          {
+            "id": "development-toolkit",
+            "classification": "DEVELOPMENT_TOOLING",
+            "roles": [
+              "IMPLEMENTATION",
+              "VERIFICATION"
+            ],
+            "include": [
+              "${DEVELOPMENT_TOOLING_ROOT}/**"
+            ],
+            "purpose": "reusable_development_validation_and_generation",
+            "shipped": false,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "development_tooling",
+            "compatibility_owner": "development_tooling",
+            "analysis_inputs": [
+              "${PRODUCT_ROOT}/**",
+              "${CONTRACT_ROOT}/**"
+            ]
+          },
+          {
+            "id": "release-automation",
+            "classification": "DELIVERY",
+            "roles": [
+              "AUTOMATION"
+            ],
+            "include": [
+              "${RELEASE_AUTOMATION_FILE}"
+            ],
+            "purpose": "build_publish_and_deploy_release_targets",
+            "shipped": false,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "delivery",
+            "compatibility_owner": "delivery"
+          },
+          {
+            "id": "production-operations",
+            "classification": "OPERATIONS",
+            "roles": [
+              "AUTOMATION"
+            ],
+            "include": [
+              "${OPERATIONS_ROOT}/**"
+            ],
+            "purpose": "ongoing_production_health_recovery_and_maintenance",
+            "shipped": false,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "operations",
+            "compatibility_owner": "operations"
+          },
+          {
+            "id": "shared-contracts",
+            "classification": "NEUTRAL_CONTRACT",
+            "include": [
+              "${CONTRACT_ROOT}/**"
+            ],
+            "purpose": "lifecycle_independent_declarative_contracts",
+            "shipped": true,
+            "runtime_required": false,
+            "executable": false,
+            "release_owner": "contract",
+            "compatibility_owner": "contract"
+          }
+        ],
+        "associated_artifacts": [
+          {
+            "id": "development-toolkit-docs",
+            "anchor": "development-toolkit",
+            "include": [
+              "${DEVELOPMENT_TOOLING_DOCS_ROOT}/**"
+            ],
+            "purpose": "toolkit_owned_usage_and_authority_documentation"
+          }
+        ],
+        "relationships": [
+          {
+            "id": "product-tests-verify-runtime",
+            "from": "product-tests",
+            "to": "product-runtime",
+            "type": "VERIFIES"
+          },
+          {
+            "id": "toolkit-reads-contracts",
+            "from": "development-toolkit",
+            "to": "shared-contracts",
+            "type": "READS"
+          },
+          {
+            "id": "toolkit-docs-document-toolkit",
+            "from": "development-toolkit-docs",
+            "to": "development-toolkit",
+            "type": "DOCUMENTS"
+          },
+          {
+            "id": "release-builds-sdk",
+            "from": "release-automation",
+            "to": "product-sdk",
+            "type": "BUILDS"
+          },
+          {
+            "id": "release-publishes-sdk",
+            "from": "release-automation",
+            "to": "product-sdk",
+            "type": "PUBLISHES"
+          },
+          {
+            "id": "operations-manages-runtime",
+            "from": "production-operations",
+            "to": "product-runtime",
+            "type": "MANAGES"
+          }
+        ],
+        "policies": {
+          "product_to_nonproduct_runtime_dependency": "deny",
+          "nonproduct_in_product_package": "deny",
+          "independent_build_resolution": "required",
+          "shared_executable_cross_lifecycle": "deny",
+          "neutral_contract_sharing": "allow"
+        }
+      }
+    },
+    {
+      "source_path": "src/ptsip/profiles/history/pp.1.02/hybrid-python-package.ptsip.yaml",
+      "source_blob": "b3e67998fd93f1f917d28ca44998b86f28f9a3af",
+      "source_size": 1104,
+      "version": "pp.1.02",
+      "instance": {
+        "ptsip": {
+          "version": "pp.1.02",
+          "revision": "Rev.0001",
+          "profile_role": "DISTRIBUTED_EXAMPLE",
+          "specification": {
+            "source": "https://github.com/Kinirin/PTSIP",
+            "revision": "3c47816770d194ae42f98faedc911d980db0e62a"
+          }
+        },
+        "responsibility_map": {
+          "mode": "hybrid",
+          "template": {
+            "id": "python-package-library",
+            "revision": "sha256:409acd1cd9907a60761a3cf26a051185d40b5e926e6952131b641b10bccc5c9b"
+          },
+          "overrides": {
+            "components": [
+              {
+                "id": "package",
+                "classification": "PRODUCT",
+                "roles": [
+                  "IMPLEMENTATION"
+                ],
+                "include": [
+                  "${PACKAGE_ROOT}/**"
+                ],
+                "purpose": "custom_python_package_layout",
+                "shipped": true,
+                "runtime_required": true,
+                "executable": true
+              },
+              {
+                "id": "package-tests",
+                "classification": "PRODUCT",
+                "roles": [
+                  "VERIFICATION"
+                ],
+                "include": [
+                  "${PRODUCT_TEST_ROOT}/**"
+                ],
+                "purpose": "custom_product_owned_verification_layout",
+                "shipped": false,
+                "runtime_required": false,
+                "executable": true
+              }
+            ]
+          }
+        },
+        "policies": {
+          "product_to_nonproduct_runtime_dependency": "deny",
+          "nonproduct_in_product_package": "deny",
+          "independent_build_resolution": "required"
+        }
+      }
+    },
+    {
+      "source_path": "src/ptsip/profiles/history/pp.1.02/template-python-package.ptsip.yaml",
+      "source_blob": "d6d6482210600c304d43410dca50c67b0fb273cf",
+      "source_size": 518,
+      "version": "pp.1.02",
+      "instance": {
+        "ptsip": {
+          "version": "pp.1.02",
+          "revision": "Rev.0001",
+          "profile_role": "DISTRIBUTED_EXAMPLE",
+          "specification": {
+            "source": "https://github.com/Kinirin/PTSIP",
+            "revision": "3c47816770d194ae42f98faedc911d980db0e62a"
+          }
+        },
+        "responsibility_map": {
+          "mode": "template",
+          "template": {
+            "id": "python-package-library",
+            "revision": "sha256:409acd1cd9907a60761a3cf26a051185d40b5e926e6952131b641b10bccc5c9b"
+          }
+        },
+        "policies": {
+          "product_to_nonproduct_runtime_dependency": "deny",
+          "nonproduct_in_product_package": "deny",
+          "independent_build_resolution": "required"
+        }
+      }
+    },
+    {
+      "source_path": "src/ptsip/profiles/history/pp.2.00/example.ptsip.yaml",
+      "source_blob": "ca0d29fbfdef82cc5100cfebe5aa0e2cec6df0ec",
+      "source_size": 3649,
+      "version": "pp.2.00",
+      "instance": {
+        "ptsip": {
+          "version": "pp.2.00",
+          "revision": "Rev.0001",
+          "profile_role": "DISTRIBUTED_EXAMPLE",
+          "specification": {
+            "source": "https://github.com/Kinirin/PTSIP",
+            "revision": "3c47816770d194ae42f98faedc911d980db0e62a"
+          }
+        },
+        "responsibility_map": {
+          "mode": "explicit"
+        },
+        "components": [
+          {
+            "id": "product-runtime",
+            "classification": "PRODUCT",
+            "roles": [
+              "IMPLEMENTATION"
+            ],
+            "include": [
+              "${PRODUCT_RUNTIME_ROOT}/**"
+            ],
+            "purpose": "product_runtime",
+            "shipped": true,
+            "runtime_required": true,
+            "executable": true,
+            "release_owner": "product",
+            "compatibility_owner": "product"
+          },
+          {
+            "id": "product-sdk",
+            "classification": "PRODUCT",
+            "roles": [
+              "IMPLEMENTATION"
+            ],
+            "include": [
+              "${PRODUCT_SDK_ROOT}/**"
+            ],
+            "purpose": "shipped_product_sdk",
+            "shipped": true,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "product",
+            "compatibility_owner": "product"
+          },
+          {
+            "id": "product-tests",
+            "classification": "PRODUCT",
+            "roles": [
+              "VERIFICATION"
+            ],
+            "include": [
+              "${PRODUCT_TEST_ROOT}/**"
+            ],
+            "purpose": "product_owned_quality_verification",
+            "shipped": false,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "product",
+            "compatibility_owner": "product"
+          },
+          {
+            "id": "development-toolkit",
+            "classification": "DEVELOPMENT_TOOLING",
+            "roles": [
+              "IMPLEMENTATION",
+              "VERIFICATION"
+            ],
+            "include": [
+              "${DEVELOPMENT_TOOLING_ROOT}/**"
+            ],
+            "purpose": "reusable_development_validation_and_generation",
+            "shipped": false,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "development_tooling",
+            "compatibility_owner": "development_tooling",
+            "analysis_inputs": [
+              "${PRODUCT_ROOT}/**",
+              "${CONTRACT_ROOT}/**"
+            ]
+          },
+          {
+            "id": "release-automation",
+            "classification": "DELIVERY",
+            "roles": [
+              "AUTOMATION"
+            ],
+            "include": [
+              "${RELEASE_AUTOMATION_FILE}"
+            ],
+            "purpose": "build_publish_and_deploy_release_targets",
+            "shipped": false,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "delivery",
+            "compatibility_owner": "delivery"
+          },
+          {
+            "id": "production-operations",
+            "classification": "OPERATIONS",
+            "roles": [
+              "AUTOMATION"
+            ],
+            "include": [
+              "${OPERATIONS_ROOT}/**"
+            ],
+            "purpose": "ongoing_production_health_recovery_and_maintenance",
+            "shipped": false,
+            "runtime_required": false,
+            "executable": true,
+            "release_owner": "operations",
+            "compatibility_owner": "operations"
+          },
+          {
+            "id": "shared-contracts",
+            "classification": "NEUTRAL_CONTRACT",
+            "include": [
+              "${CONTRACT_ROOT}/**"
+            ],
+            "purpose": "lifecycle_independent_declarative_contracts",
+            "shipped": true,
+            "runtime_required": false,
+            "executable": false,
+            "release_owner": "contract",
+            "compatibility_owner": "contract"
+          }
+        ],
+        "associated_artifacts": [
+          {
+            "id": "development-toolkit-docs",
+            "anchor": "development-toolkit",
+            "include": [
+              "${DEVELOPMENT_TOOLING_DOCS_ROOT}/**"
+            ],
+            "purpose": "toolkit_owned_usage_and_authority_documentation"
+          }
+        ],
+        "relationships": [
+          {
+            "id": "product-tests-verify-runtime",
+            "from": "product-tests",
+            "to": "product-runtime",
+            "type": "VERIFIES"
+          },
+          {
+            "id": "toolkit-reads-contracts",
+            "from": "development-toolkit",
+            "to": "shared-contracts",
+            "type": "READS"
+          },
+          {
+            "id": "toolkit-docs-document-toolkit",
+            "from": "development-toolkit-docs",
+            "to": "development-toolkit",
+            "type": "DOCUMENTS"
+          },
+          {
+            "id": "release-builds-sdk",
+            "from": "release-automation",
+            "to": "product-sdk",
+            "type": "BUILDS"
+          },
+          {
+            "id": "release-publishes-sdk",
+            "from": "release-automation",
+            "to": "product-sdk",
+            "type": "PUBLISHES"
+          },
+          {
+            "id": "operations-manages-runtime",
+            "from": "production-operations",
+            "to": "product-runtime",
+            "type": "MANAGES"
+          }
+        ],
+        "policies": {
+          "product_to_nonproduct_runtime_dependency": "deny",
+          "nonproduct_in_product_package": "deny",
+          "independent_build_resolution": "required",
+          "shared_executable_cross_lifecycle": "deny",
+          "neutral_contract_sharing": "allow"
+        }
+      }
+    },
+    {
+      "source_path": "src/ptsip/profiles/history/pp.2.00/hybrid-python-package.ptsip.yaml",
+      "source_blob": "b1d669d44a8b5698e062923effbaef834570fc85",
+      "source_size": 1104,
+      "version": "pp.2.00",
+      "instance": {
+        "ptsip": {
+          "version": "pp.2.00",
+          "revision": "Rev.0001",
+          "profile_role": "DISTRIBUTED_EXAMPLE",
+          "specification": {
+            "source": "https://github.com/Kinirin/PTSIP",
+            "revision": "3c47816770d194ae42f98faedc911d980db0e62a"
+          }
+        },
+        "responsibility_map": {
+          "mode": "hybrid",
+          "template": {
+            "id": "python-package-library",
+            "revision": "sha256:409acd1cd9907a60761a3cf26a051185d40b5e926e6952131b641b10bccc5c9b"
+          },
+          "overrides": {
+            "components": [
+              {
+                "id": "package",
+                "classification": "PRODUCT",
+                "roles": [
+                  "IMPLEMENTATION"
+                ],
+                "include": [
+                  "${PACKAGE_ROOT}/**"
+                ],
+                "purpose": "custom_python_package_layout",
+                "shipped": true,
+                "runtime_required": true,
+                "executable": true
+              },
+              {
+                "id": "package-tests",
+                "classification": "PRODUCT",
+                "roles": [
+                  "VERIFICATION"
+                ],
+                "include": [
+                  "${PRODUCT_TEST_ROOT}/**"
+                ],
+                "purpose": "custom_product_owned_verification_layout",
+                "shipped": false,
+                "runtime_required": false,
+                "executable": true
+              }
+            ]
+          }
+        },
+        "policies": {
+          "product_to_nonproduct_runtime_dependency": "deny",
+          "nonproduct_in_product_package": "deny",
+          "independent_build_resolution": "required"
+        }
+      }
+    },
+    {
+      "source_path": "src/ptsip/profiles/history/pp.2.00/template-python-package.ptsip.yaml",
+      "source_blob": "4be32a5f3b8883e76f4024d1be6d6f1f8450eb82",
+      "source_size": 518,
+      "version": "pp.2.00",
+      "instance": {
+        "ptsip": {
+          "version": "pp.2.00",
+          "revision": "Rev.0001",
+          "profile_role": "DISTRIBUTED_EXAMPLE",
+          "specification": {
+            "source": "https://github.com/Kinirin/PTSIP",
+            "revision": "3c47816770d194ae42f98faedc911d980db0e62a"
+          }
+        },
+        "responsibility_map": {
+          "mode": "template",
+          "template": {
+            "id": "python-package-library",
+            "revision": "sha256:409acd1cd9907a60761a3cf26a051185d40b5e926e6952131b641b10bccc5c9b"
+          }
+        },
+        "policies": {
+          "product_to_nonproduct_runtime_dependency": "deny",
+          "nonproduct_in_product_package": "deny",
+          "independent_build_resolution": "required"
+        }
+      }
+    },
+    {
+      "source_path": "src/ptsip/profiles/hybrid-python-package.ptsip.yaml",
+      "source_blob": "b1d669d44a8b5698e062923effbaef834570fc85",
+      "source_size": 1104,
+      "version": "pp.2.00",
+      "instance": {
+        "ptsip": {
+          "version": "pp.2.00",
+          "revision": "Rev.0001",
+          "profile_role": "DISTRIBUTED_EXAMPLE",
+          "specification": {
+            "source": "https://github.com/Kinirin/PTSIP",
+            "revision": "3c47816770d194ae42f98faedc911d980db0e62a"
+          }
+        },
+        "responsibility_map": {
+          "mode": "hybrid",
+          "template": {
+            "id": "python-package-library",
+            "revision": "sha256:409acd1cd9907a60761a3cf26a051185d40b5e926e6952131b641b10bccc5c9b"
+          },
+          "overrides": {
+            "components": [
+              {
+                "id": "package",
+                "classification": "PRODUCT",
+                "roles": [
+                  "IMPLEMENTATION"
+                ],
+                "include": [
+                  "${PACKAGE_ROOT}/**"
+                ],
+                "purpose": "custom_python_package_layout",
+                "shipped": true,
+                "runtime_required": true,
+                "executable": true
+              },
+              {
+                "id": "package-tests",
+                "classification": "PRODUCT",
+                "roles": [
+                  "VERIFICATION"
+                ],
+                "include": [
+                  "${PRODUCT_TEST_ROOT}/**"
+                ],
+                "purpose": "custom_product_owned_verification_layout",
+                "shipped": false,
+                "runtime_required": false,
+                "executable": true
+              }
+            ]
+          }
+        },
+        "policies": {
+          "product_to_nonproduct_runtime_dependency": "deny",
+          "nonproduct_in_product_package": "deny",
+          "independent_build_resolution": "required"
+        }
+      }
+    },
+    {
+      "source_path": "src/ptsip/profiles/template-python-package.ptsip.yaml",
+      "source_blob": "4be32a5f3b8883e76f4024d1be6d6f1f8450eb82",
+      "source_size": 518,
+      "version": "pp.2.00",
+      "instance": {
+        "ptsip": {
+          "version": "pp.2.00",
+          "revision": "Rev.0001",
+          "profile_role": "DISTRIBUTED_EXAMPLE",
+          "specification": {
+            "source": "https://github.com/Kinirin/PTSIP",
+            "revision": "3c47816770d194ae42f98faedc911d980db0e62a"
+          }
+        },
+        "responsibility_map": {
+          "mode": "template",
+          "template": {
+            "id": "python-package-library",
+            "revision": "sha256:409acd1cd9907a60761a3cf26a051185d40b5e926e6952131b641b10bccc5c9b"
+          }
+        },
+        "policies": {
+          "product_to_nonproduct_runtime_dependency": "deny",
+          "nonproduct_in_product_package": "deny",
+          "independent_build_resolution": "required"
+        }
+      }
+    }
+  ]
+}

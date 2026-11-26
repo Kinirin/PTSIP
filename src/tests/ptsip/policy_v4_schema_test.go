@@ -237,25 +237,33 @@ func TestOfficialAndUserVersionContracts(t *testing.T) {
 			if !v.OfficialVersionValid(version) {
 				t.Fatalf("approved official version rejected: %s", version)
 			}
-			assertValid(t, evaluate(t, v, "validation.policy.identity", object{"policy": object{"Policy_Identity": object{"version": version}}}))
+			assertValid(t, evaluate(t, v, "validation.policy.identity", object{"policy": object{"Policy_Identity": object{"SchemaVersion": "SCH.1.00", "Version": version}}}))
 		})
 	}
 	for _, version := range []any{"1.2", "1.2.3-Beta", "1.2.3-unknown", "1.2.3\n", 123} {
 		if v.OfficialVersionValid(version) {
 			t.Errorf("unapproved official version accepted: %v", version)
 		}
-		if result := evaluate(t, v, "validation.policy.identity", object{"policy": object{"Policy_Identity": object{"version": version}}}); result.Valid {
+		if result := evaluate(t, v, "validation.policy.identity", object{"policy": object{"Policy_Identity": object{"Version": version}}}); result.Valid {
 			t.Errorf("invalid version passed without a user contract: %v", version)
 		}
 	}
 	project := t.TempDir()
 	custom := object{"release_train": "winter"}
-	writeContract(t, project, "my-version.json", object{"$schema": dialect, "x-ptsip-target": "Policy_Identity.version", "const": custom})
+	writeContract(t, project, "my-version.json", object{"$schema": dialect, "x-ptsip-target": "Policy_Identity.Version", "const": custom})
 	for _, version := range []any{"v1.2.3", custom} {
-		assertValid(t, evaluate(t, v, "validation.policy.identity", object{"policy": object{"Policy_Identity": object{"version": version}}, "project_root": project}))
+		assertValid(t, evaluate(t, v, "validation.policy.identity", object{"policy": object{"Policy_Identity": object{"Version": version}}, "project_root": project}))
 	}
-	if result := evaluate(t, v, "validation.policy.identity", object{"policy": object{"Policy_Identity": object{"version": object{"release_train": "summer"}}}, "project_root": project}); result.Valid {
+	if result := evaluate(t, v, "validation.policy.identity", object{"policy": object{"Policy_Identity": object{"Version": object{"release_train": "summer"}}}, "project_root": project}); result.Valid {
 		t.Fatal("version outside both alternatives was accepted")
+	}
+	legacy := t.TempDir()
+	writeContract(t, legacy, "legacy-version.json", object{"$schema": dialect, "x-ptsip-target": "Policy_Identity.version", "const": custom})
+	assertValid(t, evaluate(t, v, "validation.policy.identity", object{"policy": object{"Policy_Identity": object{"Version": custom}}, "project_root": legacy}))
+	for _, identity := range []object{{"SchemaVersion": "v4"}, {"version": "v1.2.3"}} {
+		if result := evaluate(t, v, "validation.policy.identity", object{"policy": object{"Policy_Identity": identity}}); result.Valid {
+			t.Errorf("unsupported Policy Identity accepted: %v", identity)
+		}
 	}
 }
 
@@ -311,7 +319,7 @@ func TestVersionContractBootstrapProvidesUserOwnedDefaults(t *testing.T) {
 	if err := os.WriteFile(filename, authored, 0o644); err != nil {
 		t.Fatal(err)
 	}
-	identity["version"] = "v1.2.3"
+	identity["Version"] = "v1.2.3"
 	assertValid(t, evaluate(t, v, "validation.policy.identity", input))
 	if actual, err := os.ReadFile(filename); err != nil || string(actual) != string(authored) {
 		t.Fatalf("authored version settings were changed: %q, %v", actual, err)

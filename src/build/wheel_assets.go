@@ -361,13 +361,17 @@ func stageStorageSchemas(root string, files wheelContents) error {
 		}
 		registry.Files[name] = sourceFile{Data: data}
 		var schema struct {
-			ID string `json:"$id"`
+			ID      string `json:"$id"`
+			Version string `json:"version"`
 		}
 		if err := registry.decode(name, &schema); err != nil {
 			return err
 		}
 		if schema.ID != binding.ID {
 			return fmt.Errorf("central RBAC schema identity mismatch: %s", selector)
+		}
+		if schema.Version != binding.Version {
+			return fmt.Errorf("central RBAC schema version mismatch: %s", selector)
 		}
 		ids[binding.ID] = true
 	}

@@ -19,6 +19,9 @@ import (
 
 const Manifest = "registry/manifest.json"
 const PlanDocumentURN = "urn:ptsip:contract:plan:public-structure"
+const PolicyDocumentURN = "urn:ptsip:contract:public-structure-policy:v4"
+const PolicyIdentityURN = "urn:ptsip:contract:policy:identity:v4"
+const PlanLifecycleURN = "urn:ptsip:contract:plan:lifecycle"
 
 type PlanDependency struct {
 	Field    string
@@ -29,13 +32,14 @@ type PlanDependency struct {
 func PlanDependencies() []PlanDependency {
 	return []PlanDependency{
 		{"Plan_Identity", "urn:ptsip:contract:plan:identity", "schemas/plan/plan-identity.schema.json"},
-		{"Plan_Lifecycle", "urn:ptsip:contract:plan:lifecycle", "schemas/plan/plan-lifecycle.schema.json"},
+		{"Plan_Lifecycle", PlanLifecycleURN, "schemas/plan/plan-lifecycle.schema.json"},
 		{"Plan_Unit", "urn:ptsip:contract:plan:unit", "schemas/plan/plan-unit.schema.json"},
 	}
 }
 
 var urn = regexp.MustCompile(`^urn:ptsip:contract:(public-structure-policy|policy:[a-z][a-z_-]*):v[1-9][0-9]*$`)
 var sha = regexp.MustCompile(`^[a-f0-9]{64}$`)
+var schemaVersion = regexp.MustCompile(`^SCH\.[1-9][0-9]*\.[0-9]{2}$`)
 
 type Entry struct {
 	Field     string            `json:"field"`
@@ -99,7 +103,11 @@ func Open(root, expectedDigest string) (*Registry, error) {
 	for _, entry := range data.Contracts {
 		planRoot := entry.URN == PlanDocumentURN && entry.Field == "Plan_Document" &&
 			entry.Resource == "schemas/plan/public-structure-plan.schema.json" && len(entry.Semantics) == 0
-		policy := urn.MatchString(entry.URN) && strings.HasSuffix(entry.URN, ":"+entry.Version) &&
+		versionMatches := strings.HasSuffix(entry.URN, ":"+entry.Version)
+		if entry.URN == PolicyDocumentURN {
+			versionMatches = schemaVersion.MatchString(entry.Version)
+		}
+		policy := urn.MatchString(entry.URN) && versionMatches &&
 			entry.Semantics[""] != "" && schemaPath(entry.Resource, "schemas/policy/")
 		if entry.Version == "" || entry.Field == "" || !sha.MatchString(entry.SHA256) || !(planRoot || policy) {
 			return nil, fmt.Errorf("INVALID_REGISTRY_ENTRY: %s", entry.URN)
@@ -180,6 +188,9 @@ func (r *Registry) Schema(id string) (Entry, map[string]any, error) {
 	if !ok || schema["$id"] != id {
 		return Entry{}, nil, fmt.Errorf("SCHEMA_ID_MISMATCH: %s", id)
 	}
+	if id == PolicyDocumentURN && schema["version"] != entry.Version {
+		return Entry{}, nil, fmt.Errorf("SCHEMA_VERSION_MISMATCH: %s", id)
+	}
 	if id == PlanDocumentURN {
 		properties, _ := schema["properties"].(map[string]any)
 		version, _ := properties["SchemaVersion"].(map[string]any)
@@ -212,7 +223,17 @@ func (r *Registry) Reference(root, id string) (map[string]any, error) {
 		return nil, fmt.Errorf("UNREGISTERED_PLAN_SCHEMA_DEPENDENCY: %s", id)
 	}
 	_, schema, err := r.Schema(id)
+	if err == nil && root == PolicyDocumentURN && id == PolicyIdentityURN &&
+		!PolicyIdentityVersionMatches(schema, r.entries[root].Version) {
+		return nil, fmt.Errorf("POLICY_IDENTITY_SCHEMA_VERSION_MISMATCH: %s", id)
+	}
 	return schema, err
+}
+
+func PolicyIdentityVersionMatches(schema map[string]any, version string) bool {
+	properties, _ := schema["properties"].(map[string]any)
+	versionField, _ := properties["SchemaVersion"].(map[string]any)
+	return versionField["const"] == version
 }
 
 func (r *Registry) readSchema(resource, expectedDigest string) ([]byte, error) {

@@ -91,18 +91,14 @@
               "additionalProperties": false,
               "required": [
                 "section",
-                "version_keys"
+                "version_key"
               ],
               "properties": {
                 "section": {
                   "const": "RBAC"
                 },
-                "version_keys": {
-                  "const": [
-                    "RA_list",
-                    "RAC_list",
-                    "AEC_list"
-                  ]
+                "version_key": {
+                  "const": "version"
                 }
               }
             },

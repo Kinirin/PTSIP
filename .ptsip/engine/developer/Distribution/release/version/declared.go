@@ -40,6 +40,9 @@ func VersionsAtCommit(root, revision string) (map[string]string, error) {
 	if _, err := gitVersion(root, "merge-base", "--is-ancestor", revision, head); err != nil {
 		return nil, fmt.Errorf("HISTORICAL_VERSION_ANCESTOR_REQUIRED: %w", err)
 	}
+	if original, err := versionsource.ParseHistoricalSectioned(raw); err == nil {
+		return releaseNoteVersions(original), nil
+	}
 	return historicalVersions(raw)
 }
 
@@ -48,12 +51,16 @@ func currentVersions(raw []byte) (map[string]string, error) {
 	if err != nil {
 		return nil, err
 	}
+	return releaseNoteVersions(versions), nil
+}
+
+func releaseNoteVersions(versions versionsource.Versions) map[string]string {
 	// These are the component routes registered for the current release notes.
 	values := map[string]string{"package": versions.PackageVersion, "tool": versions.ToolVersion, "profile": versions.ProfileVersion}
 	for id, value := range versions.Engines {
 		values["engine."+id] = value
 	}
-	return values, nil
+	return values
 }
 
 func DeclaredChanges(root, base, head string) (VersionDiffReport, []DeclaredVersionChange, error) {

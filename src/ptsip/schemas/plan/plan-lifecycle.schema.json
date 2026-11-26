@@ -18,14 +18,19 @@
       ]
     },
     "Creation_date": {
-      "description": "Recorded Plan creation date."
+      "description": "Recorded Plan creation date.",
+      "type": "string",
+      "format": "date-time"
     },
     "completion_date": {
       "description": "Use null when no completion date has been recorded.",
-      "not": { "const": "" }
+      "type": ["string", "null"],
+      "format": "date-time"
     },
     "last_modified_date": {
-      "description": "Recorded last change to Plan lifecycle status."
+      "description": "Recorded last change to Plan lifecycle status.",
+      "type": "string",
+      "format": "date-time"
     },
     "SchemaVersion": false,
     "approval_ref": false,

@@ -143,6 +143,12 @@ func contractOperation(request record, root, op string) record {
 		if err := validator.ValidateInstance(entry.URN, schema, instance); err != nil {
 			result["status"] = "INVALID"
 			result["structure"] = record{"status": "INVALID", "problem": err.Error()}
+		} else if entry.URN == registry.PlanDocumentURN {
+			productRoot := filepath.Join(root, "..")
+			if err := source.CheckPlanPolicyReferences(productRoot, registryDigest == "" && source.IsPolicyCheckout(productRoot), instance); err != nil {
+				result["status"] = "UNRESOLVED"
+				result["reference_resolution"] = record{"status": "UNRESOLVED", "urn": id, "problem": err.Error()}
+			}
 		}
 	case "compatibility":
 		compare(request, r, entry, base, result)

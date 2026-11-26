@@ -13,6 +13,7 @@ import (
 	"strings"
 
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/registry"
+	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/source"
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/validator"
 	"github.com/santhosh-tekuri/jsonschema/v6"
 )
@@ -61,8 +62,8 @@ func collectRegistrations(config map[string]any) (map[string]map[string]any, err
 				continue
 			}
 			if entry["diagnostic_only"] == true {
-                continue
-            }
+				continue
+			}
 			if _, resource := entry["path"]; !resource {
 				if err := visit(entry); err != nil {
 					return err
@@ -238,8 +239,8 @@ func New(root string) (*Validator, error) {
 				return nil, fmt.Errorf("invalid schema registration: %s", key)
 			}
 			if entry["diagnostic_only"] == true {
-                continue
-            }
+				continue
+			}
 			if _, duplicate := v.registered[key]; duplicate {
 				return nil, fmt.Errorf("duplicate schema registration: %s", key)
 			}
@@ -255,6 +256,12 @@ func New(root string) (*Validator, error) {
 			object := document.Value.(map[string]any)
 			if entry["$id"] != object["$id"] {
 				return nil, fmt.Errorf("schema resource ID mismatch: %s", key)
+			}
+			switch key {
+			case PolicyKey, "RA_list", "RAC_list", "AEC_list":
+				if object["version"] != version {
+					return nil, fmt.Errorf("schema registration version mismatch: %s", key)
+				}
 			}
 			if key == registry.PlanDocumentURN {
 				fields, _ := object["properties"].(map[string]any)
@@ -290,7 +297,12 @@ func New(root string) (*Validator, error) {
 			return nil, err
 		}
 	}
-	compiled, err := compileDocuments(documents)
+	identitySchema, _ := v.documents[registry.PolicyIdentityURN].(map[string]any)
+	policyVersion, _ := registrations[PolicyKey]["version"].(string)
+	if !registry.PolicyIdentityVersionMatches(identitySchema, policyVersion) {
+		return nil, errors.New("Policy identity SchemaVersion does not match its public schema registration")
+	}
+	compiled, err := compileDocuments(documents, true)
 	if err != nil {
 		return nil, err
 	}
@@ -325,12 +337,14 @@ func (v *Validator) StructureIssues(key string, instance any) []Issue {
 		return []Issue{{Code: "SCHEMA", Path: []any{}, Message: "Unknown schema registration: " + key}}
 	}
 	issues := validationIssues(schema, instance, "SCHEMA", nil)
-	if len(issues) == 0 && key == registry.PlanDocumentURN {
-		if err := validator.CheckPlanWorkUnitPrefixes(instance); err != nil {
-			issues = append(issues, Issue{
-				Code: "SCHEMA", Path: []any{"work_unit_item", err.Index, "work_unit_id"}, Message: err.Error(),
-			})
-		}
+	if len(issues) != 0 || key != registry.PlanDocumentURN {
+		return issues
+	}
+	if err := validator.CheckPlanWorkUnitPrefixes(instance); err != nil {
+		return []Issue{{Code: "SCHEMA", Path: []any{"work_unit", err.Index, "id"}, Message: err.Error()}}
+	}
+	if err := source.CheckPlanPolicyReferences(v.Root, source.IsPolicyCheckout(v.Root), instance); err != nil {
+		return []Issue{{Code: "POLICY_RULE_REFERENCE", Path: []any{"policy_refs", err.Index}, Message: err.Error()}}
 	}
 	return issues
 }
@@ -457,8 +471,11 @@ func describeSchema(uri string, value any) (schemaDocument, error) {
 	return document, nil
 }
 
-func compileDocuments(documents map[string]schemaDocument) (*jsonschema.Compiler, error) {
+func compileDocuments(documents map[string]schemaDocument, assertFormat bool) (*jsonschema.Compiler, error) {
 	compiler := newCompiler()
+	if assertFormat {
+		compiler.AssertFormat()
+	}
 	aliases := make(map[string]string)
 	for _, uri := range sortedKeys(documents) {
 		if err := compiler.AddResource(uri, documents[uri].Value); err != nil {

@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	historical "github.com/Kinirin/PTSIP/contracts-tests/history/profile"
 	usercontracts "github.com/Kinirin/PTSIP/src/ptsip/common_contract/user_contracts"
 	"github.com/santhosh-tekuri/jsonschema/v6"
 	"gopkg.in/yaml.v3"
@@ -161,59 +162,91 @@ func TestProjectProfileRecordedFixtureEvidence(t *testing.T) {
 	root := repositoryRoot(t)
 	plan := readObject(t, filepath.Join(root, "src", "planning", "0.3.8", "ptsip-schema-centralization.plan.json"))
 	retirement := plan["profile_directory_retirement"].(object)
-	original := retirement["original_head"].(string)
+	original, fixtures, err := historical.Fixtures()
+	if err != nil || original != retirement["original_head"] {
+		t.Fatalf("invalid historical fixture index revision %q: %v", original, err)
+	}
 	git := func(args ...string) ([]byte, error) {
 		command := exec.Command("git", args...)
 		command.Dir = root
 		return command.Output()
 	}
+	hasSource := true
 	if _, err := git("cat-file", "-e", original+"^{commit}"); err != nil {
 		shallow, shallowErr := git("rev-parse", "--is-shallow-repository")
-		if shallowErr == nil && strings.TrimSpace(string(shallow)) == "true" {
-			t.Skip("recorded fixture source commit is outside this shallow checkout")
+		if shallowErr != nil || strings.TrimSpace(string(shallow)) != "true" {
+			t.Fatalf("recorded fixture source commit %s is unavailable: %v", original, err)
 		}
-		t.Fatalf("recorded fixture source commit %s is unavailable: %v", original, err)
+		hasSource = false
+		t.Log("shallow checkout: validating JSON fixtures against the recorded manifest and schemas")
 	}
 	_, contracts := profileSchemaCompiler(t)
-	checked := 0
+	validators := map[string]func(*jsonschema.Schema, map[string]any) error{
+		"pp.1.01": historical.Validate101,
+		"pp.1.02": historical.Validate102,
+		"pp.2.00": historical.Validate200,
+	}
+	expected := map[string]object{}
 	for _, row := range retirement["removal_manifest"].(array) {
 		fixture := row.(object)
 		group := fixture["role_group"]
-		if group != "HISTORICAL_YAML_INSTANCE_FIXTURE" && group != "CURRENT_YAML_DISTRIBUTED_EXAMPLE" {
-			continue
+		if group == "HISTORICAL_YAML_INSTANCE_FIXTURE" || group == "CURRENT_YAML_DISTRIBUTED_EXAMPLE" {
+			expected[fixture["source_path"].(string)] = fixture
 		}
-		checked++
-		path := fixture["source_path"].(string)
-		t.Run(path, func(t *testing.T) {
-			blob := fixture["git_blob_sha"].(string)
-			resolved, err := git("rev-parse", "--verify", original+":"+path)
-			if err != nil || strings.TrimSpace(string(resolved)) != blob {
-				t.Fatalf("recorded fixture does not bind the original Git path: %s: %v", resolved, err)
+	}
+	if len(fixtures) != 12 || len(expected) != 12 {
+		t.Fatalf("expected 12 historical fixtures, got %d in the index and %d in the manifest", len(fixtures), len(expected))
+	}
+	for _, fixture := range fixtures {
+		t.Run(fixture.SourcePath, func(t *testing.T) {
+			row := expected[fixture.SourcePath]
+			if row == nil || fixture.SourceBlob != row["git_blob_sha"] || float64(fixture.SourceSize) != row["size_bytes"] {
+				t.Fatalf("fixture does not match recorded source provenance: %s", fixture.SourcePath)
 			}
-			raw, err := git("cat-file", "blob", blob)
-			if err != nil || float64(len(raw)) != fixture["size_bytes"] {
-				t.Fatalf("recorded fixture blob unavailable or size differs: %d: %v", len(raw), err)
-			}
-			var instance object
-			if err := yaml.Unmarshal(raw, &instance); err != nil {
+			delete(expected, fixture.SourcePath)
+			var instance map[string]any
+			if err := json.Unmarshal(fixture.Instance, &instance); err != nil {
 				t.Fatal(err)
 			}
-			identity, ok := instance["ptsip"].(object)
-			if !ok {
-				t.Fatal("fixture is missing its Profile identity object")
+			contract, validate := contracts[fixture.Version], validators[fixture.Version]
+			if contract == nil || validate == nil {
+				t.Fatalf("fixture has no registered historical validator: %q", fixture.Version)
 			}
-			version, _ := identity["version"].(string)
-			contract := contracts[version]
-			if contract == nil {
-				t.Fatalf("fixture has no registered historical schema: %q", version)
+			if err := validate(contract, instance); err != nil {
+				t.Fatalf("fixture differs from its registered %s schema: %v", fixture.Version, err)
 			}
-			if err := contract.Validate(instance); err != nil {
-				t.Fatalf("fixture differs from its registered %s schema: %v", version, err)
+			for _, other := range profileVersions {
+				if other.version != fixture.Version && contracts[other.version].Validate(instance) == nil {
+					t.Errorf("fixture for %s passed the %s schema", fixture.Version, other.version)
+				}
+			}
+			if !hasSource {
+				return
+			}
+			resolved, err := git("rev-parse", "--verify", original+":"+fixture.SourcePath)
+			if err != nil || strings.TrimSpace(string(resolved)) != fixture.SourceBlob {
+				t.Fatalf("recorded fixture does not bind the original Git path: %s: %v", resolved, err)
+			}
+			raw, err := git("cat-file", "blob", fixture.SourceBlob)
+			if err != nil || len(raw) != fixture.SourceSize {
+				t.Fatalf("recorded fixture blob unavailable or size differs: %d: %v", len(raw), err)
+			}
+			var sourceInstance object
+			if err := yaml.Unmarshal(raw, &sourceInstance); err != nil {
+				t.Fatal(err)
+			}
+			encoded, err := json.Marshal(sourceInstance)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var normalized map[string]any
+			if err := json.Unmarshal(encoded, &normalized); err != nil {
+				t.Fatal(err)
+			}
+			if !reflect.DeepEqual(normalized, instance) {
+				t.Fatal("JSON fixture differs from the recorded YAML instance")
 			}
 		})
-	}
-	if checked != 12 {
-		t.Fatalf("expected 12 recorded Profile fixtures, found %d", checked)
 	}
 }
 

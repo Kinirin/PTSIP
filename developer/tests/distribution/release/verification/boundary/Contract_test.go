@@ -95,6 +95,7 @@ func TestSourceCompositionRejectsAmbiguousOrRetiredAuthority(t *testing.T) {
 		{"old-route", releaseIndexPath, CompositionPath, historicalCompositionPath},
 		{"duplicate-route", releaseIndexPath, "\"platform\": \"Common\",", "\"platform\": \"Common\", \"platform\": \"Common\","},
 		{"fallback-source", CompositionPath, "\"file\": \"src/VERSION\"", "\"file\": \"pyproject.toml\""},
+		{"legacy-rbac-version-keys", CompositionPath, "\"section\": \"RBAC\",\n        \"version_key\": \"version\"", "\"section\": \"RBAC\",\n        \"version_keys\": [\"RA_list\", \"RAC_list\", \"AEC_list\"]"},
 		{"publication-grant", CompositionPath, "\"publication_authorized\": false", "\"publication_authorized\": true"},
 		{"stale-source-binding", CompositionPath, "EXACT_FINAL_COMMITTED_SHA", "ANY_CHECKOUT"},
 		{"missing-receipt-digest", CompositionPath, "\"wheel_sha256\"", "\"filename\""},
@@ -107,8 +108,9 @@ func TestSourceCompositionRejectsAmbiguousOrRetiredAuthority(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			mutated := strings.Replace(string(raw), test.from, test.to, 1)
-			if mutated == string(raw) {
+			original := strings.ReplaceAll(string(raw), "\r\n", "\n")
+			mutated := strings.Replace(original, test.from, test.to, 1)
+			if mutated == original {
 				t.Fatal("fixture was not mutated")
 			}
 			if err := os.WriteFile(file, []byte(mutated), 0644); err != nil {
