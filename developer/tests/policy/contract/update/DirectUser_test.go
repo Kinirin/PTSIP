@@ -200,7 +200,13 @@ func TestDelegatedOperationalPolicyThroughDeveloperCLI(t *testing.T) {
 	}
 	// Use the exact original policy revision even after the canonical update
 	// is committed; the evidence record is intentionally reproducible.
-	raw := committed(req.Target)
+	baseline := exec.Command("git", "-C", repository, "show", "--no-textconv", "7db1860aee31dc086d71ac260e1d807ab9015c6b:"+req.Target)
+	raw, err := baseline.Output()
+	if err != nil {
+		// Shallow clones can still validate while the live target is the
+		// recorded original baseline; the CLI enforces the exact hash.
+		raw = committed(req.Target)
+	}
 	root, _, _ := policyFixture(t, "developer")
 	put(t, root, req.Target, raw)
 	put(t, root, update.DelegatedPlanPath, plan)
