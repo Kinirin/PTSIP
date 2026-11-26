@@ -407,14 +407,25 @@
       "pyproject_as_preexisting_canonical_composition_source": "FORBIDDEN",
       "distribution_scope": "NOT_PYPI_ONLY",
       "non_version_packaging_metadata_disposition": "PRESERVE_NON_VERSION_BUILD_AND_DISTRIBUTION_METADATA_IN_CURRENT_CONSUMER_FORMAT_UNTIL_VERIFIED_REPLACEMENT",
-      "replacement_asset_inclusion_and_distribution_readiness": "GO_ASSET_CLOSURE_AND_SOURCE_ARCHIVE_PARITY_REQUIRED_BEFORE_REMOVAL",
-      "current_result": "A setuptools base-Wheel comparison from fabaa455 with both tables removed lost six specdata resources, including the legacy registry and its referenced schemas. The current Go assets and candidate build do not establish replacement parity for them. Preserve the tables until each affected runtime resource is covered or retired under WU-08.",
+      "replacement_asset_inclusion_and_distribution_readiness": "OWNER_DIRECTED_TABLE_REMOVAL_NOW;GO_ASSET_CLOSURE_SOURCE_ARCHIVE_AND_INSTALLED_PARITY_REQUIRED_BEFORE_COMPLETION_OR_RELEASE",
+      "current_result": "A setuptools base-Wheel comparison from fabaa455 with both tables removed lost six specdata resources, including the legacy registry and its referenced schemas. The current Go assets and candidate build do not establish replacement parity for them. Preserve the tables until each affected runtime resource is covered or retired under WU-08.\nUser explicitly directed immediate removal of the two setuptools declarations. The prior sequencing requirement to retain those tables until parity is superseded for source editing only; the six missing resources remain an open defect and require verified replacement or retirement before completion or release. No successful build is claimed.",
       "asset_delivery_design_ref": "#/approved_implementation_design/asset_delivery",
       "implementation_approval": {
         "state": "APPROVED",
         "scope": "POLICY_COMPLIANT_IN_SCOPE_ACTIONS",
         "preserve_design_reconciliation_and_verification": true,
         "approval_ref": "authority/latest_implementation_approval"
+      },
+      "latest_removal_authorization": {
+        "source": "USER_EXPLICIT_CHAT_2026_11_26",
+        "base_revision": "ea343101c531f8ff7d35696acf23106db4cf686c",
+        "scope": "REMOVE_EXACT_TWO_SETuptools_PACKAGE_DATA_TABLES",
+        "prior_gate": "GO_ASSET_CLOSURE_AND_SOURCE_ARCHIVE_PARITY_REQUIRED_BEFORE_REMOVAL",
+        "source_edit_authorized": true,
+        "required_asset_coverage_waived": false,
+        "publication_authorized": false,
+        "verification": "PENDING",
+        "known_missing_resource_count": 6
       }
     },
     {
@@ -648,7 +659,7 @@
       "history_conflict": "FAIL_IF_EXISTING_HISTORY_VERSION_HAS_DIFFERENT_SEMANTIC_CONTENT",
       "historical_field_rewrite": "FORBIDDEN_AFTER_NEW_ARCHIVE_CREATION",
       "first_unification_no_schema_contract_version_change": "DO_NOT_GENERATE_SYNTHETIC_HISTORY_OR_ARTIFICIAL_PATCH",
-      "new_history_path_mapping": "OWNER_DEFINED_MACHINE_READABLE_CONTRACT_REQUIRED;APPROVED_DOMAIN_ROOTS_RECORDED_20261124;EXACT_RESOURCE_MAPPING_PENDING",
+      "new_history_path_mapping": "OWNER_DEFINED_MACHINE_READABLE_CONTRACT_REQUIRED;ALL_CURRENT_DOMAIN_ROOTS_USER_APPROVED;EXACT_RESOURCE_AND_EVIDENCE_LEAF_MAPPING_PLAN_DERIVED",
       "engine_historical_legacy_archive_deletion": "NOT_AUTHORIZED",
       "approved_history_directory_mapping_20261124": {
         "source": "USER_EXPLICIT_CHAT_2026_11_24",
@@ -656,19 +667,38 @@
         "schema_domains": {
           "profile": "src/ptsip/schemas/history/profile/",
           "policy": "src/ptsip/schemas/history/policy/",
-          "plan": "src/ptsip/schemas/history/plan/"
+          "plan": "src/ptsip/schemas/history/plan/",
+          "rbac": "src/ptsip/schemas/history/rbac/"
         },
         "engine_history_root": "src/ptsip/schemas/history/engines/",
         "explicit_engine_domains": {
           "validation": "src/ptsip/schemas/history/engines/validation/",
           "execution": "src/ptsip/schemas/history/engines/execution/",
-          "projection": "src/ptsip/schemas/history/engines/projection/"
+          "projection": "src/ptsip/schemas/history/engines/projection/",
+          "context": "src/ptsip/schemas/history/engines/context/",
+          "storage": "src/ptsip/schemas/history/engines/storage/",
+          "discovery": "src/ptsip/schemas/history/engines/discovery/"
         },
-        "other_engine_leaf_directories": "NOT_INDIVIDUALLY_SPECIFIED",
-        "mapping_state": "DIRECTORY_DOMAIN_MAPPING_APPROVED;EXACT_CURRENT_RESOURCE_ID_TO_HISTORY_LEAF_AND_FILENAME_BINDINGS_PENDING",
+        "other_engine_leaf_directories": "ALL_SIX_CURRENT_ENGINE_DOMAINS_EXPLICITLY_APPROVED",
+        "mapping_state": "ALL_CURRENT_SCHEMA_AND_SIX_ENGINE_DOMAIN_ROOTS_APPROVED;EXACT_RESOURCE_AND_EVIDENCE_LEAF_MAPPING_PLAN_DERIVED_PENDING_IMPLEMENTATION",
         "history_generation_owner": "src/ptsip/ptsip_specification/",
         "immutable_history": "PRESERVED",
-        "creates_or_moves_files": false
+        "creates_or_moves_files": false,
+        "latest_domain_approval": {
+          "source": "USER_EXPLICIT_CHAT_2026_11_26",
+          "base_revision": "ea343101c531f8ff7d35696acf23106db4cf686c",
+          "policy_revision": "eb9cdc666d35a891659e5f81e4ebfbc7395fd965",
+          "prior_other_engine_leaf_state": "NOT_INDIVIDUALLY_SPECIFIED",
+          "new_schema_domains": {
+            "rbac": "src/ptsip/schemas/history/rbac/"
+          },
+          "new_engine_domains": {
+            "context": "src/ptsip/schemas/history/engines/context/",
+            "storage": "src/ptsip/schemas/history/engines/storage/",
+            "discovery": "src/ptsip/schemas/history/engines/discovery/"
+          },
+          "implementation_authorized": true
+        }
       },
       "prior_history_trigger": {
         "sync_trigger": "APPROVED_SOURCE_VERSION_CHANGE_REQUIRING_CURRENT_SCHEMA_OR_ENGINE_CONTRACT_VERSION_UPDATE",
@@ -722,7 +752,7 @@
         "approval_ref": "authority/latest_implementation_approval"
       },
       "implementation_completion_requirement_20261125": {
-        "state": "SPECIFICATION_AND_PUBLICATION_BOUND_HISTORY_IMPLEMENTED;LIVE_RESOURCE_MAPPING_AND_REFERENCE_VERIFIER_OPEN",
+        "state": "SPECIFICATION_AND_PUBLICATION_BOUND_HISTORY_IMPLEMENTED;ALL_CURRENT_DOMAIN_ROOTS_APPROVED;LIVE_LEAF_MAPPING_AND_REFERENCE_VERIFIER_OPEN",
         "owner": "src/ptsip/ptsip_specification/",
         "existing_policy_binding": {
           "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
@@ -737,7 +767,7 @@
           "Integrate the existing release publication-evidence owner with this history function only under its existing authority; validate positive and negative paths including repeated invocation, absent/forged evidence, unchanged contracts, duplicate archive IDs and preserved reference resolution.",
           "Keep product tests in src/tests/ptsip or existing registered product test locations; developer tests in developer/tests; verify installed Wheel access and exact-source artifacts."
         ],
-        "unresolved_mapping": "A read-only release observer can verify the published GitHub carrier, exact source tag, shipping manifest and carrier Wheel, including independent PyPI digest verification when selected. Product code compares observed and exact-source Wheel contract bytes, then prepares and exclusively materializes only changed versioned resources in fixture history. Live wiring requires a complete exact-source resource inventory, approved archive and evidence leaf bindings including the pending RBAC leaves, and the release-owned reference verifier. No official history or publication operation was performed.",
+        "unresolved_mapping": "Published artifact observation and fixture history generation implemented. All current schema and six engine history domain roots are now user-approved. Derive exact resource/archive/evidence leaf bindings from registered exact-source inventory and integrate the release-owned file/anchor reference verifier, including RBAC and all six engines. No actual history or publication operation performed.",
         "revision_gate": {
           "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
           "implementation_authorized_for_new_revision": true,
@@ -1087,7 +1117,7 @@
       ],
       "closure_rule": "Follow exact registered schema, engine manifest, capability, binding, transport, registry and owner-projected Support Policy references, including registered immutable Profile history. Include separately required installed resources by exact verifier and live consumer evidence. Reject missing, ambiguous, stale, unverified, developer-private, or out-of-root members.",
       "frontend_role": "PEP 517 transport and retained package metadata only. Materialize its package version from src/VERSION; verify wheel name, dist-info path, METADATA and RECORD against the builder's same source and fail on disagreement.",
-      "remove_tables_after": "Machine-proven replacement archive and installed runtime coverage of all required previous consumers, with explicit retirement records for unnecessary members.",
+      "remove_tables_after": "SUPERSEDED_FOR_SOURCE_EDIT_BY_USER_EXPLICIT_CHAT_2026_11_26;REMOVE_TWO_DECLARATIONS_NOW;MACHINE_PROVEN_REPLACEMENT_ARCHIVE_AND_INSTALLED_RUNTIME_COVERAGE_OR_EXPLICIT_RETIREMENT_REQUIRED_BEFORE_COMPLETION_AND_RELEASE",
       "preserve_package_history_semantics": "Integrated product distribution and auxiliary Profile or Tool packages keep their distinct declared inventories; do not widen standalone delivery or activation.",
       "retire_legacy_specdata_when": "Honor the schema-centralization plan's per-asset consumer closure. Keep the withdrawn duplicate retired and preserve unresolved sources until verified replacement or authorized retirement."
     },
@@ -1327,7 +1357,7 @@
         "Pass strict TOML shape, valid and invalid version cases and historical-read tests.",
         "Pass deterministic sync checks for manifest, binding, Cargo, index and version metadata. Verify canonical contract and existing history bytes are preserved.",
         "Validate the new release composition route and all affected consumers, with no loss of verification or publication evidence.",
-        "Prove required artifact member and digest parity via registered build verification before removing legacy package-data tables."
+        "Prove required artifact member and digest parity via registered build verification before VC-06 completion and release; user explicitly approved immediate source removal of the two legacy package-data tables without waiving asset coverage."
       ],
       "operational_sequence": "Use resolved UP-01 and VC-10. Complete the independent snapshot job and final exact clean source verification before building the wheel. Keep dependency graph verification as a separate job and publication subject to its own authorization.",
       "no_unverified_claims": "A design decision, local simulation, historical acceptance, source-only test or staged implementation does not admit production use or release."
@@ -1718,6 +1748,16 @@
       "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
       "coordinated_schema_plan": "src/planning/0.3.8/ptsip-schema-centralization.plan.json",
       "implementation": "The canonical RBAC system and registered schema version projections, current and history Go parsing, release composition consumer bindings, and engine publication-interval calculation were implemented in fabaa455850c0b40156db54d79c58663854fcc4a. Version sync, independent Snapshot and graph regeneration, and verification of that committed source passed in GitHub Actions run 45753003195. The live interval caller depends on VC-12 platform publication evidence. No publication authorized by this record."
+    },
+    {
+      "id": "VC-12-HISTORY-DOMAIN-APPROVAL-20261126",
+      "source": "USER_EXPLICIT_CHAT_2026_11_26",
+      "base_revision": "ea343101c531f8ff7d35696acf23106db4cf686c",
+      "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+      "policy_revision": "eb9cdc666d35a891659e5f81e4ebfbc7395fd965",
+      "decision": "ALL_CURRENT_SCHEMA_AND_ENGINE_HISTORY_DOMAIN_ROOTS_APPROVED",
+      "implementation_blocking": false,
+      "exact_resource_mapping": "PLAN_DERIVED_CONTRACT"
     }
   ]
 }
