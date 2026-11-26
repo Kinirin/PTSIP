@@ -44,81 +44,12 @@ where = ["src"]
 include = ["ptsip", "vpms", "vpms.*", "agent_contracts", "agent_contracts.*"]
 namespaces = true
 
-[tool.setuptools.package-data]
-vpms = [
-  "contracts/*.json",
-  "contracts/schemas/*.json",
-]
-ptsip = [
-  "common_contract/registry/manifest.json",
-  "common_contract/cmd/ptsip-common-contract/protocol.json",
-  "common_contract/user_contracts/*.go",
-  "common_contract/user_contracts/templates/*.json",
-  "engines/index.json",
-  "engines/*/*.json",
-  "engines/contracts/*.json",
-  "engines/contracts/engines_registries/*.json",
-  "engines/*/src/schemas/*.json",
-  "engines/registries/*.json",
-  "specdata/compile-sealed-rbac-registry-fields.json",
-  "specdata/ptsip-agent-classification.schema.json",
-  "specdata/ptsip-artifact-evidence.schema.json",
-  "specdata/ptsip-diagnostic.schema.json",
-  "specdata/ptsip-normalized-evidence.schema.json",
-  "specdata/ptsip-profile.schema.json",
-  "specdata/ptsip-registry.yaml",
-  "specdata/ptsip-source-profile-0.3.4.schema.json",
-  "specdata/ptsip-source-profile-0.3.6.schema.json",
-  "schemas/config.json",
-  "schemas/plan/*.schema.json",
-  "schemas/policy/*.schema.json",
-  "schemas/policy/*/*.schema.json",
-  "schemas/storage/rbac/*.schema.json",
-  "schemas/storage/profile/*.schema.json",
-  "schemas/history/profile/*.schema.json",
-  "CLI.go",
-  "go.mod",
-  "go.sum",
-  "agent_contracts/*.yaml",
-  "agent_contracts/schemas/*.json",
-  "agent_contracts/spec/*.yaml",
-  "agent_contracts/operations/*.yaml",
-  "agent_contracts/vocabulary/*.yaml",
-  "agent_contracts/bindings/*.yaml",
-]
-agent_contracts = [
-  "*.yaml",
-  "schemas/contracts/*.json",
-  "schemas/io/*.json",
-  "spec/*.yaml",
-  "operations/*.yaml",
-  "actions/*.yaml",
-  "conditions/*.yaml",
-  "gates/*.yaml",
-  "vocabulary/*.yaml",
-  "bindings/*.yaml",
-  "index.json",
-  "contracts/current.json",
-  "conformance/current.json",
-  "promotion/current.json",
-  "promotion/index.json",
-  "promotion/specification-contract.json",
-  "canonicalization/*.json",
-  "digests/*.json",
-  "schemas/candidate-index.schema.json",
-  "schemas/candidate-group.schema.json",
-  "schemas/candidate-vectors.schema.json",
-]
-
 [project.optional-dependencies]
 dev = [
   "build>=1.2,<2",
   "pytest>=8,<9",
   "setuptools>=77.0.3",
 ]
-
-[tool.setuptools.exclude-package-data]
-ptsip = ["common_contract/*.go", "common_contract/go.mod", "common_contract/go.sum", "common_contract/testdata/*"]
 
 # Canonical current composition. Published snapshots are recorded separately
 # after their original-source artifacts and publication state are verified.
