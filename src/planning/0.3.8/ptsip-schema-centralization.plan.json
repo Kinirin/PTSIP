@@ -334,10 +334,12 @@
         "coordinated_cutover_required": true
       },
       "revision_gate": {
-        "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
-        "implementation_authorized_for_new_revision": false,
+        "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
+        "implementation_authorized_for_new_revision": true,
         "prior_approval_preserved_for_unchanged_scope": true,
-        "publication_authorized": false
+        "publication_authorized": false,
+        "approval_source": "USER_EXPLICIT_CHAT_2026_11_26",
+        "audited_revision": "372394a981d4cc53797ce4d3c240d9678dd77df4"
       },
       "previous_policy_v4_version_value": "v4",
       "prior_rbac_schema_versions": "v.1",
@@ -922,33 +924,38 @@
       "id": "WU04-UNIT-VALUE-FREEFORM-20261121",
       "scope": "work_unit_item[].value[]",
       "state": "USER_APPROVED_UNIT_SINGLE_ID_AND_FREEFORM_VALUE",
-      "note": "Each WU has precisely one scalar work_unit_id. Removed dynamic plan reference keys/project_specific wrapper from required Plan Unit shape. value[] is optional and has no PTSIP required item fields. Do not silently resolve WU ID regex or redefine Task refs."
+      "note": "Each WU has precisely one scalar work_unit_id. Removed dynamic plan reference keys/project_specific wrapper from required Plan Unit shape. value[] is optional and has no PTSIP required item fields. Do not silently resolve WU ID regex or redefine Task refs.",
+      "latest_field_decision_ref": "current_user_decisions/Director_Decision/decisions_0015"
     },
     {
       "id": "WU04-UNIT-VALUE-NO-INNER-FIELDS-20261121",
       "scope": "work_unit_item[].value[]",
       "state": "USER_APPROVED_FINAL_VALUE_NO_INNER_FIELDS",
-      "note": "Official PTSIP schema shall use unconstrained array items and no named inner properties or required child fields. Canonical preview only value: []. Preserves consumer-owned separate custom contracts; not a decision about unit root required fields."
+      "note": "Official PTSIP schema shall use unconstrained array items and no named inner properties or required child fields. Canonical preview only value: []. Preserves consumer-owned separate custom contracts; not a decision about unit root required fields.",
+      "latest_field_decision_ref": "current_user_decisions/Director_Decision/decisions_0015"
     },
     {
       "id": "WU04-WORK-UNIT-ID-PATTERN-20261121",
       "scope": "work_unit_item[].work_unit_id",
       "state": "USER_APPROVED_EXACT_REGEX",
-      "note": "Accidental trailing escaped asterisk corrected. ^WU-[A-Z]{2}-[0-9]{3}$; exactly one scalar ID per Work Unit, same two-letter uppercase random prefix within Plan, three numeric suffix. No dynamic migrated plan-ID key or value[] inner requirements."
+      "note": "Accidental trailing escaped asterisk corrected. ^WU-[A-Z]{2}-[0-9]{3}$; exactly one scalar ID per Work Unit, same two-letter uppercase random prefix within Plan, three numeric suffix. No dynamic migrated plan-ID key or value[] inner requirements.",
+      "latest_field_decision_ref": "current_user_decisions/Director_Decision/decisions_0015"
     },
     {
       "id": "WU04-CONTRACT-DIRECTION-20261124",
       "scope": "WU-04",
       "state": "USER_APPROVED_IDS_VERSIONS_ROOT_ONLY_REGISTRY_AND_FIELD_RESPONSIBILITIES",
       "decision_ref": "current_user_decisions/Director_Decision/decisions_0008",
-      "note": "Supersedes earlier independent child config entry direction; historical records remain. Exact reference encoding and unresolved field semantics remain separate; diagnostic bindings unchanged."
+      "note": "Supersedes earlier independent child config entry direction; historical records remain. Exact reference encoding and unresolved field semantics remain separate; diagnostic bindings unchanged.",
+      "latest_field_decision_ref": "current_user_decisions/Director_Decision/decisions_0015"
     },
     {
       "id": "WU10-FIXTURE-ROOT-20261124",
       "scope": "WU-10_WU-14",
       "state": "USER_APPROVED_SRC_TESTS_ROOT",
       "decision_ref": "current_user_decisions/Director_Decision/decisions_0009",
-      "note": "Root approved; no invented leaf names or materialization. Existing exact-path false flag refers only to leaf paths."
+      "note": "Root approved; no invented leaf names or materialization. Existing exact-path false flag refers only to leaf paths.",
+      "latest_exact_layout_decision_ref": "current_user_decisions/Director_Decision/decisions_0016"
     },
     {
       "id": "WU14-APPROVAL-EVIDENCE-OWNERSHIP-20261124",
@@ -964,7 +971,8 @@
       "state": "USER_APPROVED_POLICY_SYNCHRONIZED_PLAN_REASSESSMENT_PENDING",
       "decision_ref": "current_user_decisions/Director_Decision/decisions_0011",
       "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
-      "note": "Combined contract_vision superseded; independent Schema versions and explicit null completion date approved. Exact locator, field placement, shared version contract shape and still-open reference/field semantics remain."
+      "note": "Combined contract_vision superseded; independent Schema versions and explicit null completion date approved. Exact locator, field placement, shared version contract shape and still-open reference/field semantics remain.",
+      "latest_field_decision_ref": "current_user_decisions/Director_Decision/decisions_0015"
     },
     {
       "id": "WU04-USER-VERSION-POLICY-RULE-SCOPE-20261124",
@@ -972,7 +980,27 @@
       "state": "USER_APPROVED_POLICY_SYNCHRONIZED",
       "decision_ref": "current_user_decisions/Director_Decision/decisions_0012",
       "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
-      "note": "Policy ID scopes Rule ID; Plan SchemaVersion root, user-only Revision and consumer version contract path/initial null values approved. No schema mutation or user file creation."
+      "note": "Policy ID scopes Rule ID; Plan SchemaVersion root, user-only Revision and consumer version contract path/initial null values approved. No schema mutation or user file creation.",
+      "latest_field_decision_ref": "current_user_decisions/Director_Decision/decisions_0015"
+    },
+    {
+      "id": "SCHEMA-RBAC-VERSION-CUTOVER-20261126",
+      "scope": "WU-02_WU-03_WU-04_WU-05",
+      "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
+      "audited_revision": "372394a981d4cc53797ce4d3c240d9678dd77df4",
+      "decision_ref": "current_user_decisions/Director_Decision/decisions_0014"
+    },
+    {
+      "id": "WU04-FINAL-FIELDS-20261126",
+      "scope": "WU-04",
+      "state": "USER_APPROVED_IMPLEMENTATION_AUTHORIZED",
+      "decision_ref": "current_user_decisions/Director_Decision/decisions_0015"
+    },
+    {
+      "id": "WU10-FIXTURE-EXACT-GO-PATHS-20261126",
+      "scope": "WU-10_WU-14",
+      "state": "USER_APPROVED_IMPLEMENTATION_AUTHORIZED",
+      "decision_ref": "current_user_decisions/Director_Decision/decisions_0016"
     }
   ],
   "target_registry": {
@@ -2795,10 +2823,12 @@
           "coordinated_cutover_required": true
         },
         "revision_gate": {
-          "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
-          "implementation_authorized_for_new_revision": false,
+          "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
+          "implementation_authorized_for_new_revision": true,
           "prior_approval_preserved_for_unchanged_scope": true,
-          "publication_authorized": false
+          "publication_authorized": false,
+          "approval_source": "USER_EXPLICIT_CHAT_2026_11_26",
+          "audited_revision": "372394a981d4cc53797ce4d3c240d9678dd77df4"
         },
         "actions": [
           "Synchronize schemas/config.json versions for the five approved resources and preserve exact IDs, keys, paths, root-only Plan registration and unaffected Profile/history registration. Config is a projection of canonical src/VERSION; do not add independent RBAC system version as a schema registration.",
@@ -2888,10 +2918,12 @@
           "coordinated_cutover_required": true
         },
         "revision_gate": {
-          "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
-          "implementation_authorized_for_new_revision": false,
+          "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
+          "implementation_authorized_for_new_revision": true,
           "prior_approval_preserved_for_unchanged_scope": true,
-          "publication_authorized": false
+          "publication_authorized": false,
+          "approval_source": "USER_EXPLICIT_CHAT_2026_11_26",
+          "audited_revision": "372394a981d4cc53797ce4d3c240d9678dd77df4"
         },
         "actions": [
           "Bind the public Policy schema registration and schema-resource version to SCH.1.00. Implement the already approved SchemaVersion field inside Policy_Identity, distinct from user Version; use exact approved field rules and preserve unrelated approved semantics.",
@@ -2945,10 +2977,11 @@
         "User correction on 2026-11-21 supersedes all earlier WU04 dynamic migrated Plan-ID-key and project_specific[] requirements. Each work_unit_item contains one work_unit_id (not one global Work Unit for entire Plan), and optional value[] array for arbitrary user-authored content; PTSIP core imposes ZERO required child fields or mandatory project Plan IDs inside value.",
         "Preserve existing work_unit_item.title, RA_id and direct task_id[] responsibilities; no new required fields added for user-owned value[], and no pattern validation on abandoned migrated Plan-ID mapping key. The work_unit_id exact ^WU-[A-Z]{2}-[0-9]{3}$ pattern is approved; no pending asterisk ambiguity.",
         "User 2026-11-21 explicitly approves value[] as a free-form optional array; PTSIP MUST NOT define any named item subfield, require any nested item field, or show example subfield names as though canonical. Canonical YAML preview contains only value: [] with no inner keys. Consumer-defined extension contract maintains separate authority to validate its own data.",
-        "User 2026-11-21 explicitly corrected the accidental trailing escaped asterisk in work_unit_item.work_unit_id and approved ^WU-[A-Z]{2}-[0-9]{3}$. Apply only to new Work Unit schema validation, preserving one scalar ID per unit and a shared two-letter uppercase prefix per Plan. Do not rewrite historical migration-plan WU-01..WU-14 IDs."
+        "User 2026-11-21 explicitly corrected the accidental trailing escaped asterisk in work_unit_item.work_unit_id and approved ^WU-[A-Z]{2}-[0-9]{3}$. Apply only to new Work Unit schema validation, preserving one scalar ID per unit and a shared two-letter uppercase prefix per Plan. Do not rewrite historical migration-plan WU-01..WU-14 IDs.",
+        "LATEST USER 2026-11-26: apply decisions_0015 to public-structure-plan.schema.json, plan-unit.schema.json, plan-lifecycle.schema.json and actual active consumers/registry/tests. work_unit[].id replaces work_unit_item[].work_unit_id; policy_refs items are single Policy_ID#Rule_ID strings; all lifecycle date fields use RFC3339 timezone date-time strings with explicit null unrecorded completion. Preserve approved ID patterns, shared prefix, task_id and free-form value; do not invent requiredness. Prior contradictory tuple, field-name and date-format requirements are superseded. Update affected consumer tests and verify exact registered contract closure; no publication."
       ],
-      "gate": "Seven Plan statuses corrected; observed Approval.In_progress is optional document persistence, scheduled approval remains effective while work runs, and authorized resumption writes Approval.Scheduled_implementation. User Task index.yaml location, field roles and four short status labels are recorded. Plan schema target paths APPROVED; responsibility-grouped config registration C APPROVED (Identity/Lifecycle/Unit), full separation of Identity/Lifecycle/Unit APPROVED; all four exact schema target paths APPROVED; Plan Identity/Unit required field responsibilities, public-root-to-contract references and config registration identities pending; remaining transition/authorization rules, completion writer and synchronization, exact task reference encoding and timestamps remain unresolved. Prefix collision is low-priority nonblocking with no handling rule invented; only affected implementation blocked, no external policy dependency. User 2026-11-21 field ownership/layout direction and required field roles recorded in wu04_user_field_design_2026_11_21. Historical regex ambiguity is now resolved for active Plan Identity and Work Unit IDs, last-change/contract-revision double encoding and policy reference tuple second component remain unresolved. Effective policy is not overwritten. User correction replaces duplicate contract_revision with only contract_vision; plan-sn becomes plan-; Task IDs use hyphens and YAML flow arrays; migrated Plan IDs are direct dynamic work-unit YAML mapping keys with user-controlled values. Plan Identity and Work Unit ID regexes are approved; retired dynamic Plan-key schema validation is not applicable; no runtime contract registration changed. Plan Identity plan_id regex resolved explicitly as ^plan-[a-zA-Z0-9]{4}$; Work Unit ID is explicitly approved and retired Plan dynamic-key patterns are not applicable. Latest user WU-04 correction removes mandatory Plan-ID dynamic key and project_specific[], replacing with optional value[] user-controlled records (zero required child fields), one work_unit_id per unit. Earlier dynamic-key requirements retained as superseded history only. User explicitly approves value[] no inner named fields and no required item fields in PTSIP default Plan Unit contract; preview uses value: [] only.",
-      "execution_status": "FOUR_PLAN_SCHEMAS_PATH_CONNECTED_DIAGNOSTICS_ONLY",
+      "gate": "LATEST_USER_20261126: WORK_UNIT_CONTAINER_AND_ID, SINGLE_COMBINED_POLICY_RULE_REFERENCE, RFC3339_DATE_TIME_APPROVED_FOR_IMPLEMENTATION; PRESERVE_UNRELATED_UNRESOLVED_TASK_LIFECYCLE_REQUIREDNESS_AUTHORITY_AND_REFERENCE_LOCATOR_GATES; VERIFY_EXISTING_CONSUMERS_AND_CONTRACT_CLOSURE",
+      "execution_status": "REGISTERED_PLAN_CONTRACTS_EXIST_FINAL_FIELD_MIGRATION_APPROVED_PENDING_IMPLEMENTATION",
       "current_result": "The current public Plan root is independently registered at SCH.1.00; its three child schemas resolve through fixed ID-to-resource bindings. Existing Plan ID, Task IDs, free-form values, user-owned Revision and explicit null completion_date remain supported. The Go source and packaged Common Contract validation now enforce the approved shared two-letter prefix on the current work_unit_item[].work_unit_id layout. Explicit consumer-repository bootstrap supplies Version_Contract_Structure.json with null policy and plan slots and the approved version recommendations, preserving prior user bytes. The focused Go tests cover same and mixed prefixes, pre-version bootstrap, read-only validation and existing user settings. Pending work-unit field layout, Policy Rule reference encoding, completion-date constraints and the 20261125 version revision retain their separate gates.",
       "observed_progress_task_index_contract_ref": "wu04_observed_execution_and_task_index_contract",
       "schema_path_scaffold_execution": {
@@ -2991,11 +3024,55 @@
         "gate": "USER_IDS_VERSIONS_ROOT_ONLY_REGISTRY_APPROVED;REFERENCE_LOCATORS_AND_VERSION_FIELD_DESIGN_REASSESSMENT_PENDING"
       },
       "latest_user_contract_decision": {
-        "decision_ref": "current_user_decisions/Director_Decision/decisions_0012",
+        "decision_ref": "current_user_decisions/Director_Decision/decisions_0015",
         "prior_reference_version_decision_ref": "current_user_decisions/Director_Decision/decisions_0011",
         "prior_id_registry_decision_ref": "current_user_decisions/Director_Decision/decisions_0008",
-        "state": "POLICY_RULE_SCOPE_PLAN_SCHEMA_VERSION_LOCATION_USER_CONTRACT_PATH_AND_USER_ONLY_REVISION_APPROVED",
-        "actual_schema_state": "EXISTING_DIAGNOSTIC_SCAFFOLDS_UNCHANGED"
+        "state": "USER_FINAL_FIELDS_APPROVED_IMPLEMENTATION_AUTHORIZED",
+        "actual_schema_state": "REGISTERED_PLAN_CONTRACTS_EXIST;FINAL_FIELD_MIGRATION_PENDING",
+        "prior_decision_ref": "current_user_decisions/Director_Decision/decisions_0012",
+        "implementation_authorized": true,
+        "field_contract": {
+          "work_unit": {
+            "container": "work_unit",
+            "type": "array",
+            "item_id": "id",
+            "id_pattern": "^WU-[A-Z]{2}-[0-9]{3}$",
+            "same_plan_prefix": true,
+            "prior_fields": [
+              "work_unit_item",
+              "work_unit_id"
+            ],
+            "prior_field_status": "SUPERSEDED",
+            "preserve_existing_approved_fields": true,
+            "other_requiredness": "PRESERVE_EFFECTIVE_POLICY"
+          },
+          "policy_refs": {
+            "container": "policy_refs",
+            "item_type": "string",
+            "serialization": "SINGLE_COMBINED_STRING",
+            "format": "{Policy_ID}#{Rule_ID}",
+            "separator": "#",
+            "example": "SFP-CNTR-0009#SFP-CNTR-0009/R-02",
+            "rule_id": "EXACT_RULE_ID_IN_OWNING_POLICY",
+            "prior_tuple": "SUPERSEDED",
+            "missing_or_ambiguous_ref": "FAIL_CLOSED_AFFECTED_REFERENCE",
+            "revision_provenance": "UNCHANGED_NOT_NEWLY_SPECIFIED"
+          },
+          "lifecycle_dates": {
+            "fields": [
+              "Creation_date",
+              "completion_date",
+              "last_modified_date"
+            ],
+            "type": "string",
+            "format": "date-time",
+            "standard": "RFC3339_WITH_TIMEZONE",
+            "completion_date_null_allowed": true,
+            "unrecorded_completion": "EXPLICIT_NULL",
+            "requiredness": "PRESERVE_EFFECTIVE_APPROVED_RULES",
+            "transition_authority": "UNCHANGED"
+          }
+        }
       },
       "implementation_approval": {
         "state": "APPROVED",
@@ -3039,10 +3116,12 @@
           "coordinated_cutover_required": true
         },
         "revision_gate": {
-          "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
-          "implementation_authorized_for_new_revision": false,
+          "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
+          "implementation_authorized_for_new_revision": true,
           "prior_approval_preserved_for_unchanged_scope": true,
-          "publication_authorized": false
+          "publication_authorized": false,
+          "approval_source": "USER_EXPLICIT_CHAT_2026_11_26",
+          "audited_revision": "372394a981d4cc53797ce4d3c240d9678dd77df4"
         },
         "actions": [
           "Ensure Plan public structure schema version and SchemaVersion const are SCH.1.00, matching src/VERSION and config/manifest. Preserve approved Plan child schema identities, separate responsibilities and root-only config registration. Verify installed Common Contract lookup and no accidental lifecycle SchemaVersion field."
@@ -3165,10 +3244,12 @@
           "coordinated_cutover_required": true
         },
         "revision_gate": {
-          "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
-          "implementation_authorized_for_new_revision": false,
+          "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
+          "implementation_authorized_for_new_revision": true,
           "prior_approval_preserved_for_unchanged_scope": true,
-          "publication_authorized": false
+          "publication_authorized": false,
+          "approval_source": "USER_EXPLICIT_CHAT_2026_11_26",
+          "audited_revision": "372394a981d4cc53797ce4d3c240d9678dd77df4"
         },
         "actions": [
           "Set schema-resource version metadata and config registration for each RA/RAC/AEC list to SCH.1.00 independently of RBAC system version. Preserve existing approved list field structure and record semantics; do not reinterpret existing instance format_version as SchemaVersion or add a new instance field without separate authority.",
@@ -3453,10 +3534,11 @@
         "Run static usage scan for old example/template YAML and retire only those proven unused after registered schema and Storage Rust engine consumer replacement",
         "Before deleting src/ptsip/profiles/history, materialize the pp1.01 pp1.02 pp2.00 hybrid, explicit and template fixtures in proposed JSON golden fixtures under src/tests/ptsip/, preserving original Git sha evidence",
         "The selected pp2 profile-local source may contain obsolete field-review candidate commentary. It is source evidence, not an active admission veto; derive the approved canonical pp2 contract from actual validation semantics and the user's explicit source selection.",
-        "CURRENT USER AUTHORIZED: implement official pp.3.00 core from immutable pp.2.00 history field responsibilities, required component.dependency using exact existing component_dependency_policy contract, DEFAULT mode only and no $comment. User extension/lineage/compression unresolved details remain independent."
+        "CURRENT USER AUTHORIZED: implement official pp.3.00 core from immutable pp.2.00 history field responsibilities, required component.dependency using exact existing component_dependency_policy contract, DEFAULT mode only and no $comment. User extension/lineage/compression unresolved details remain independent.",
+        "LATEST USER 2026-11-26: implement approved flat historical Profile validators/index under src/tests/ptsip/history/profile/ exactly as decisions_0016; preserve 12 Git-source JSON fixture evidence, map each original to its version, reuse registered test entry, validate positive and cross-version negative cases. No per-version directories. No restoration of retired Profile tree."
       ],
       "acceptance": "Historical pp.1.01/pp.1.02/pp.2.00 exact schema blobs, IDs and version selectors remain unchanged with lookup paths under schemas/history/profile/. New direct official pp.3.00 core and native version support pass focused independent conformance. No pp.1.00 source fabricated. WU14 latest design-trigger exception controls removal of the 22 legacy Profile files; fixture and distribution obligations continue after deletion.",
-      "execution_status": "THREE_VERSION_SCHEMA_DERIVATION_AND_YAML_CONFORMANCE_VERIFIED_JSON_FIXTURE_TRANSFER_BLOCKED",
+      "execution_status": "THREE_VERSION_SCHEMA_DERIVATION_AND_YAML_CONFORMANCE_VERIFIED;FIXTURE_LAYOUT_APPROVED_IMPLEMENTATION_PENDING",
       "current_result": "pp.1.01/pp.1.02/pp.2.00 canonical resources and selected pp2 source are verified. User approved src/tests/ JSON fixture root on 2026-11-24; exact leaf allocation and materialization remain pending. No pp.1.00 schema is required or fabricated.",
       "pp300_followup": {
         "status": "OFFICIAL_CORE_IMPLEMENTATION_AUTHORIZED_BY_LATEST_USER",
@@ -3471,11 +3553,27 @@
         "old_pp200_work": "COMPLETED_HISTORICAL_VALIDATION_PRESERVED_NO_RETROACTIVE_SOURCE_CHANGE"
       },
       "latest_fixture_decision": {
-        "decision_ref": "current_user_decisions/Director_Decision/decisions_0009",
-        "root": "src/tests/",
+        "decision_ref": "current_user_decisions/Director_Decision/decisions_0016",
+        "prior_decision_ref": "current_user_decisions/Director_Decision/decisions_0009",
+        "root": "src/tests/ptsip/history/profile/",
         "root_approved": true,
-        "exact_leaf_paths_approved": false,
-        "materialized": false
+        "exact_leaf_paths_approved": true,
+        "exact_leaf_paths_scope": "APPROVED_GO_VALIDATOR_AND_INDEX_PATHS_ONLY",
+        "version_subdirectories": false,
+        "index": "src/tests/ptsip/history/profile/index.json",
+        "validators": {
+          "pp.1.01": "src/tests/ptsip/history/profile/profile_1_01.go",
+          "pp.1.02": "src/tests/ptsip/history/profile/profile_1_02.go",
+          "pp.2.00": "src/tests/ptsip/history/profile/profile_2_00.go"
+        },
+        "filename_resolution": "USE_EXPLICIT_USER_TREE_LIST;PROSE_PROFILE_PP1_01_GO_VARIANT_NOT_ADDED",
+        "json_fixture_data": "PRESERVE_TWELVE_ORIGINAL_FIXTURES_AND_IMMUTABLE_GIT_EVIDENCE;JSON_DATA_REPRESENTATION_AND_EXACT_MAPPING_PLAN_DERIVED_WITHIN_APPROVED_LAYOUT;NO_NEW_VERSION_DIRECTORIES",
+        "source_git_object": "0cb9745113ca87de4c59924b9ac8d4f62d1fc21d",
+        "go_test_entry": "INTEGRATE_APPROVED_GO_VALIDATOR_FILES_WITH_EXISTING_REGISTERED_TEST_RUNNER;DO_NOT_TREAT_NON_TEST_GO_FILENAME_AS_GO_TEST_ENTRY",
+        "materialized": false,
+        "implementation_authorized": true,
+        "implementation_status": "APPROVED_PENDING_IMPLEMENTATION_AND_VERIFICATION",
+        "preserve_retired_profile_tree_absence": true
       },
       "implementation_approval": {
         "state": "APPROVED",
@@ -3706,7 +3804,7 @@
         {
           "id": "PROFILE_JSON_FIXTURE_PATHS_OR_ALTERNATIVE_EVIDENCE",
           "kind": "POST_DELETION_ACCEPTANCE",
-          "state": "TWELVE_EXISTING_GIT_FIXTURES_REVALIDATED;SRC_TESTS_ROOT_APPROVED;LEAF_ALLOCATION_AND_MATERIALIZATION_PENDING"
+          "state": "EXACT_GO_VALIDATOR_AND_INDEX_PATHS_APPROVED;FIXTURE_MATERIALIZATION_AND_VERIFICATION_PENDING_WU10"
         },
         {
           "id": "USER_PROFILE_SOURCE_DISPOSITION",
@@ -4146,6 +4244,11 @@
         "preserve_execution_status": true,
         "preserve_action_specific_gates": true,
         "approval_ref": "release_scope/implementation_approval_20261124"
+      },
+      "latest_fixture_decision": {
+        "decision_ref": "current_user_decisions/Director_Decision/decisions_0016",
+        "dependency": "WU-10",
+        "state": "APPROVED_LAYOUT_PENDING_FIXTURE_IMPLEMENTATION_AND_VERIFICATION"
       }
     }
   ],
@@ -9214,8 +9317,8 @@
       "wu09_boundary": "DOCUMENT_SPECIFIC_PLAN_PREPARATION_APPROVED;ACTUAL_POLICY_DOCUMENT_MUTATION_REQUIRES_SEPARATE_EFFECTIVE_POLICY_AUTHORITY"
     },
     "latest_schema_version_revision_gate_20261125": {
-      "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
-      "implementation_authorized_for_new_revision": false,
+      "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
+      "implementation_authorized_for_new_revision": true,
       "prior_approval_preserved_for_unchanged_scope": true,
       "publication_authorized": false,
       "scope": [
@@ -9233,7 +9336,9 @@
       },
       "design_ref": "current_user_decisions/Director_Decision/decisions_0014",
       "existing_approval_20261124": "PRESERVED_UNCHANGED_SCOPE",
-      "no_implementation_performed": true
+      "no_implementation_performed": true,
+      "approval_source": "USER_EXPLICIT_CHAT_2026_11_26",
+      "audited_revision": "372394a981d4cc53797ce4d3c240d9678dd77df4"
     }
   },
   "planning_provenance": {
@@ -14850,14 +14955,12 @@
       "legacy_migration_plan_work_unit_handles_unchanged": true
     },
     "open_gates": [
-      "LIFECYCLE_LAST_CHANGED_FIELD_NAME_FORMAT",
       "PLAN_TASK_ID_LOOKUP_LINK_TO_TASK_INDEX_AND_NESTED_TASK_AUTHORITY",
       "USER_OVERRIDE_SCOPE_COMPATIBILITY_WITH_EFFECTIVE_SFP_CNTR_0009",
       "TASK_HYPHEN_ID_SCOPE_INDEX_REGISTRY_CONFIRMATION",
       "VALUE_ARRAY_USER_CONTRACT_EXTERNAL_VALIDATOR_BOUNDARY_NOT_YET_IMPLEMENTED",
       "REFERENCE_LOCATOR_REASSESSMENT_UNDER_NEW_POLICY",
-      "USER_VERSION_CONTRACT_CUSTOM_SECTIONS_NOT_DEFINED_BY_PTSIP",
-      "FINAL_POLICY_RULE_PAIR_SERIALIZATION_IF_NOT_ALREADY_DERIVABLE"
+      "USER_VERSION_CONTRACT_CUSTOM_SECTIONS_NOT_DEFINED_BY_PTSIP"
     ],
     "approval_boundary": "PLAN_FIELD_DIRECTION_RECORDED_NOT_SCHEMA_IMPLEMENTATION_NOT_EFFECTIVE_POLICY_OVERRIDE",
     "current_user_corrections_2026_11_21": {
@@ -14922,7 +15025,7 @@
       "no_retroactive_rewrite_of_legacy_wu_01_to_14": true,
       "dynamic_migrated_plan_key_not_applicable": true
     },
-    "latest_effective_decision_ref": "current_user_decisions/Director_Decision/decisions_0012"
+    "latest_effective_decision_ref": "current_user_decisions/Director_Decision/decisions_0015"
   },
   "wu04_schema_scaffold_execution": {
     "state": "FOUR_SEPARATE_PATH_SCAFFOLDS_CREATED_NOT_REGISTERED",
@@ -15505,14 +15608,14 @@
           },
           "pending_interpretation": [
             "MEANING_OF_RULES_ITEMS_ID_IN_CHILD_SCHEMA_REFERENCE_VERSUS_DIRECT_PUBLIC_ROOT_REFERENCE",
-            "WORK_UNIT_CONTAINER_CARDINALITY_AND_WORK_UNIT_ID_FIELD_MIGRATION_FROM_PRIOR_DRAFT",
-            "DATE_FIELD_FORMAT_REQUIREDNESS_AND_STATUS_TRANSITION_AUTHORITY",
             "PRESERVE_APPROVED_ID_PATTERNS_AND_FREE_FORM_VALUE_ITEMS;DO_NOT_INFER_NEW_REQUIREDNESS",
             "REASSESS_CHILD_REFERENCE_LOCATOR_UNDER_SELECTIVE_MIGRATION_POLICY",
-            "FINAL_POLICY_RULE_PAIR_SERIALIZATION_AND_REVISION_PROVENANCE_IF_NEEDED"
+            "DATE_FIELD_REQUIREDNESS_AND_STATUS_TRANSITION_AUTHORITY_IF_NEEDED",
+            "REVISION_PROVENANCE_IF_NEEDED"
           ],
           "implementation_scope": "DECISION_RECORD_ONLY;NO_SCHEMA_OR_CONFIG_MUTATION_IN_THIS_EDIT;NO_NEW_RELEASE_OR_RUNTIME_ACTIVATION_AUTHORITY",
-          "latest_superseding_decision_ref": "current_user_decisions/Director_Decision/decisions_0011"
+          "latest_superseding_decision_ref": "current_user_decisions/Director_Decision/decisions_0011",
+          "latest_field_decision_ref": "current_user_decisions/Director_Decision/decisions_0015"
         }
       },
       "decisions_0009": {
@@ -15527,7 +15630,8 @@
           "exact_leaf_paths": "NOT_SPECIFIED_BY_THIS_ROOT_APPROVAL",
           "preserve_twelve_verified_immutable_git_source_evidence": true,
           "do_not_restore_retired_profile_tree": true,
-          "implementation_scope": "ROOT_APPROVAL_ONLY;MATERIALIZATION_AND_VALIDATION_PENDING"
+          "implementation_scope": "ROOT_APPROVAL_ONLY;MATERIALIZATION_AND_VALIDATION_PENDING",
+          "latest_exact_layout_decision_ref": "current_user_decisions/Director_Decision/decisions_0016"
         }
       },
       "decisions_0010": {
@@ -15602,7 +15706,7 @@
           "lifecycle": {
             "completion_date": null,
             "unrecorded_serialization": "EXPLICIT_NULL",
-            "date_format": "UNRESOLVED"
+            "date_format": "SUPERSEDED_BY_DECISIONS_0015_RFC3339_DATE_TIME"
           },
           "preserve": [
             "APPROVED_FOUR_PLAN_SCHEMA_IDS_AND_PATHS",
@@ -15630,7 +15734,7 @@
             "rule_id": "RULE_ID_WITHIN_OWNING_POLICY_ID",
             "purpose": "BIND_DETAILED_POLICY_BASIS",
             "prior_two_part_direction": "PRESERVED",
-            "exact_final_serialization": "NOT_NEWLY_SPECIFIED"
+            "exact_final_serialization": "SUPERSEDED_BY_DECISIONS_0015"
           },
           "plan_schema_version": {
             "field": "SchemaVersion",
@@ -15728,7 +15832,7 @@
         "authority": "USER_EXPLICIT",
         "title": "RBAC system version and independently registered schema version cutover",
         "scope": "WU-02_WU-03_WU-04_WU-05",
-        "status": "APPROVED_POLICY_DIRECTION",
+        "status": "USER_AUDITED_IMPLEMENTATION_APPROVED",
         "decision": {
           "policy_binding": {
             "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
@@ -15792,10 +15896,12 @@
             "coordinated_cutover_required": true
           },
           "revision_gate": {
-            "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
-            "implementation_authorized_for_new_revision": false,
+            "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
+            "implementation_authorized_for_new_revision": true,
             "prior_approval_preserved_for_unchanged_scope": true,
-            "publication_authorized": false
+            "publication_authorized": false,
+            "approval_source": "USER_EXPLICIT_CHAT_2026_11_26",
+            "audited_revision": "372394a981d4cc53797ce4d3c240d9678dd77df4"
           },
           "minor": {
             "new_field_in_any_of": [
@@ -15810,7 +15916,88 @@
             "increase_authority": "USER_DIRECT_DECISION_AND_INCREMENT_ONLY",
             "automatic_increment": false
           },
-          "implementation": "PLAN_REVISION_ONLY;NO_IMPLEMENTATION_OR_PUBLICATION"
+          "implementation": "AUTHORIZED_PENDING_IMPLEMENTATION_AND_VERIFICATION;NO_PUBLICATION"
+        }
+      },
+      "decisions_0015": {
+        "decisions_date": "2026-11-26",
+        "authority": "USER_EXPLICIT",
+        "title": "Plan Unit, Policy Rule reference and Lifecycle date final decision and implementation approval",
+        "scope": "WU-04",
+        "status": "APPROVED",
+        "decision": {
+          "work_unit": {
+            "container": "work_unit",
+            "type": "array",
+            "item_id": "id",
+            "id_pattern": "^WU-[A-Z]{2}-[0-9]{3}$",
+            "same_plan_prefix": true,
+            "prior_fields": [
+              "work_unit_item",
+              "work_unit_id"
+            ],
+            "prior_field_status": "SUPERSEDED",
+            "preserve_existing_approved_fields": true,
+            "other_requiredness": "PRESERVE_EFFECTIVE_POLICY"
+          },
+          "policy_refs": {
+            "container": "policy_refs",
+            "item_type": "string",
+            "serialization": "SINGLE_COMBINED_STRING",
+            "format": "{Policy_ID}#{Rule_ID}",
+            "separator": "#",
+            "example": "SFP-CNTR-0009#SFP-CNTR-0009/R-02",
+            "rule_id": "EXACT_RULE_ID_IN_OWNING_POLICY",
+            "prior_tuple": "SUPERSEDED",
+            "missing_or_ambiguous_ref": "FAIL_CLOSED_AFFECTED_REFERENCE",
+            "revision_provenance": "UNCHANGED_NOT_NEWLY_SPECIFIED"
+          },
+          "lifecycle_dates": {
+            "fields": [
+              "Creation_date",
+              "completion_date",
+              "last_modified_date"
+            ],
+            "type": "string",
+            "format": "date-time",
+            "standard": "RFC3339_WITH_TIMEZONE",
+            "completion_date_null_allowed": true,
+            "unrecorded_completion": "EXPLICIT_NULL",
+            "requiredness": "PRESERVE_EFFECTIVE_APPROVED_RULES",
+            "transition_authority": "UNCHANGED"
+          },
+          "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+          "policy_revision": "71f608cc95bceaebe454da20f1b11abd0b9b5c60",
+          "implementation_authorized": true,
+          "implementation_status": "PENDING_IMPLEMENTATION_AND_VERIFICATION"
+        }
+      },
+      "decisions_0016": {
+        "decisions_date": "2026-11-26",
+        "authority": "USER_EXPLICIT",
+        "title": "Historical Profile fixture validator directory and exact files",
+        "scope": "WU-10_AND_WU-14_FIXTURE_ACCEPTANCE_ONLY",
+        "status": "APPROVED",
+        "decision": {
+          "root": "src/tests/ptsip/history/profile/",
+          "root_approved": true,
+          "exact_leaf_paths_approved": true,
+          "exact_leaf_paths_scope": "APPROVED_GO_VALIDATOR_AND_INDEX_PATHS_ONLY",
+          "version_subdirectories": false,
+          "index": "src/tests/ptsip/history/profile/index.json",
+          "validators": {
+            "pp.1.01": "src/tests/ptsip/history/profile/profile_1_01.go",
+            "pp.1.02": "src/tests/ptsip/history/profile/profile_1_02.go",
+            "pp.2.00": "src/tests/ptsip/history/profile/profile_2_00.go"
+          },
+          "filename_resolution": "USE_EXPLICIT_USER_TREE_LIST;PROSE_PROFILE_PP1_01_GO_VARIANT_NOT_ADDED",
+          "json_fixture_data": "PRESERVE_TWELVE_ORIGINAL_FIXTURES_AND_IMMUTABLE_GIT_EVIDENCE;JSON_DATA_REPRESENTATION_AND_EXACT_MAPPING_PLAN_DERIVED_WITHIN_APPROVED_LAYOUT;NO_NEW_VERSION_DIRECTORIES",
+          "source_git_object": "0cb9745113ca87de4c59924b9ac8d4f62d1fc21d",
+          "go_test_entry": "INTEGRATE_APPROVED_GO_VALIDATOR_FILES_WITH_EXISTING_REGISTERED_TEST_RUNNER;DO_NOT_TREAT_NON_TEST_GO_FILENAME_AS_GO_TEST_ENTRY",
+          "materialized": false,
+          "implementation_authorized": true,
+          "implementation_status": "APPROVED_PENDING_IMPLEMENTATION_AND_VERIFICATION",
+          "preserve_retired_profile_tree_absence": true
         }
       }
     }
