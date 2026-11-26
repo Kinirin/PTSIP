@@ -687,6 +687,23 @@ Policy_Content:
         absent_invalid_stale_or_mismatched_evidence: FAIL_CLOSED
         historical_digest_repair: SEPARATE_AUTHORIZATION_REQUIRED
         provider_transport_storage_and_verifier: PLAN_DERIVED_WITHIN_EXISTING_AUTHORITY
+        approval_verification_simplification_20261126:
+          decision_source: USER_EXPLICIT_CHAT_2026_11_26
+          conflict_resolution: KEEP_LATEST_WITHDRAW_MANDATORY_SIGNATURE_AND_EXTERNAL_REPLAY_STORE
+          mandatory_per_request_ed25519_signature: false
+          mandatory_deployment_pinned_public_key: false
+          mandatory_dedicated_replay_store: false
+          mandatory_repository_external_replay_store: false
+          signature_and_replay_store_as_completion_gates: WITHDRAWN
+          approval_evidence_method: PLAN_DERIVED_LIGHTWEIGHT_WITHIN_EXISTING_AUTHORITY
+          existing_explicit_user_delegation: REUSE_WITHIN_APPROVED_SCOPE
+          redundant_user_reapproval_within_valid_delegation: NOT_REQUIRED
+          exact_request_and_baseline_binding: PRESERVED
+          evidence_origin_and_integrity: PRESERVED
+          request_self_assertion_is_approval: false
+          new_or_out_of_scope_policy_change: REQUIRES_USER_AUTHORITY
+          historical_digest_repair: SEPARATE_AUTHORIZATION_REQUIRED
+          canonical_digest_atomic_update_and_readback: PRESERVED
       preconditions:
       - C-ID-06589F56A0137903568CF0C1E68DEACF
       source_ref:
@@ -1286,7 +1303,7 @@ Policy_Content:
       - evidence_requirement_binding
   source_document:
     path: developer/policy/GOV/MPD-GOV-0004.yaml
-    sha256: 0217c8d7c0ef78ab584d9948410a70368ab938f17f3c9d6a88a729a85586c5e0
+    sha256: 2faf041c07b987d3467f018bbe04e718b49fd62e8e3f7ad133a294c5c29509ce
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: PUBLIC_POLICY_V2
