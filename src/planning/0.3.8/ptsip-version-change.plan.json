@@ -207,10 +207,12 @@
         "automatic_major": false,
         "do_not_reverse_from_schema_registration": true,
         "revision_gate": {
-          "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
-          "implementation_authorized_for_new_revision": false,
+          "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
+          "implementation_authorized_for_new_revision": true,
           "prior_approval_preserved_for_unchanged_scope": true,
-          "publication_authorized": false
+          "publication_authorized": false,
+          "approval_source": "USER_EXPLICIT_CHAT_2026_11_26",
+          "audited_revision": "372394a981d4cc53797ce4d3c240d9678dd77df4"
         }
       }
     },
@@ -382,10 +384,12 @@
           "WU-05"
         ],
         "revision_gate": {
-          "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
-          "implementation_authorized_for_new_revision": false,
+          "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
+          "implementation_authorized_for_new_revision": true,
           "prior_approval_preserved_for_unchanged_scope": true,
-          "publication_authorized": false
+          "publication_authorized": false,
+          "approval_source": "USER_EXPLICIT_CHAT_2026_11_26",
+          "audited_revision": "372394a981d4cc53797ce4d3c240d9678dd77df4"
         }
       }
     },
@@ -539,10 +543,12 @@
           ".ptsip/contracts/schemas/release/source-composition.schema.json"
         ],
         "revision_gate": {
-          "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
-          "implementation_authorized_for_new_revision": false,
+          "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
+          "implementation_authorized_for_new_revision": true,
           "prior_approval_preserved_for_unchanged_scope": true,
-          "publication_authorized": false
+          "publication_authorized": false,
+          "approval_source": "USER_EXPLICIT_CHAT_2026_11_26",
+          "audited_revision": "372394a981d4cc53797ce4d3c240d9678dd77df4"
         }
       }
     },
@@ -732,10 +738,12 @@
         ],
         "unresolved_mapping": "Use existing approved directory mappings; do not silently choose unapproved RBAC history leaf paths or other undecided mappings.",
         "revision_gate": {
-          "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
-          "implementation_authorized_for_new_revision": false,
+          "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
+          "implementation_authorized_for_new_revision": true,
           "prior_approval_preserved_for_unchanged_scope": true,
-          "publication_authorized": false
+          "publication_authorized": false,
+          "approval_source": "USER_EXPLICIT_CHAT_2026_11_26",
+          "audited_revision": "372394a981d4cc53797ce4d3c240d9678dd77df4"
         }
       }
     },
@@ -1280,7 +1288,7 @@
     "implementation_permitted_now": true,
     "no_branch_creation": true,
     "simulations_must_not_mutate_canonical_version_values": true,
-    "status_note": "OWNER_APPROVED_ALL_VC_01_THROUGH_VC_13_IMPLEMENTATION_UNDER_LATEST_EFFECTIVE_POLICY;RECONCILE_SUPERSEDED_DESIGN_BEFORE_AFFECTED_IMPLEMENTATION;ALL_VERIFICATION_AND_SEPARATE_PUBLICATION_GATES_PRESERVED",
+    "status_note": "OWNER_APPROVED_ALL_PRIOR_SCOPE_AND_20261125_REVISED_SCOPE;VERIFICATION_AND_SEPARATE_PUBLICATION_GATES_PRESERVED",
     "owner_approval_intent_record": {
       "source": "USER_EXPLICIT_CHAT_2026_11_24",
       "state": "IMPLEMENTATION_APPROVED",
@@ -1347,8 +1355,8 @@
       ]
     },
     "latest_revision_gate_20261125": {
-      "state": "REVISED_SCOPE_PENDING_USER_AUDIT",
-      "implementation_authorized_for_new_revision": false,
+      "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
+      "implementation_authorized_for_new_revision": true,
       "prior_approval_preserved_for_unchanged_scope": true,
       "publication_authorized": false,
       "scope": [
@@ -1366,8 +1374,10 @@
         "source_pointer": "/Policy_Rules/contracts/0/rules/1/canonical_version_source_partition_20261125",
         "policy_revision": "ecdf1145a7838e78db75c316962603facf0e7e96"
       },
-      "prior_approval": "PRESERVED_FOR_UNCHANGED_SCOPE;NEW_PLAN_DELTA_REQUIRES_USER_AUDIT",
-      "no_implementation_performed": true
+      "prior_approval": "PRESERVED_FOR_UNCHANGED_SCOPE;NEW_PLAN_DELTA_USER_AUDITED_AND_APPROVED",
+      "no_implementation_performed": true,
+      "approval_source": "USER_EXPLICIT_CHAT_2026_11_26",
+      "audited_revision": "372394a981d4cc53797ce4d3c240d9678dd77df4"
     }
   },
   "policy_violation": {
@@ -1688,6 +1698,25 @@
       },
       "design_ref": "#/approved_implementation_design/version_source",
       "implementation_blocking": false
+    },
+    {
+      "id": "RBAC-SCHEMA-VERSION-IMPLEMENTATION-APPROVAL-20261126",
+      "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
+      "implementation_authorized_for_new_revision": true,
+      "approval_source": "USER_EXPLICIT_CHAT_2026_11_26",
+      "audited_revision": "372394a981d4cc53797ce4d3c240d9678dd77df4",
+      "publication_authorized": false,
+      "scope": [
+        "VC-02",
+        "VC-05",
+        "VC-07",
+        "VC-09",
+        "VC-12",
+        "VC-13_CONSUMER_CLOSURE_ONLY"
+      ],
+      "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
+      "coordinated_schema_plan": "src/planning/0.3.8/ptsip-schema-centralization.plan.json",
+      "implementation": "PENDING_IMPLEMENTATION_AND_VERIFICATION"
     }
   ]
 }
