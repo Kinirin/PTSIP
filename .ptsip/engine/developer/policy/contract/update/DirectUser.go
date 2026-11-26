@@ -49,6 +49,10 @@ func DirectUserAuthorizer(trustedKey, replayDirectory, root, evidencePath string
 	if evidencePath == "" {
 		return nil, fmt.Errorf("POLICY_UPDATE_APPROVAL_EVIDENCE_REQUIRED")
 	}
+	root, err = canonicalRepositoryRoot(root)
+	if err != nil {
+		return nil, err
+	}
 	dir, err := approvalReplayDirectory(replayDirectory, root)
 	if err != nil {
 		return nil, err
@@ -65,7 +69,7 @@ func DirectUserAuthorizer(trustedKey, replayDirectory, root, evidencePath string
 		if approval.IssuedAt.IsZero() || now.Before(approval.IssuedAt) || !now.Before(approval.ExpiresAt) {
 			return fmt.Errorf("POLICY_UPDATE_APPROVAL_EVIDENCE_STALE")
 		}
-		if !reflect.DeepEqual(approval.Approval, actual) {
+		if actual.Root != root || !reflect.DeepEqual(approval.Approval, actual) {
 			return fmt.Errorf("POLICY_UPDATE_APPROVAL_BINDING_MISMATCH")
 		}
 		return claimDirectUserApproval(dir, actual.Reference)
@@ -84,14 +88,6 @@ func approvalReplayDirectory(dir, root string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("POLICY_UPDATE_APPROVAL_REPLAY_STORE_INVALID: %w", err)
 	}
-	root, err = filepath.Abs(root)
-	if err != nil {
-		return "", err
-	}
-	root, err = filepath.EvalSymlinks(root)
-	if err != nil {
-		return "", err
-	}
 	relative, err := filepath.Rel(root, dir)
 	// An independent drive cannot be inside the worktree.
 	if err == nil && relative != ".." && !strings.HasPrefix(relative, ".."+string(os.PathSeparator)) {
@@ -102,7 +98,12 @@ func approvalReplayDirectory(dir, root string) (string, error) {
 
 func claimDirectUserApproval(dir, reference string) error {
 	name := filepath.Join(dir, bytesDigest([]byte(reference))+".used")
-	marker, err := os.OpenFile(name, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0600)
+	temporary, err := stage(name, 0600, nil)
+	if err != nil {
+		return fmt.Errorf("POLICY_UPDATE_APPROVAL_REPLAY_STORE_UNAVAILABLE: %w", err)
+	}
+	defer os.Remove(temporary)
+	err = publishReplayFile(temporary, name)
 	if errors.Is(err, os.ErrExist) {
 		return fmt.Errorf("POLICY_UPDATE_APPROVAL_EVIDENCE_REPLAYED")
 	}
@@ -112,7 +113,7 @@ func claimDirectUserApproval(dir, reference string) error {
 	// Never remove a claim on a failed write or interrupted update. A retry
 	// after consumption needs fresh direct approval even if the baseline was
 	// recovered by the update's existing atomic-write logic.
-	if err := errors.Join(marker.Sync(), marker.Close(), syncDirectory(dir)); err != nil {
+	if err := syncDirectory(dir); err != nil {
 		return fmt.Errorf("POLICY_UPDATE_APPROVAL_REPLAY_STORE_UNAVAILABLE: %w", err)
 	}
 	return nil

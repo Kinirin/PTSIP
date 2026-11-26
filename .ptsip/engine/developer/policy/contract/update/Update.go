@@ -140,7 +140,7 @@ func prepare(root string, request Request) (preparedUpdate, error) {
 	if !sha256Pattern.MatchString(request.BaselineSHA256) || len(request.Values) == 0 {
 		return preparedUpdate{}, fmt.Errorf("POLICY_UPDATE_REQUIRES_BASELINE_AND_CONTENT_DELTA")
 	}
-	root, err := filepath.Abs(root)
+	root, err := canonicalRepositoryRoot(root)
 	if err != nil {
 		return preparedUpdate{}, err
 	}
@@ -202,6 +202,14 @@ func prepare(root string, request Request) (preparedUpdate, error) {
 		SourceBefore: result.DigestBefore, SourceAfter: result.DigestAfter, ChangedItems: slices.Clone(result.ChangedItems),
 		RequestSHA256: bytesDigest(requestBytes)}
 	return preparedUpdate{approval: approval, result: result, name: name, prior: prior, proposed: proposed, document: document}, nil
+}
+
+func canonicalRepositoryRoot(root string) (string, error) {
+	absolute, err := filepath.Abs(root)
+	if err != nil {
+		return "", err
+	}
+	return filepath.EvalSymlinks(absolute)
 }
 
 func applyValues(raw []byte, document source.Document, values map[string]json.RawMessage, result *Result) ([]byte, error) {

@@ -147,6 +147,10 @@ func TestAuthorizedPolicyContentAndCanonicalDigestMaterializeTogether(t *testing
 	for _, plane := range []string{"developer", "support"} {
 		t.Run(plane, func(t *testing.T) {
 			root, target, raw := policyFixture(t, plane)
+			canonicalRoot, err := filepath.EvalSymlinks(root)
+			if err != nil {
+				t.Fatal(err)
+			}
 			before := document(t, raw)
 			selection, err := entry.Resolve(root, target)
 			if err != nil {
@@ -162,7 +166,7 @@ func TestAuthorizedPolicyContentAndCanonicalDigestMaterializeTogether(t *testing
 			req := request(target, raw, "SRC-0003", `{"message":"Updated 단위","limit":3}`)
 			result, err := update.Apply(ctx, root, req, func(_ context.Context, actual update.Approval) error {
 				approved = true
-				if actual.Target != target || actual.Root != root || actual.Reference != req.ApprovalRef ||
+				if actual.Target != target || actual.Root != canonicalRoot || actual.Reference != req.ApprovalRef ||
 					actual.PolicyID != source.Object(before["Policy_Identity"])["id"] ||
 					actual.PolicyKind != selection.PolicyKind || actual.RootFamily != selection.RootFamily ||
 					actual.BaselineSHA256 != req.BaselineSHA256 || actual.ProposedSHA256 == actual.BaselineSHA256 ||

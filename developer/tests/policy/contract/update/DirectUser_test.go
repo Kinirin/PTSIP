@@ -108,12 +108,29 @@ func TestDirectUserApprovalThroughDeveloperCLI(t *testing.T) {
 		base64.StdEncoding.EncodeToString(pub), filepath.ToSlash(store))
 	binary := buildDeveloperCLI(t, settings)
 
+	canonicalRoot, err := filepath.EvalSymlinks(root)
+	if err != nil {
+		t.Fatal(err)
+	}
 	preview, code := runDeveloperCLI(t, binary, root, "--dry-run")
 	if code != 0 || preview.Status != "PREPARED_NOT_AUTHORIZED" ||
-		preview.Approval.Target != target || preview.Approval.RequestSHA256 == "" ||
+		preview.Approval.Root != canonicalRoot || preview.Approval.Target != target || preview.Approval.RequestSHA256 == "" ||
 		preview.Approval.ProposedSHA256 == req.BaselineSHA256 || !bytes.Equal(raw, read(t, root, target)) {
 		t.Fatalf("non-mutating preview failed: %+v", preview)
 	}
+	t.Run("canonical-repository-root", func(t *testing.T) {
+		alias := filepath.Join(t.TempDir(), "repository")
+		if err := os.Symlink(root, alias); err != nil {
+			if runtime.GOOS == "windows" {
+				t.Skipf("repository symlinks unavailable: %v", err)
+			}
+			t.Fatal(err)
+		}
+		report, exit := runDeveloperCLI(t, binary, alias, "--dry-run")
+		if exit != 0 || report.Approval.Root != canonicalRoot || report.Approval.RequestSHA256 != preview.Approval.RequestSHA256 {
+			t.Fatalf("repository alias did not resolve to the canonical approval: %+v", report)
+		}
+	})
 	now := time.Now().UTC()
 	approval := update.DirectUserApproval{
 		Format: update.DirectUserApprovalFormat, IssuedAt: now.Add(-time.Minute), ExpiresAt: now.Add(time.Hour),
@@ -192,6 +209,14 @@ func TestDirectUserApprovalThroughDeveloperCLI(t *testing.T) {
 	if _, err := check.CheckUnifiedDocument(root, document(t, updated)); err != nil {
 		t.Fatal(err)
 	}
+	entries, err := os.ReadDir(store)
+	if err != nil || len(entries) != 1 {
+		t.Fatalf("expected one consumed approval: %v, %v", entries, err)
+	}
+	claimed, err := entries[0].Info()
+	if err != nil {
+		t.Fatal(err)
+	}
 	report, code = runDeveloperCLI(t, binary, root, "--approval-evidence", path)
 	if code != 2 || !strings.Contains(report.Problem, "STALE_POLICY_UPDATE_BASELINE") ||
 		!bytes.Equal(updated, read(t, root, target)) {
@@ -201,5 +226,7 @@ func TestDirectUserApprovalThroughDeveloperCLI(t *testing.T) {
 	requireReject(binary, "POLICY_UPDATE_APPROVAL_EVIDENCE_REPLAYED", "--approval-evidence", path)
 	if entries, err := os.ReadDir(store); err != nil || len(entries) != 1 {
 		t.Fatalf("expected one consumed approval across CLI invocations: %v, %v", entries, err)
+	} else if observed, err := entries[0].Info(); err != nil || !os.SameFile(claimed, observed) {
+		t.Fatalf("replayed approval replaced the prior claim: %v", err)
 	}
 }

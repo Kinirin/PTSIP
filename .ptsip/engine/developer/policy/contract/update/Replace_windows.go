@@ -7,7 +7,20 @@ import (
 
 var moveFileEx = syscall.NewLazyDLL("kernel32.dll").NewProc("MoveFileExW")
 
+const (
+	replaceExisting = 0x1
+	writeThrough    = 0x8
+)
+
 func replaceFile(from, to string) error {
+	return moveFile(from, to, replaceExisting|writeThrough)
+}
+
+func publishReplayFile(from, to string) error {
+	return moveFile(from, to, writeThrough)
+}
+
+func moveFile(from, to string, flags uintptr) error {
 	source, err := syscall.UTF16PtrFromString(from)
 	if err != nil {
 		return err
@@ -16,14 +29,12 @@ func replaceFile(from, to string) error {
 	if err != nil {
 		return err
 	}
-	const replaceExisting = 0x1
-	const writeThrough = 0x8
-	result, _, err := moveFileEx.Call(uintptr(unsafe.Pointer(source)), uintptr(unsafe.Pointer(destination)), replaceExisting|writeThrough)
+	result, _, err := moveFileEx.Call(uintptr(unsafe.Pointer(source)), uintptr(unsafe.Pointer(destination)), flags)
 	if result == 0 {
 		return err
 	}
 	return nil
 }
 
-// MOVEFILE_WRITE_THROUGH supplies durability for the Windows replacement.
+// MOVEFILE_WRITE_THROUGH supplies durability for both Windows moves.
 func syncDirectory(string) error { return nil }

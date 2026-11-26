@@ -408,6 +408,7 @@
       "distribution_scope": "NOT_PYPI_ONLY",
       "non_version_packaging_metadata_disposition": "PRESERVE_NON_VERSION_BUILD_AND_DISTRIBUTION_METADATA_IN_CURRENT_CONSUMER_FORMAT_UNTIL_VERIFIED_REPLACEMENT",
       "replacement_asset_inclusion_and_distribution_readiness": "GO_ASSET_CLOSURE_AND_SOURCE_ARCHIVE_PARITY_REQUIRED_BEFORE_REMOVAL",
+      "current_result": "A setuptools base-Wheel comparison from fabaa455 with both tables removed lost six specdata resources, including the legacy registry and its referenced schemas. The current Go assets and candidate build do not establish replacement parity for them. Preserve the tables until each affected runtime resource is covered or retired under WU-08.",
       "asset_delivery_design_ref": "#/approved_implementation_design/asset_delivery",
       "implementation_approval": {
         "state": "APPROVED",
@@ -721,7 +722,7 @@
         "approval_ref": "authority/latest_implementation_approval"
       },
       "implementation_completion_requirement_20261125": {
-        "state": "REQUIRED_NOT_IMPLEMENTED_AT_OBSERVED_BASELINE",
+        "state": "SPECIFICATION_AND_PUBLICATION_BOUND_HISTORY_IMPLEMENTED;LIVE_RESOURCE_MAPPING_AND_REFERENCE_VERIFIER_OPEN",
         "owner": "src/ptsip/ptsip_specification/",
         "existing_policy_binding": {
           "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
@@ -736,7 +737,7 @@
           "Integrate the existing release publication-evidence owner with this history function only under its existing authority; validate positive and negative paths including repeated invocation, absent/forged evidence, unchanged contracts, duplicate archive IDs and preserved reference resolution.",
           "Keep product tests in src/tests/ptsip or existing registered product test locations; developer tests in developer/tests; verify installed Wheel access and exact-source artifacts."
         ],
-        "unresolved_mapping": "Use existing approved directory mappings; do not silently choose unapproved RBAC history leaf paths or other undecided mappings.",
+        "unresolved_mapping": "A read-only release observer can verify the published GitHub carrier, exact source tag, shipping manifest and carrier Wheel, including independent PyPI digest verification when selected. Product code compares observed and exact-source Wheel contract bytes, then prepares and exclusively materializes only changed versioned resources in fixture history. Live wiring requires a complete exact-source resource inventory, approved archive and evidence leaf bindings including the pending RBAC leaves, and the release-owned reference verifier. No official history or publication operation was performed.",
         "revision_gate": {
           "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
           "implementation_authorized_for_new_revision": true,
@@ -1375,7 +1376,7 @@
         "policy_revision": "ecdf1145a7838e78db75c316962603facf0e7e96"
       },
       "prior_approval": "PRESERVED_FOR_UNCHANGED_SCOPE;NEW_PLAN_DELTA_USER_AUDITED_AND_APPROVED",
-      "no_implementation_performed": true,
+      "no_implementation_performed": false,
       "approval_source": "USER_EXPLICIT_CHAT_2026_11_26",
       "audited_revision": "372394a981d4cc53797ce4d3c240d9678dd77df4"
     }
@@ -1716,7 +1717,7 @@
       ],
       "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
       "coordinated_schema_plan": "src/planning/0.3.8/ptsip-schema-centralization.plan.json",
-      "implementation": "PENDING_IMPLEMENTATION_AND_VERIFICATION"
+      "implementation": "The canonical RBAC system and registered schema version projections, current and history Go parsing, release composition consumer bindings, and engine publication-interval calculation were implemented in fabaa455850c0b40156db54d79c58663854fcc4a. Version sync, independent Snapshot and graph regeneration, and verification of that committed source passed in GitHub Actions run 45753003195. The live interval caller depends on VC-12 platform publication evidence. No publication authorized by this record."
     }
   ]
 }
