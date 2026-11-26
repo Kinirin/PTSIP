@@ -3,6 +3,7 @@ on:
   push:
     branches: [main]
     paths:
+      - '.github/workflows/tooling-test.yml'
       - '.ptsip/engine/developer/policy/contract/update/**'
       - 'developer/tests/policy/contract/update/**'
   workflow_dispatch:
