@@ -303,7 +303,23 @@ Policy_Content:
             rule_id: "RULE_ID_WITHIN_OWNING_POLICY_ID"
             rule_reference_purpose: "BIND_DETAILED_POLICY_BASIS"
             reference_scope: "POLICY_ID_AND_OWNED_RULE_ID"
-            exact_reference_serialization: "PRESERVE_EXISTING_APPROVED_TWO_PART_DIRECTION;FINAL_FIELD_CONTRACT_PENDING"
+            exact_reference_serialization: "SINGLE_COMBINED_STRING"
+            separator: "#"
+            format: "{Policy_ID}#{Rule_ID}"
+            components: "EXACT_EXISTING_POLICY_ID_AND_OWNED_RULE_ID;NO_SYNTHETIC_RULE_ID"
+            ambiguous_or_unresolved_reference: "FAIL_CLOSED_AFFECTED_REFERENCE"
+            decision_source: "USER_EXPLICIT_CHAT_2026_11_26"
+            prior_tuple_serialization: "SUPERSEDED"
+          plan_work_unit_structure_20261126:
+            decision_source: "USER_EXPLICIT_CHAT_2026_11_26"
+            root_container: "work_unit"
+            container_type: "ARRAY"
+            item_identity_field: "id"
+            item_identity_pattern: "^WU-[A-Z]{2}-[0-9]{3}$"
+            superseded_fields: ["work_unit_item", "work_unit_id"]
+            same_plan_prefix: true
+            preserve_other_approved_fields: true
+            legacy_consumer_migration: "PLAN_DERIVED_NO_SILENT_COMPATIBILITY_CLAIM"
           official_schema_version_binding_and_registry_migration: "PLAN_DERIVED_CONTRACT"
         canonical_version_source_partition_20261125:
           decision_source: "USER_EXPLICIT_CHAT_2026_11_25"
@@ -381,7 +397,12 @@ Policy_Content:
           field: "completion_date"
           unrecorded_value: null
           unrecorded_serialization: "EXPLICIT_JSON_YAML_NULL_NOT_EMPTY_STRING"
-          date_format: "UNRESOLVED"
+          date_format: "RFC3339_DATE_TIME_WITH_TIMEZONE"
+          date_value_type: "STRING"
+          date_fields: ["Creation_date", "completion_date", "last_modified_date"]
+          completion_date_null_allowed: true
+          requiredness: "PRESERVE_EFFECTIVE_APPROVED_RULES;DO_NOT_INFER"
+          format_decision_source: "USER_EXPLICIT_CHAT_2026_11_26"
           status_transition_authority: "UNCHANGED"
     -
       id: "SRC-0007"
@@ -495,7 +516,7 @@ Policy_Content:
           no_release_or_deployment_authority_implied: true
   source_document:
     path: "src/policy/CNTR/SFP-CNTR-0009.yaml"
-    sha256: "ade3ba5badf2444742b3850e876d24333f3da703759c45d1f10d748b150b8482"
+    sha256: "4fbbb1908d214e0d2149407115e37267b0cd66d04355034496e8a36460749e8e"
 Policy_Migration:
   baseline_head: "b8a830a58598ac1e72a1f5efba98b153f39ba43f"
   source_format: "ptsip-support-native-contract/v1"
