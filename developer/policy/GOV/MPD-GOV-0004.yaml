@@ -690,14 +690,10 @@ Policy_Content:
         approval_verification_simplification_20261126:
           decision_source: USER_EXPLICIT_CHAT_2026_11_26
           conflict_resolution: KEEP_LATEST_WITHDRAW_MANDATORY_SIGNATURE_AND_EXTERNAL_REPLAY_STORE
-          mandatory_per_request_ed25519_signature: false
-          mandatory_deployment_pinned_public_key: false
-          mandatory_dedicated_replay_store: false
-          mandatory_repository_external_replay_store: false
-          signature_and_replay_store_as_completion_gates: WITHDRAWN
+          withdrawn_gate_fields: REMOVE_NOT_SET_FALSE
+          withdrawal_record: git:5a5ed119cf76e95052ed9ed2b557186d6dca984a
           approval_evidence_method: PLAN_DERIVED_LIGHTWEIGHT_WITHIN_EXISTING_AUTHORITY
           existing_explicit_user_delegation: REUSE_WITHIN_APPROVED_SCOPE
-          redundant_user_reapproval_within_valid_delegation: NOT_REQUIRED
           exact_request_and_baseline_binding: PRESERVED
           evidence_origin_and_integrity: PRESERVED
           request_self_assertion_is_approval: false
@@ -1303,7 +1299,7 @@ Policy_Content:
       - evidence_requirement_binding
   source_document:
     path: developer/policy/GOV/MPD-GOV-0004.yaml
-    sha256: 2faf041c07b987d3467f018bbe04e718b49fd62e8e3f7ad133a294c5c29509ce
+    sha256: 8980c3d5d60ac911692c29e8532c6d021738d2899753dbeabeb065352ede8210
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: PUBLIC_POLICY_V2
