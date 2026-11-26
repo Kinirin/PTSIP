@@ -26,6 +26,10 @@ func CheckPlanPolicyReferences(productRoot string, checkout bool, instance any) 
 		return nil
 	}
 	productRoot, rootErr := filepath.Abs(productRoot)
+	// Canonicalize the selected product root before checking paths below it.
+	if rootErr == nil {
+		productRoot, rootErr = filepath.EvalSymlinks(productRoot)
+	}
 	if rootErr != nil {
 		return &PlanPolicyReferenceError{Reference: String(refs[0]), Err: rootErr}
 	}
