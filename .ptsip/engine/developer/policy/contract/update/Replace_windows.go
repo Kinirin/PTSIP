@@ -16,10 +16,6 @@ func replaceFile(from, to string) error {
 	return moveFile(from, to, replaceExisting|writeThrough)
 }
 
-func publishReplayFile(from, to string) error {
-	return moveFile(from, to, writeThrough)
-}
-
 func moveFile(from, to string, flags uintptr) error {
 	source, err := syscall.UTF16PtrFromString(from)
 	if err != nil {

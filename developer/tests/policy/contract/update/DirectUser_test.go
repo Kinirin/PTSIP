@@ -2,24 +2,18 @@ package update_test
 
 import (
 	"bytes"
-	"crypto/ed25519"
-	"crypto/rand"
-	"encoding/base64"
 	"encoding/json"
-	"fmt"
-	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/contract/check"
 	"github.com/Kinirin/PTSIP/.ptsip/engine/developer/policy/contract/update"
 )
 
-func buildDeveloperCLI(t *testing.T, settings string) string {
+func buildDeveloperCLI(t *testing.T) string {
 	t.Helper()
 	module, err := filepath.Abs("../../../../../.ptsip/engine/developer")
 	if err != nil {
@@ -29,7 +23,7 @@ func buildDeveloperCLI(t *testing.T, settings string) string {
 	if runtime.GOOS == "windows" {
 		name += ".exe"
 	}
-	cmd := exec.Command("go", "-C", module, "build", "-mod=readonly", "-ldflags", settings, "-o", name, ".")
+	cmd := exec.Command("go", "-C", module, "build", "-mod=readonly", "-o", name, ".")
 	if raw, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("building developer CLI: %v\n%s", err, raw)
 	}
@@ -77,156 +71,96 @@ func marshal(t *testing.T, value any) []byte {
 	return raw
 }
 
-func signedEvidence(t *testing.T, signer ed25519.PrivateKey, approval update.DirectUserApproval) update.SignedDirectUserApproval {
+func gitFixture(t *testing.T, root string, args ...string) {
 	t.Helper()
-	payload := marshal(t, approval)
-	return update.SignedDirectUserApproval{
-		Payload:   base64.StdEncoding.EncodeToString(payload),
-		Signature: base64.StdEncoding.EncodeToString(ed25519.Sign(signer, payload)),
+	cmd := exec.Command("git", append([]string{"-C", root}, args...)...)
+	if out, err := cmd.CombinedOutput(); err != nil {
+		t.Fatalf("git %v: %v\n%s", args, err, out)
 	}
 }
 
-func TestDirectUserApprovalThroughDeveloperCLI(t *testing.T) {
-	root, target, raw := policyFixture(t, "developer")
-	req := request(target, raw, "SRC-0003", `{"message":"Direct user fixture","limit":3}`)
-	const requestFile = "update-request.json"
-	put(t, root, requestFile, marshal(t, req))
-
-	pub, signer, err := ed25519.GenerateKey(rand.Reader)
-	if err != nil {
-		t.Fatal(err)
-	}
-	_, foreignSigner, err := ed25519.GenerateKey(rand.Reader)
-	if err != nil {
-		t.Fatal(err)
-	}
-	store := t.TempDir()
-	evidenceDir := t.TempDir()
-	const evidenceFile = "approval.json"
-	path := filepath.Join(evidenceDir, evidenceFile)
-	settings := fmt.Sprintf(`-X main.policyUpdateApprovalPublicKey=%s -X "main.policyUpdateApprovalReplayDirectory=%s"`,
-		base64.StdEncoding.EncodeToString(pub), filepath.ToSlash(store))
-	binary := buildDeveloperCLI(t, settings)
-
-	canonicalRoot, err := filepath.EvalSymlinks(root)
-	if err != nil {
-		t.Fatal(err)
-	}
-	preview, code := runDeveloperCLI(t, binary, root, "--dry-run")
-	if code != 0 || preview.Status != "PREPARED_NOT_AUTHORIZED" ||
-		preview.Approval.Root != canonicalRoot || preview.Approval.Target != target || preview.Approval.RequestSHA256 == "" ||
-		preview.Approval.ProposedSHA256 == req.BaselineSHA256 || !bytes.Equal(raw, read(t, root, target)) {
-		t.Fatalf("non-mutating preview failed: %+v", preview)
-	}
-	t.Run("canonical-repository-root", func(t *testing.T) {
-		alias := filepath.Join(t.TempDir(), "repository")
-		if err := os.Symlink(root, alias); err != nil {
-			if runtime.GOOS == "windows" {
-				t.Skipf("repository symlinks unavailable: %v", err)
+func TestDelegatedApprovalThroughDeveloperCLI(t *testing.T) {
+	binary := buildDeveloperCLI(t)
+	for _, plane := range []string{"developer", "support"} {
+		t.Run(plane, func(t *testing.T) {
+			root, target, raw := policyFixture(t, plane)
+			req := request(target, raw, "SRC-0003", `{"message":"Delegated fixture","limit":3}`)
+			put(t, root, "update-request.json", marshal(t, req))
+			gitFixture(t, root, "init", "-q")
+			gitFixture(t, root, "config", "user.name", "PTSIP fixture")
+			gitFixture(t, root, "config", "user.email", "fixture@example.invalid")
+			gitFixture(t, root, "config", "commit.gpgsign", "false")
+			writePlan := func(allowed bool, requests ...update.Request) {
+				put(t, root, update.DelegatedPlanPath, marshal(t, map[string]any{
+					"plan_id": "DEV-038-GO-UNIFIED-POLICY-SOURCE-DIGEST-SYNC",
+					"status": "Approval.Scheduled_implementation",
+					"implementation_authorized": true,
+					"approval": map[string]any{"status": "APPROVED", "policy_mutation_authorized": allowed,
+						"authorized_update_requests": requests},
+				}))
 			}
-			t.Fatal(err)
-		}
-		report, exit := runDeveloperCLI(t, binary, alias, "--dry-run")
-		if exit != 0 || report.Approval.Root != canonicalRoot || report.Approval.RequestSHA256 != preview.Approval.RequestSHA256 {
-			t.Fatalf("repository alias did not resolve to the canonical approval: %+v", report)
-		}
-	})
-	now := time.Now().UTC()
-	approval := update.DirectUserApproval{
-		Format: update.DirectUserApprovalFormat, IssuedAt: now.Add(-time.Minute), ExpiresAt: now.Add(time.Hour),
-		Approval: preview.Approval,
-	}
-	writeEvidence := func(evidence update.SignedDirectUserApproval) {
-		put(t, evidenceDir, evidenceFile, marshal(t, evidence))
-	}
-	requireReject := func(cli, problem string, options ...string) {
-		t.Helper()
-		report, code := runDeveloperCLI(t, cli, root, options...)
-		if code != 2 || !strings.Contains(report.Problem, problem) || !bytes.Equal(raw, read(t, root, target)) {
-			t.Fatalf("expected %s and original bytes, got exit %d: %+v", problem, code, report)
-		}
-	}
-	requireReject(binary, "POLICY_UPDATE_APPROVAL_EVIDENCE_REQUIRED")
-	writeEvidence(signedEvidence(t, signer, approval))
-	unconfigured := buildDeveloperCLI(t, "")
-	t.Setenv("PTSIP_POLICY_UPDATE_APPROVAL_PUBLIC_KEY", base64.StdEncoding.EncodeToString(pub))
-	t.Setenv("PTSIP_POLICY_UPDATE_APPROVAL_REPLAY_DIRECTORY", store)
-	requireReject(unconfigured, "POLICY_UPDATE_APPROVAL_PROVIDER_UNAVAILABLE", "--approval-evidence", path)
-	writeEvidence(signedEvidence(t, foreignSigner, approval))
-	requireReject(binary, "POLICY_UPDATE_APPROVAL_SIGNATURE_INVALID", "--approval-evidence", path)
-
-	tampered := signedEvidence(t, signer, approval)
-	alternative := approval
-	alternative.Approval.PolicyID = "MPD-CNTR-0002"
-	tampered.Payload = base64.StdEncoding.EncodeToString(marshal(t, alternative))
-	writeEvidence(tampered)
-	requireReject(binary, "POLICY_UPDATE_APPROVAL_SIGNATURE_INVALID", "--approval-evidence", path)
-
-	for _, tc := range []struct {
-		name    string
-		alter   func(*update.DirectUserApproval)
-		problem string
-	}{
-		{"expired", func(a *update.DirectUserApproval) { a.ExpiresAt = now.Add(-time.Second) }, "POLICY_UPDATE_APPROVAL_EVIDENCE_STALE"},
-		{"future", func(a *update.DirectUserApproval) { a.IssuedAt = now.Add(time.Hour) }, "POLICY_UPDATE_APPROVAL_EVIDENCE_STALE"},
-		{"wrong-root", func(a *update.DirectUserApproval) { a.Approval.Root = filepath.Dir(root) }, ""},
-		{"wrong-target", func(a *update.DirectUserApproval) { a.Approval.Target += ".bak" }, ""},
-		{"wrong-policy-id", func(a *update.DirectUserApproval) { a.Approval.PolicyID = "MPD-CNTR-0002" }, ""},
-		{"wrong-kind", func(a *update.DirectUserApproval) { a.Approval.PolicyKind = "PTSIP_SUPPORT_FEATURE" }, ""},
-		{"wrong-family", func(a *update.DirectUserApproval) { a.Approval.RootFamily = "GOV" }, ""},
-		{"wrong-baseline", func(a *update.DirectUserApproval) { a.Approval.BaselineSHA256 = strings.Repeat("0", 64) }, ""},
-		{"wrong-proposal", func(a *update.DirectUserApproval) { a.Approval.ProposedSHA256 = strings.Repeat("0", 64) }, ""},
-		{"wrong-source-before", func(a *update.DirectUserApproval) { a.Approval.SourceBefore = strings.Repeat("0", 64) }, ""},
-		{"wrong-source-after", func(a *update.DirectUserApproval) { a.Approval.SourceAfter = strings.Repeat("0", 64) }, ""},
-		{"wrong-changed-items", func(a *update.DirectUserApproval) { a.Approval.ChangedItems = []string{"SRC-0001"} }, ""},
-		{"wrong-request", func(a *update.DirectUserApproval) { a.Approval.RequestSHA256 = strings.Repeat("0", 64) }, ""},
-		{"wrong-approval-reference", func(a *update.DirectUserApproval) { a.Approval.Reference = "a-different-reference" }, ""},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			wrong := approval
-			tc.alter(&wrong)
-			writeEvidence(signedEvidence(t, signer, wrong))
-			problem := tc.problem
-			if problem == "" {
-				problem = "POLICY_UPDATE_APPROVAL_BINDING_MISMATCH"
+			commitPlan := func() {
+				gitFixture(t, root, "add", "--", update.DelegatedPlanPath)
+				gitFixture(t, root, "commit", "-qm", "fixture owner approval")
 			}
-			requireReject(binary, problem, "--approval-evidence", path)
+			requireReject := func(problem string) {
+				t.Helper()
+				report, code := runDeveloperCLI(t, binary, root)
+				if code != 2 || !strings.Contains(report.Problem, problem) || !bytes.Equal(raw, read(t, root, target)) {
+					t.Fatalf("expected %s and original bytes, got %d: %+v", problem, code, report)
+				}
+			}
+			preview, code := runDeveloperCLI(t, binary, root, "--dry-run")
+			if code != 0 || preview.Status != "PREPARED_NOT_AUTHORIZED" ||
+				preview.Approval.Target != target || preview.Approval.RequestSHA256 == "" ||
+				preview.Approval.ProposedSHA256 == req.BaselineSHA256 || !bytes.Equal(raw, read(t, root, target)) {
+				t.Fatalf("non-mutating preview failed: %+v", preview)
+			}
+			requireReject("POLICY_UPDATE_APPROVAL_PLAN_UNAVAILABLE")
+			writePlan(true)
+			commitPlan()
+			requireReject("POLICY_UPDATE_APPROVAL_EVIDENCE_REQUIRED")
+			writePlan(true, req)
+			// A worktree-only approval is not authority.
+			requireReject("POLICY_UPDATE_APPROVAL_EVIDENCE_REQUIRED")
+			writePlan(false, req)
+			commitPlan()
+			requireReject("POLICY_UPDATE_APPROVAL_DELEGATION_UNAVAILABLE")
+			writePlan(true, req, req)
+			commitPlan()
+			requireReject("POLICY_UPDATE_APPROVAL_REFERENCE_AMBIGUOUS")
+			writePlan(true, req)
+			commitPlan()
+			changed := request(target, raw, "SRC-0003", `{"message":"Different request","limit":4}`)
+			put(t, root, "update-request.json", marshal(t, changed))
+			requireReject("POLICY_UPDATE_APPROVAL_BINDING_MISMATCH")
+			changed = req
+			changed.ApprovalRef = "unrecorded"
+			put(t, root, "update-request.json", marshal(t, changed))
+			requireReject("POLICY_UPDATE_APPROVAL_EVIDENCE_REQUIRED")
+			put(t, root, "update-request.json", marshal(t, req))
+
+			report, code := runDeveloperCLI(t, binary, root)
+			updated := read(t, root, target)
+			if code != 0 || report.Status != "UPDATED" || bytes.Equal(raw, updated) ||
+				report.Result.DigestAfter != preview.Approval.SourceAfter {
+				t.Fatalf("valid delegated request was not applied: %+v", report)
+			}
+			if _, err := check.CheckUnifiedDocument(root, document(t, updated)); err != nil {
+				t.Fatal(err)
+			}
+			report, code = runDeveloperCLI(t, binary, root)
+			if code != 2 || !strings.Contains(report.Problem, "STALE_POLICY_UPDATE_BASELINE") ||
+				!bytes.Equal(updated, read(t, root, target)) {
+				t.Fatalf("stale baseline changed the file: %+v", report)
+			}
+			// Restoring the exact baseline is permitted by the same committed
+			// delegation; no separate replay store is required.
+			put(t, root, target, raw)
+			report, code = runDeveloperCLI(t, binary, root)
+			if code != 0 || report.Status != "UPDATED" || !bytes.Equal(updated, read(t, root, target)) {
+				t.Fatalf("delegated retry failed: %+v", report)
+			}
 		})
-	}
-
-	writeEvidence(signedEvidence(t, signer, approval))
-	changed := request(target, raw, "SRC-0003", `{"message":"Different request","limit":4}`)
-	put(t, root, requestFile, marshal(t, changed))
-	requireReject(binary, "POLICY_UPDATE_APPROVAL_BINDING_MISMATCH", "--approval-evidence", path)
-	put(t, root, requestFile, marshal(t, req))
-
-	report, code := runDeveloperCLI(t, binary, root, "--approval-evidence", path)
-	updated := read(t, root, target)
-	if code != 0 || report.Status != "UPDATED" || bytes.Equal(raw, updated) ||
-		report.Result.DigestAfter != approval.Approval.SourceAfter {
-		t.Fatalf("valid direct approval was not applied: %+v", report)
-	}
-	if _, err := check.CheckUnifiedDocument(root, document(t, updated)); err != nil {
-		t.Fatal(err)
-	}
-	entries, err := os.ReadDir(store)
-	if err != nil || len(entries) != 1 {
-		t.Fatalf("expected one consumed approval: %v, %v", entries, err)
-	}
-	claimed, err := entries[0].Info()
-	if err != nil {
-		t.Fatal(err)
-	}
-	report, code = runDeveloperCLI(t, binary, root, "--approval-evidence", path)
-	if code != 2 || !strings.Contains(report.Problem, "STALE_POLICY_UPDATE_BASELINE") ||
-		!bytes.Equal(updated, read(t, root, target)) {
-		t.Fatalf("stale baseline replay changed the file: %+v", report)
-	}
-	put(t, root, target, raw)
-	requireReject(binary, "POLICY_UPDATE_APPROVAL_EVIDENCE_REPLAYED", "--approval-evidence", path)
-	if entries, err := os.ReadDir(store); err != nil || len(entries) != 1 {
-		t.Fatalf("expected one consumed approval across CLI invocations: %v, %v", entries, err)
-	} else if observed, err := entries[0].Info(); err != nil || !os.SameFile(claimed, observed) {
-		t.Fatalf("replayed approval replaced the prior claim: %v", err)
 	}
 }

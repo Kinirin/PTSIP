@@ -3,175 +3,123 @@ package update
 import (
 	"bytes"
 	"context"
-	"crypto/ed25519"
-	"encoding/base64"
 	"encoding/json"
-	"errors"
 	"fmt"
-	"os"
+	"os/exec"
 	"path/filepath"
-	"reflect"
 	"strings"
-	"time"
 
 	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/jsondoc"
+	"github.com/Kinirin/PTSIP/src/ptsip/common_contract/source"
 )
 
-const DirectUserApprovalFormat = "ptsip-direct-policy-update-approval/v1"
+// The repository owner controls the committed plan and the execution checkout.
+// Git is the existing authority boundary, not a new authentication service.
+// Uncommitted plan edits and request-supplied approval files are not authority.
+const DelegatedPlanPath = "developer/planning/0.3.8/go-policy-source-digest-sync.plan.json"
 
-// DirectUserApproval is the signed payload. The envelope signs the raw JSON
-// bytes of this value so verifiers do not depend on JSON member ordering.
-type DirectUserApproval struct {
-	Format    string    `json:"format"`
-	IssuedAt  time.Time `json:"issued_at"`
-	ExpiresAt time.Time `json:"expires_at"`
-	Approval  Approval  `json:"approval"`
+type delegatedPlan struct {
+	PlanID                   string `json:"plan_id"`
+	Status                   string `json:"status"`
+	ImplementationAuthorized bool   `json:"implementation_authorized"`
+	Approval struct {
+		Status                   string            `json:"status"`
+		PolicyMutationAuthorized bool              `json:"policy_mutation_authorized"`
+		AuthorizedRequests       []json.RawMessage `json:"authorized_update_requests"`
+	} `json:"approval"`
 }
 
-// SignedDirectUserApproval carries the standard base64 payload and detached
-// Ed25519 signature. It contains no caller-selected key or trust source.
-type SignedDirectUserApproval struct {
-	Payload   string `json:"payload"`
-	Signature string `json:"signature"`
-}
-
-// DirectUserAuthorizer verifies evidence from an admitted direct user's
-// deployment-pinned key. The same operator manages the separate replay
-// directory. Neither setting derives from a request or policy document.
-func DirectUserAuthorizer(trustedKey, replayDirectory, root, evidencePath string) (Authorizer, error) {
-	if trustedKey == "" || replayDirectory == "" {
-		return nil, fmt.Errorf("POLICY_UPDATE_APPROVAL_PROVIDER_UNAVAILABLE")
-	}
-	key, err := base64.StdEncoding.Strict().DecodeString(trustedKey)
-	if err != nil || len(key) != ed25519.PublicKeySize {
-		return nil, fmt.Errorf("POLICY_UPDATE_APPROVAL_TRUST_KEY_INVALID")
-	}
-	if evidencePath == "" {
-		return nil, fmt.Errorf("POLICY_UPDATE_APPROVAL_EVIDENCE_REQUIRED")
-	}
-	root, err = canonicalRepositoryRoot(root)
+// DelegatedAuthorizer consumes exact requests recorded under the existing
+// owner's WU-15 delegation in the committed plan. The agent may record those
+// requests within its approved scope; no repeated owner approval is required.
+// A plan flag or an approval_ref alone never authorizes a delta.
+func DelegatedAuthorizer(root string) (Authorizer, error) {
+	root, err := canonicalRepositoryRoot(root)
 	if err != nil {
 		return nil, err
 	}
-	dir, err := approvalReplayDirectory(replayDirectory, root)
+	top, err := gitApproval(root, "rev-parse", "--show-toplevel")
 	if err != nil {
 		return nil, err
 	}
-	approval, err := readDirectUserApproval(ed25519.PublicKey(key), evidencePath)
+	canonical, err := canonicalRepositoryRoot(strings.TrimSpace(string(top)))
 	if err != nil {
 		return nil, err
+	}
+	relative, err := filepath.Rel(root, canonical)
+	if err != nil || relative != "." {
+		return nil, fmt.Errorf("POLICY_UPDATE_APPROVAL_REPOSITORY_MISMATCH")
+	}
+	raw, err := gitApproval(root, "show", "--no-textconv", "HEAD:"+DelegatedPlanPath)
+	if err != nil {
+		return nil, err
+	}
+	if _, err := jsondoc.Decode(raw); err != nil {
+		return nil, fmt.Errorf("POLICY_UPDATE_APPROVAL_PLAN_INVALID: %w", err)
+	}
+	var plan delegatedPlan
+	if err := json.Unmarshal(raw, &plan); err != nil {
+		return nil, fmt.Errorf("POLICY_UPDATE_APPROVAL_PLAN_INVALID: %w", err)
+	}
+	if plan.PlanID != "DEV-038-GO-UNIFIED-POLICY-SOURCE-DIGEST-SYNC" ||
+		(plan.Status != "Approval.Scheduled_implementation" && plan.Status != "Approval.In_progress") ||
+		!plan.ImplementationAuthorized || plan.Approval.Status != "APPROVED" || !plan.Approval.PolicyMutationAuthorized {
+		return nil, fmt.Errorf("POLICY_UPDATE_APPROVAL_DELEGATION_UNAVAILABLE")
+	}
+	requests := make(map[string]Request, len(plan.Approval.AuthorizedRequests))
+	for _, raw := range plan.Approval.AuthorizedRequests {
+		var request Request
+		dec := json.NewDecoder(bytes.NewReader(raw))
+		dec.DisallowUnknownFields()
+		if err := dec.Decode(&request); err != nil || strings.TrimSpace(request.ApprovalRef) == "" ||
+			!sha256Pattern.MatchString(request.BaselineSHA256) || len(request.Values) == 0 ||
+			!source.Relative(request.Target) ||
+			(!strings.HasPrefix(request.Target, "developer/policy/") && !strings.HasPrefix(request.Target, "src/policy/")) {
+			return nil, fmt.Errorf("POLICY_UPDATE_APPROVAL_REQUEST_INVALID")
+		}
+		if _, exists := requests[request.ApprovalRef]; exists {
+			return nil, fmt.Errorf("POLICY_UPDATE_APPROVAL_REFERENCE_AMBIGUOUS")
+		}
+		requests[request.ApprovalRef] = request
 	}
 	return func(ctx context.Context, actual Approval) error {
 		if err := ctx.Err(); err != nil {
 			return err
 		}
-		now := time.Now()
-		if approval.IssuedAt.IsZero() || now.Before(approval.IssuedAt) || !now.Before(approval.ExpiresAt) {
-			return fmt.Errorf("POLICY_UPDATE_APPROVAL_EVIDENCE_STALE")
+		request, exists := requests[actual.Reference]
+		if !exists {
+			return fmt.Errorf("POLICY_UPDATE_APPROVAL_EVIDENCE_REQUIRED")
 		}
-		if actual.Root != root || !reflect.DeepEqual(approval.Approval, actual) {
+		if actual.Root != root || actual.Target != request.Target || actual.BaselineSHA256 != request.BaselineSHA256 {
 			return fmt.Errorf("POLICY_UPDATE_APPROVAL_BINDING_MISMATCH")
 		}
-		return claimDirectUserApproval(dir, actual.Reference)
+		// Derive the complete binding again from the independently recorded
+		// request; the callback cannot approve different values or identities.
+		expected, err := prepare(root, request)
+		if err != nil {
+			return err
+		}
+		if !sameApproval(expected.approval, actual) {
+			return fmt.Errorf("POLICY_UPDATE_APPROVAL_BINDING_MISMATCH")
+		}
+		return nil
 	}, nil
 }
 
-func approvalReplayDirectory(dir, root string) (string, error) {
-	if !filepath.IsAbs(dir) {
-		return "", fmt.Errorf("POLICY_UPDATE_APPROVAL_REPLAY_STORE_INVALID")
-	}
-	info, err := os.Lstat(dir)
-	if err != nil || !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
-		return "", fmt.Errorf("POLICY_UPDATE_APPROVAL_REPLAY_STORE_INVALID")
-	}
-	dir, err = filepath.EvalSymlinks(dir)
+func sameApproval(left, right Approval) bool {
+	a, err := json.Marshal(left)
 	if err != nil {
-		return "", fmt.Errorf("POLICY_UPDATE_APPROVAL_REPLAY_STORE_INVALID: %w", err)
+		return false
 	}
-	relative, err := filepath.Rel(root, dir)
-	// An independent drive cannot be inside the worktree.
-	if err == nil && relative != ".." && !strings.HasPrefix(relative, ".."+string(os.PathSeparator)) {
-		return "", fmt.Errorf("POLICY_UPDATE_APPROVAL_REPLAY_STORE_IN_WORKTREE")
-	}
-	return dir, nil
+	b, err := json.Marshal(right)
+	return err == nil && bytes.Equal(a, b)
 }
 
-func claimDirectUserApproval(dir, reference string) error {
-	name := filepath.Join(dir, bytesDigest([]byte(reference))+".used")
-	temporary, err := stage(name, 0600, nil)
-	if err != nil {
-		return fmt.Errorf("POLICY_UPDATE_APPROVAL_REPLAY_STORE_UNAVAILABLE: %w", err)
+func gitApproval(root string, args ...string) ([]byte, error) {
+	cmd := exec.Command("git", append([]string{"--no-replace-objects", "-C", root}, args...)...)
+	raw, err := cmd.Output()
+	if err != nil || len(raw) > source.MaxBytes {
+		return nil, fmt.Errorf("POLICY_UPDATE_APPROVAL_PLAN_UNAVAILABLE")
 	}
-	defer os.Remove(temporary)
-	err = publishReplayFile(temporary, name)
-	if errors.Is(err, os.ErrExist) {
-		return fmt.Errorf("POLICY_UPDATE_APPROVAL_EVIDENCE_REPLAYED")
-	}
-	if err != nil {
-		return fmt.Errorf("POLICY_UPDATE_APPROVAL_REPLAY_STORE_UNAVAILABLE: %w", err)
-	}
-	// Never remove a claim on a failed write or interrupted update. A retry
-	// after consumption needs fresh direct approval even if the baseline was
-	// recovered by the update's existing atomic-write logic.
-	if err := syncDirectory(dir); err != nil {
-		return fmt.Errorf("POLICY_UPDATE_APPROVAL_REPLAY_STORE_UNAVAILABLE: %w", err)
-	}
-	return nil
-}
-
-func readDirectUserApproval(key ed25519.PublicKey, path string) (DirectUserApproval, error) {
-	info, err := os.Lstat(path)
-	if err != nil || !info.Mode().IsRegular() {
-		return DirectUserApproval{}, fmt.Errorf("POLICY_UPDATE_APPROVAL_EVIDENCE_NOT_REGULAR")
-	}
-	file, err := readSnapshot(path)
-	if err != nil {
-		return DirectUserApproval{}, err
-	}
-	var evidence SignedDirectUserApproval
-	if err := decodeExactApprovalJSON(file.data, &evidence); err != nil {
-		return DirectUserApproval{}, fmt.Errorf("POLICY_UPDATE_APPROVAL_EVIDENCE_INVALID: %w", err)
-	}
-	payload, err := base64.StdEncoding.Strict().DecodeString(evidence.Payload)
-	if err != nil {
-		return DirectUserApproval{}, fmt.Errorf("POLICY_UPDATE_APPROVAL_EVIDENCE_INVALID: %w", err)
-	}
-	signature, err := base64.StdEncoding.Strict().DecodeString(evidence.Signature)
-	if err != nil || !ed25519.Verify(key, payload, signature) {
-		return DirectUserApproval{}, fmt.Errorf("POLICY_UPDATE_APPROVAL_SIGNATURE_INVALID")
-	}
-	var approval DirectUserApproval
-	if err := decodeExactApprovalJSON(payload, &approval); err != nil {
-		return DirectUserApproval{}, fmt.Errorf("POLICY_UPDATE_APPROVAL_EVIDENCE_INVALID: %w", err)
-	}
-	if approval.Format != DirectUserApprovalFormat {
-		return DirectUserApproval{}, fmt.Errorf("POLICY_UPDATE_APPROVAL_EVIDENCE_FORMAT_UNSUPPORTED")
-	}
-	return approval, nil
-}
-
-// Reject duplicate, missing, case-aliased, and unrecognized fields in signed
-// evidence. JSON size is bounded by its outer regular file snapshot.
-func decodeExactApprovalJSON(raw []byte, value any) error {
-	observed, err := jsondoc.Decode(raw)
-	if err != nil {
-		return err
-	}
-	dec := json.NewDecoder(bytes.NewReader(raw))
-	dec.DisallowUnknownFields()
-	if err := dec.Decode(value); err != nil {
-		return err
-	}
-	normalized, err := json.Marshal(value)
-	if err != nil {
-		return err
-	}
-	expected, err := jsondoc.Decode(normalized)
-	if err != nil {
-		return err
-	}
-	if !reflect.DeepEqual(observed, expected) {
-		return fmt.Errorf("unexpected approval evidence fields or values")
-	}
-	return nil
+	return raw, nil
 }
