@@ -675,6 +675,18 @@ Policy_Content:
     value:
       id: R-ID-EA22BC28627FD8005FD6A17361B01CED
       rule: GOV-APPROVAL-SOURCE
+      policy_update_direct_user_approval_20261126:
+        decision_source: USER_EXPLICIT_CHAT_2026_11_26
+        scope: REGISTERED_DEVELOPER_POLICY_UPDATE_CLI
+        approval_provider: DIRECT_USER_APPROVAL_EVIDENCE
+        authority: EXISTING_ADMITTED_USER_POLICY_CHANGE_AUTHORITY
+        exact_request_and_baseline_binding: REQUIRED
+        verify_evidence_origin_and_integrity: REQUIRED
+        request_self_assertion_is_approval: false
+        plan_implementation_approval_is_policy_mutation_approval: false
+        absent_invalid_stale_or_mismatched_evidence: FAIL_CLOSED
+        historical_digest_repair: SEPARATE_AUTHORIZATION_REQUIRED
+        provider_transport_storage_and_verifier: PLAN_DERIVED_WITHIN_EXISTING_AUTHORITY
       preconditions:
       - C-ID-06589F56A0137903568CF0C1E68DEACF
       source_ref:
@@ -1274,7 +1286,7 @@ Policy_Content:
       - evidence_requirement_binding
   source_document:
     path: developer/policy/GOV/MPD-GOV-0004.yaml
-    sha256: 2987e41713281e1538c37eeed753dac265b5bc0a15b448f6ee858334e64f1e5b
+    sha256: 0217c8d7c0ef78ab584d9948410a70368ab938f17f3c9d6a88a729a85586c5e0
 Policy_Migration:
   baseline_head: 7420848b01747e937b400e6647020b122ed3bf51
   source_format: PUBLIC_POLICY_V2
