@@ -108,8 +108,8 @@
         "Add Go tests under developer/tests/policy/contract/ (not under .ptsip) for create versus update, successful same-document mutation plus digest synchronization, no-op stability, repeated updates, both policy planes, stale base revision, concurrent file changes, unauthorized deltas, partial/failed writes, and repair authorization boundary.",
         "Run developer Go authoring and common source contract tests plus the registered policy check against updated fixtures. Treat Go-only replacement of changed.py in policy-contract-guard.yml as a separate verification-migration responsibility, not as the digest authoring implementation.",
         "Update .ptsip/engine/developer/main.go and applicable developer package indexes, imports and Go command routes to the new ownership locations; validate Responsibility-Authority and all other real callers, and retire old policy-specific paths only after consumer and regression equivalence. Rewire affected test execution with developer/tests and coordinate existing test relocation without duplicating tests.",
-        "SUPERSEDED IMPLEMENTATION DIRECTION: the prior mandatory detached Ed25519 signature, deployment key, external replay store and separate approval per in-scope operational request are withdrawn. Historical implementation and fixture evidence remain recorded.",
-        "LATEST USER 2026-11-26: simplify registered policy update CLI to consume existing explicit user delegation within WU-15 without mandatory Ed25519, deployment public key or dedicated external replay store. Derive the lightweight approval evidence and actual CLI integration using existing admitted authority; do not accept request self-assertion or a bare plan flag as proof of authority. Do not require redundant approvals for valid delegated work; preserve exact target/content/baseline binding, canonical digest recomputation, independent readback, concurrent-change checks and atomic rollback. Reconcile main.go, update/DirectUser.go, CLI.go and actual test consumers; remove withdrawn mandatory infrastructure dependencies from the active path and update tests accordingly. Verify normal delegated operational execution and unauthorized/out-of-scope/stale/invalid requests. No new mandatory storage mechanism, actual policy semantics outside delegation, or historical mismatch repair is authorized."
+        "LATEST USER 2026-11-26: simplify registered policy update CLI to consume existing explicit user delegation within WU-15 without mandatory Ed25519, deployment public key or dedicated external replay store. Derive the lightweight approval evidence and actual CLI integration using existing admitted authority; do not accept request self-assertion or a bare plan flag as proof of authority. Do not require redundant approvals for valid delegated work; preserve exact target/content/baseline binding, canonical digest recomputation, independent readback, concurrent-change checks and atomic rollback. Reconcile main.go, update/DirectUser.go, CLI.go and actual test consumers; remove withdrawn mandatory infrastructure dependencies from the active path and update tests accordingly. Verify normal delegated operational execution and unauthorized/out-of-scope/stale/invalid requests. No new mandatory storage mechanism, actual policy semantics outside delegation, or historical mismatch repair is authorized.",
+        "LATEST USER 2026-11-27: remove the withdrawn signature/key/replay-store and redundant per-request approval gate fields entirely, not merely set them false. Do not reintroduce them in the active CLI, plan, tests or completion criteria. Use the existing delegated authority with a lightweight evidence binding derived within approved scope. Retain the exact baseline, atomic content/digest update and independent verification. Historical implementation records are evidence only."
       ],
       "acceptance": [
         "Authorized changes to an existing Unified Policy can be performed through Go Authoring without manual source_document.sha256 editing.",
@@ -137,7 +137,7 @@
       "gate": "USER_PLAN_AUDIT_AND_FULL_APPROVAL_SATISFIED;EFFECTIVE_POLICY_CONFORMANCE_REQUIRED;EXISTING_RELEASE_SINGLE_PLAN_ENTRY_PRESERVED;HISTORICAL_DIGEST_REPAIR_REQUIRES_SEPARATE_AUTHORIZATION",
       "implementation_authorized": true,
       "execution_status": "SIMPLIFICATION_APPROVED_CLI_RECONCILIATION_AND_OPERATING_VERIFICATION_PENDING",
-      "current_result": "4197722d7688e7796b7365596b963d4dc4cbc180 implemented the four Go policy contract responsibilities and the authorized update flow. At 77510354ecbd3935ca604c658f2069ce02520f5a, the update package passed locally on Windows and GitHub Actions run 45603704911 passed developer-schema-contracts on Windows and Ubuntu, including go -C developer/tests test -mod=readonly ./policy/contract/... -count=1 as part of its developer Go suite. The update tests verify canonical digest persistence and independent readback in both policy planes, stable replay, stale or unauthorized requests, preexisting mismatch rejection, concurrent file preservation, and rollback on failed verification. On Windows at the same source revision, go -C .ptsip/engine/developer run -mod=readonly . --validator policy-rules --operation update --input - --root ../../.. correctly reported POLICY_UPDATE_APPROVAL_PROVIDER_UNAVAILABLE with execution_authorized=false. Operational CLI acceptance remains blocked on connecting the registered entry point to an approved trusted provider and verifying a successful authorized request. Historical mismatch repair still requires separate authorization.\n2026-11-26: user approved direct user approval evidence provider direction and implementation; operating integration and positive/negative CLI verification pending. No new policy mutation request approved.\nProvider source implemented from 603d00b2ca0d25691d5fe0a5a0cab3992daff174. The developer CLI verifies detached Ed25519 evidence against an independently provisioned admitted-user public key, binds every approval coordinate and the request digest, and records exclusive replay claims outside the worktree. The read-only preview derives the approval binding without authority or policy writes. Windows command go -C developer/tests test -mod=readonly -count=1 -v ./policy/contract/update passed, including an actual built CLI with a fixture-only signer, exact update and independent readback, all binding mismatches, tampering, expiry, absent trust and restored-baseline replay. No production trust material or policy mutation was used. Operating deployment requires the admitted user's pinned public key and protected replay directory. A positive production update requires separate approval of its exact request.\nUser explicitly changed the plan-level policy_mutation_authorized flag to true; operational verification is authorized within WU-15. Existing direct-user exact-request evidence, trust configuration, replay protection and separate historical repair rules remain required. No actual production mutation or successful operational run is claimed.\nLATEST USER DECISION 2026-11-26: mandatory per-request Ed25519 signature, deployment public key and dedicated external replay storage are withdrawn as WU-15 completion gates. Prior reported signing/replay test results are historical evidence only. Existing explicit WU-15 operational verification delegation is reusable; do not request redundant approval within that scope. Active CLI reconciliation and actual operating verification remain pending. No operational success claimed.",
+      "current_result": "4197722d7688e7796b7365596b963d4dc4cbc180 implemented the four Go policy contract responsibilities and the authorized update flow. At 77510354ecbd3935ca604c658f2069ce02520f5a, the update package passed locally on Windows and GitHub Actions run 45603704911 passed developer-schema-contracts on Windows and Ubuntu, including go -C developer/tests test -mod=readonly ./policy/contract/... -count=1 as part of its developer Go suite. The update tests verify canonical digest persistence and independent readback in both policy planes, stable replay, stale or unauthorized requests, preexisting mismatch rejection, concurrent file preservation, and rollback on failed verification. On Windows at the same source revision, go -C .ptsip/engine/developer run -mod=readonly . --validator policy-rules --operation update --input - --root ../../.. correctly reported POLICY_UPDATE_APPROVAL_PROVIDER_UNAVAILABLE with execution_authorized=false. Operational CLI acceptance remains blocked on connecting the registered entry point to an approved trusted provider and verifying a successful authorized request. Historical mismatch repair still requires separate authorization.\n2026-11-26: user approved direct user approval evidence provider direction and implementation; operating integration and positive/negative CLI verification pending. No new policy mutation request approved.\nProvider source implemented from 603d00b2ca0d25691d5fe0a5a0cab3992daff174. The developer CLI verifies detached Ed25519 evidence against an independently provisioned admitted-user public key, binds every approval coordinate and the request digest, and records exclusive replay claims outside the worktree. The read-only preview derives the approval binding without authority or policy writes. Windows command go -C developer/tests test -mod=readonly -count=1 -v ./policy/contract/update passed, including an actual built CLI with a fixture-only signer, exact update and independent readback, all binding mismatches, tampering, expiry, absent trust and restored-baseline replay. No production trust material or policy mutation was used. Operating deployment requires the admitted user's pinned public key and protected replay directory. A positive production update requires separate approval of its exact request.\nUser explicitly changed the plan-level policy_mutation_authorized flag to true; operational verification is authorized within WU-15. Existing direct-user exact-request evidence, trust configuration, replay protection and separate historical repair rules remain required. No actual production mutation or successful operational run is claimed.\nLATEST USER DECISION 2026-11-26: mandatory per-request Ed25519 signature, deployment public key and dedicated external replay storage are withdrawn as WU-15 completion gates. Prior reported signing/replay test results are historical evidence only. Existing explicit WU-15 operational verification delegation is reusable; do not request redundant approval within that scope. Active CLI reconciliation and actual operating verification remain pending. No operational success claimed.\n2026-11-27: withdrawn gate fields deleted rather than disabled. Existing WU-15 delegation and implementation approval remain effective. Source still needs reconciliation and operating verification; no successful operation claimed.",
       "approval": {
         "status": "APPROVED",
         "approval_source": "USER_EXPLICIT",
@@ -161,10 +161,9 @@
         "policy_mutation_authorized": true,
         "provider_details": "PLAN_DERIVED_LIGHTWEIGHT_APPROVAL_CONSUMPTION;REUSE_VALID_DELEGATION;PRESERVE_EXACT_REQUEST_BASELINE_AND_EVIDENCE_ORIGIN_INTEGRITY",
         "fail_closed": true,
-        "production_test_request_requires_separate_exact_user_approval": false,
         "implementation_status": "SIMPLIFICATION_APPROVED_CLI_RECONCILIATION_AND_OPERATING_VERIFICATION_PENDING",
         "production_test_approval_scope": "EXISTING_EXPLICIT_WU15_DELEGATION_ONLY;OUT_OF_SCOPE_REQUIRES_USER_AUTHORITY",
-        "latest_simplification_policy_revision": "5a5ed119cf76e95052ed9ed2b557186d6dca984a"
+        "latest_simplification_policy_revision": "c7a4fa34db2d497b35f8780dd1f1f99b4f634d42"
       },
       "latest_policy_mutation_authorization": {
         "source": "USER_EXPLICIT_CHAT_2026_11_26",
@@ -173,7 +172,6 @@
         "scope": "WU-15_AUTHORIZED_POLICY_UPDATE_OPERATING_VERIFICATION",
         "supersedes": "PRIOR_PLAN_LEVEL_POLICY_MUTATION_AUTHORIZATION_FALSE",
         "exact_request_and_baseline_evidence_required": true,
-        "trust_key_and_protected_replay_store_required": false,
         "historical_digest_repair_separate_authorization": true,
         "blanket_future_policy_change_authority": false,
         "actual_request_verified": false,
@@ -183,14 +181,9 @@
         "source": "USER_EXPLICIT_CHAT_2026_11_26",
         "base_revision": "62075e80d6b138d2ff517a7cb70d1d22c0c4b299",
         "policy_ref": "developer/policy/GOV/MPD-GOV-0004.yaml",
-        "policy_revision": "5a5ed119cf76e95052ed9ed2b557186d6dca984a",
+        "policy_revision": "c7a4fa34db2d497b35f8780dd1f1f99b4f634d42",
         "state": "USER_APPROVED_SIMPLIFICATION_IMPLEMENTATION_AUTHORIZED",
-        "mandatory_per_request_ed25519_signature": false,
-        "mandatory_deployment_pinned_public_key": false,
-        "mandatory_dedicated_replay_store": false,
-        "mandatory_repository_external_replay_store": false,
         "existing_delegation_reusable_within_scope": true,
-        "repeat_user_approval_within_valid_delegation": false,
         "exact_request_and_baseline_binding_required": true,
         "evidence_origin_and_integrity_required": true,
         "request_self_assertion_is_approval": false,
@@ -198,7 +191,9 @@
         "implementation_authorized": true,
         "approval_method": "PLAN_DERIVED_LIGHTWEIGHT_WITHIN_EXISTING_AUTHORITY",
         "historical_digest_repair_separate_authorization": true,
-        "actual_operational_verification": "PENDING"
+        "actual_operational_verification": "PENDING",
+        "withdrawn_gate_fields": "REMOVED_NOT_BOOLEAN_FALSE",
+        "field_removal_source": "USER_EXPLICIT_CHAT_2026_11_27"
       }
     }
   ],
@@ -249,10 +244,9 @@
       "policy_mutation_authorized": true,
       "provider_details": "PLAN_DERIVED_LIGHTWEIGHT_APPROVAL_CONSUMPTION;REUSE_VALID_DELEGATION;PRESERVE_EXACT_REQUEST_BASELINE_AND_EVIDENCE_ORIGIN_INTEGRITY",
       "fail_closed": true,
-      "production_test_request_requires_separate_exact_user_approval": false,
       "implementation_status": "SIMPLIFICATION_APPROVED_CLI_RECONCILIATION_AND_OPERATING_VERIFICATION_PENDING",
       "production_test_approval_scope": "EXISTING_EXPLICIT_WU15_DELEGATION_ONLY;OUT_OF_SCOPE_REQUIRES_USER_AUTHORITY",
-      "latest_simplification_policy_revision": "5a5ed119cf76e95052ed9ed2b557186d6dca984a"
+      "latest_simplification_policy_revision": "c7a4fa34db2d497b35f8780dd1f1f99b4f634d42"
     },
     "latest_policy_mutation_authorization": {
       "source": "USER_EXPLICIT_CHAT_2026_11_26",
@@ -261,7 +255,6 @@
       "scope": "WU-15_AUTHORIZED_POLICY_UPDATE_OPERATING_VERIFICATION",
       "supersedes": "PRIOR_PLAN_LEVEL_POLICY_MUTATION_AUTHORIZATION_FALSE",
       "exact_request_and_baseline_evidence_required": true,
-      "trust_key_and_protected_replay_store_required": false,
       "historical_digest_repair_separate_authorization": true,
       "blanket_future_policy_change_authority": false,
       "actual_request_verified": false,
@@ -271,14 +264,9 @@
       "source": "USER_EXPLICIT_CHAT_2026_11_26",
       "base_revision": "62075e80d6b138d2ff517a7cb70d1d22c0c4b299",
       "policy_ref": "developer/policy/GOV/MPD-GOV-0004.yaml",
-      "policy_revision": "5a5ed119cf76e95052ed9ed2b557186d6dca984a",
+      "policy_revision": "c7a4fa34db2d497b35f8780dd1f1f99b4f634d42",
       "state": "USER_APPROVED_SIMPLIFICATION_IMPLEMENTATION_AUTHORIZED",
-      "mandatory_per_request_ed25519_signature": false,
-      "mandatory_deployment_pinned_public_key": false,
-      "mandatory_dedicated_replay_store": false,
-      "mandatory_repository_external_replay_store": false,
       "existing_delegation_reusable_within_scope": true,
-      "repeat_user_approval_within_valid_delegation": false,
       "exact_request_and_baseline_binding_required": true,
       "evidence_origin_and_integrity_required": true,
       "request_self_assertion_is_approval": false,
@@ -286,7 +274,9 @@
       "implementation_authorized": true,
       "approval_method": "PLAN_DERIVED_LIGHTWEIGHT_WITHIN_EXISTING_AUTHORITY",
       "historical_digest_repair_separate_authorization": true,
-      "actual_operational_verification": "PENDING"
+      "actual_operational_verification": "PENDING",
+      "withdrawn_gate_fields": "REMOVED_NOT_BOOLEAN_FALSE",
+      "field_removal_source": "USER_EXPLICIT_CHAT_2026_11_27"
     }
   },
   "module_layout": {
@@ -375,10 +365,9 @@
       "policy_mutation_authorized": true,
       "provider_details": "PLAN_DERIVED_LIGHTWEIGHT_APPROVAL_CONSUMPTION;REUSE_VALID_DELEGATION;PRESERVE_EXACT_REQUEST_BASELINE_AND_EVIDENCE_ORIGIN_INTEGRITY",
       "fail_closed": true,
-      "production_test_request_requires_separate_exact_user_approval": false,
       "implementation_status": "SIMPLIFICATION_APPROVED_CLI_RECONCILIATION_AND_OPERATING_VERIFICATION_PENDING",
       "production_test_approval_scope": "EXISTING_EXPLICIT_WU15_DELEGATION_ONLY;OUT_OF_SCOPE_REQUIRES_USER_AUTHORITY",
-      "latest_simplification_policy_revision": "5a5ed119cf76e95052ed9ed2b557186d6dca984a"
+      "latest_simplification_policy_revision": "c7a4fa34db2d497b35f8780dd1f1f99b4f634d42"
     },
     "latest_policy_mutation_authorization": {
       "source": "USER_EXPLICIT_CHAT_2026_11_26",
@@ -387,7 +376,6 @@
       "scope": "WU-15_AUTHORIZED_POLICY_UPDATE_OPERATING_VERIFICATION",
       "supersedes": "PRIOR_PLAN_LEVEL_POLICY_MUTATION_AUTHORIZATION_FALSE",
       "exact_request_and_baseline_evidence_required": true,
-      "trust_key_and_protected_replay_store_required": false,
       "historical_digest_repair_separate_authorization": true,
       "blanket_future_policy_change_authority": false,
       "actual_request_verified": false,
@@ -397,14 +385,9 @@
       "source": "USER_EXPLICIT_CHAT_2026_11_26",
       "base_revision": "62075e80d6b138d2ff517a7cb70d1d22c0c4b299",
       "policy_ref": "developer/policy/GOV/MPD-GOV-0004.yaml",
-      "policy_revision": "5a5ed119cf76e95052ed9ed2b557186d6dca984a",
+      "policy_revision": "c7a4fa34db2d497b35f8780dd1f1f99b4f634d42",
       "state": "USER_APPROVED_SIMPLIFICATION_IMPLEMENTATION_AUTHORIZED",
-      "mandatory_per_request_ed25519_signature": false,
-      "mandatory_deployment_pinned_public_key": false,
-      "mandatory_dedicated_replay_store": false,
-      "mandatory_repository_external_replay_store": false,
       "existing_delegation_reusable_within_scope": true,
-      "repeat_user_approval_within_valid_delegation": false,
       "exact_request_and_baseline_binding_required": true,
       "evidence_origin_and_integrity_required": true,
       "request_self_assertion_is_approval": false,
@@ -412,7 +395,9 @@
       "implementation_authorized": true,
       "approval_method": "PLAN_DERIVED_LIGHTWEIGHT_WITHIN_EXISTING_AUTHORITY",
       "historical_digest_repair_separate_authorization": true,
-      "actual_operational_verification": "PENDING"
+      "actual_operational_verification": "PENDING",
+      "withdrawn_gate_fields": "REMOVED_NOT_BOOLEAN_FALSE",
+      "field_removal_source": "USER_EXPLICIT_CHAT_2026_11_27"
     }
   }
 }
