@@ -38,17 +38,18 @@ type Request struct {
 // Approval describes the actual materialization. A trusted owner verifies
 // the reference against the repository, policy identity, and exact delta.
 type Approval struct {
-	Reference      string
-	Root           string
-	Target         string
-	PolicyID       string
-	PolicyKind     string
-	RootFamily     string
-	BaselineSHA256 string
-	ProposedSHA256 string
-	SourceBefore   string
-	SourceAfter    string
-	ChangedItems   []string
+	Reference      string   `json:"reference"`
+	Root           string   `json:"root"`
+	Target         string   `json:"target"`
+	PolicyID       string   `json:"policy_id"`
+	PolicyKind     string   `json:"policy_kind"`
+	RootFamily     string   `json:"root_family"`
+	BaselineSHA256 string   `json:"baseline_file_sha256"`
+	ProposedSHA256 string   `json:"proposed_file_sha256"`
+	SourceBefore   string   `json:"source_sha256_before"`
+	SourceAfter    string   `json:"source_sha256_after"`
+	ChangedItems   []string `json:"changed_items"`
+	RequestSHA256  string   `json:"request_sha256"`
 }
 
 // Authorizer is supplied by the trusted policy owner, never by the request.
@@ -94,37 +95,76 @@ func bytesDigest(raw []byte) string {
 // Apply verifies the existing source before deriving a digest. Historical
 // mismatches require a separate reconciliation operation.
 func Apply(ctx context.Context, root string, request Request, authorize Authorizer) (Result, error) {
-	if authorize == nil || strings.TrimSpace(request.ApprovalRef) == "" {
+	if authorize == nil {
 		return Result{}, fmt.Errorf("POLICY_UPDATE_APPROVAL_REQUIRED")
 	}
+	prepared, err := prepare(root, request)
+	if err != nil {
+		return Result{}, err
+	}
+	if err := authorize(ctx, prepared.approval); err != nil {
+		return Result{}, fmt.Errorf("POLICY_UPDATE_APPROVAL_REJECTED: %w", err)
+	}
+	if err := ctx.Err(); err != nil {
+		return Result{}, err
+	}
+	root = prepared.approval.Root
+	result := prepared.result
+	if len(result.ChangedItems) == 0 {
+		if err := confirmBaseline(root, request.Target, prepared.prior); err != nil {
+			return Result{}, err
+		}
+		return result, nil
+	}
+	if err := persist(root, request.Target, prepared.name, prepared.prior, prepared.proposed, prepared.document); err != nil {
+		return Result{}, err
+	}
+	result.Status = "UPDATED"
+	return result, nil
+}
+
+type preparedUpdate struct {
+	approval Approval
+	result   Result
+	name     string
+	prior    fileSnapshot
+	proposed []byte
+	document source.Document
+}
+
+// prepare derives the exact approval coordinates without writing any files.
+func prepare(root string, request Request) (preparedUpdate, error) {
+	if strings.TrimSpace(request.ApprovalRef) == "" {
+		return preparedUpdate{}, fmt.Errorf("POLICY_UPDATE_APPROVAL_REQUIRED")
+	}
 	if !sha256Pattern.MatchString(request.BaselineSHA256) || len(request.Values) == 0 {
-		return Result{}, fmt.Errorf("POLICY_UPDATE_REQUIRES_BASELINE_AND_CONTENT_DELTA")
+		return preparedUpdate{}, fmt.Errorf("POLICY_UPDATE_REQUIRES_BASELINE_AND_CONTENT_DELTA")
 	}
 	root, err := filepath.Abs(root)
 	if err != nil {
-		return Result{}, err
+		return preparedUpdate{}, err
 	}
 	name, err := authoring.LocalFile(root, request.Target)
 	if err != nil {
-		return Result{}, err
+		return preparedUpdate{}, err
 	}
 	prior, err := readSnapshot(name)
 	if err != nil {
-		return Result{}, err
+		return preparedUpdate{}, err
 	}
 	if bytesDigest(prior.data) != request.BaselineSHA256 {
-		return Result{}, fmt.Errorf("STALE_POLICY_UPDATE_BASELINE")
+		return preparedUpdate{}, fmt.Errorf("STALE_POLICY_UPDATE_BASELINE")
 	}
 	document, err := source.Decode(prior.data)
 	if err != nil {
-		return Result{}, err
+		return preparedUpdate{}, err
 	}
 	selection, err := entry.SelectPolicyDocument(root, document)
 	if err != nil {
-		return Result{}, err
+		return preparedUpdate{}, err
 	}
 	if !entry.IsUnifiedPolicy(document) || selection.SchemaIDs["public"] != entry.UnifiedPolicySchemaID {
-		return Result{}, fmt.Errorf("POLICY_UPDATE_REQUIRES_REGISTERED_UNIFIED_POLICY")
+		return preparedUpdate{}, fmt.Errorf("POLICY_UPDATE_REQUIRES_REGISTERED_UNIFIED_POLICY")
 	}
 	identity := source.Object(document["Policy_Identity"])
 	content := source.Object(document["Policy_Content"])
@@ -132,47 +172,36 @@ func Apply(ctx context.Context, root string, request Request, authorize Authoriz
 	id := source.String(identity["id"])
 	extension := filepath.Ext(request.Target)
 	if !strings.HasPrefix(request.Target, selection.OutputRoot+"/") {
-		return Result{}, fmt.Errorf("POLICY_TARGET_OUTSIDE_REGISTERED_ROUTE")
+		return preparedUpdate{}, fmt.Errorf("POLICY_TARGET_OUTSIDE_REGISTERED_ROUTE")
 	}
 	if filepath.Base(id) != id || (extension != ".yaml" && extension != ".yml") ||
 		identity["policy_kind"] != selection.PolicyKind || identity["root_family"] != selection.RootFamily ||
 		sourceDocument["path"] != request.Target ||
 		request.Target != selection.OutputRoot+"/"+selection.RootFamily+"/"+id+extension {
-		return Result{}, fmt.Errorf("POLICY_UPDATE_TARGET_IDENTITY_MISMATCH")
+		return preparedUpdate{}, fmt.Errorf("POLICY_UPDATE_TARGET_IDENTITY_MISMATCH")
 	}
 	if _, err := check.CheckUnifiedDocument(root, document); err != nil {
-		return Result{}, fmt.Errorf("POLICY_UPDATE_BASELINE_REJECTED: %w", err)
+		return preparedUpdate{}, fmt.Errorf("POLICY_UPDATE_BASELINE_REJECTED: %w", err)
 	}
 	result := Result{Status: "UNCHANGED", Target: request.Target,
 		DigestBefore: source.String(sourceDocument["sha256"])}
 	proposed, err := applyValues(prior.data, document, request.Values, &result)
 	if err != nil {
-		return Result{}, err
+		return preparedUpdate{}, err
 	}
 	if _, err := check.CheckUnifiedDocument(root, document); err != nil {
-		return Result{}, fmt.Errorf("POLICY_UPDATE_CANDIDATE_REJECTED: %w", err)
+		return preparedUpdate{}, fmt.Errorf("POLICY_UPDATE_CANDIDATE_REJECTED: %w", err)
+	}
+	requestBytes, err := json.Marshal(request)
+	if err != nil {
+		return preparedUpdate{}, err
 	}
 	approval := Approval{Reference: request.ApprovalRef, Root: root, Target: request.Target,
 		PolicyID: id, PolicyKind: selection.PolicyKind, RootFamily: selection.RootFamily,
 		BaselineSHA256: request.BaselineSHA256, ProposedSHA256: bytesDigest(proposed),
-		SourceBefore: result.DigestBefore, SourceAfter: result.DigestAfter, ChangedItems: slices.Clone(result.ChangedItems)}
-	if err := authorize(ctx, approval); err != nil {
-		return Result{}, fmt.Errorf("POLICY_UPDATE_APPROVAL_REJECTED: %w", err)
-	}
-	if err := ctx.Err(); err != nil {
-		return Result{}, err
-	}
-	if len(result.ChangedItems) == 0 {
-		if err := confirmBaseline(root, request.Target, prior); err != nil {
-			return Result{}, err
-		}
-		return result, nil
-	}
-	if err := persist(root, request.Target, name, prior, proposed, document); err != nil {
-		return Result{}, err
-	}
-	result.Status = "UPDATED"
-	return result, nil
+		SourceBefore: result.DigestBefore, SourceAfter: result.DigestAfter, ChangedItems: slices.Clone(result.ChangedItems),
+		RequestSHA256: bytesDigest(requestBytes)}
+	return preparedUpdate{approval: approval, result: result, name: name, prior: prior, proposed: proposed, document: document}, nil
 }
 
 func applyValues(raw []byte, document source.Document, values map[string]json.RawMessage, result *Result) ([]byte, error) {

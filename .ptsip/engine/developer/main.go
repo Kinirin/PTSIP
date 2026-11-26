@@ -75,13 +75,19 @@ var validators = map[string]Validator{
 	"ctrl-release-admission-check": ctrl_admission.Run,
 }
 
+// Trusted deployments provision these at build time with linker -X settings.
+// Policy update requests and the caller's environment cannot supply either.
+var policyUpdateApprovalPublicKey string
+var policyUpdateApprovalReplayDirectory string
+
 func main() {
 	root := flag.String("root", ".", "repository root")
 	selected := flag.String("validator", "schema-check", "registered developer validator")
 	operation := flag.String("operation", "check", "authoring: check, generate, describe, update; release-version-diff: preview, check, apply; release-documentation: check, preview, generate")
 	family := flag.String("family", "", "explicit Root Family for policy-rules generation or description")
 	input := flag.String("input", "", "repository-relative JSON/YAML input, or - for stdin")
-	dryRun := flag.Bool("dry-run", false, "resolve contract entry without invoking validation")
+	dryRun := flag.Bool("dry-run", false, "resolve a contract entry or preview an exact policy update without writing")
+	approvalEvidence := flag.String("approval-evidence", "", "path to detached direct-user approval for policy-rules update")
 	output := flag.String("output", "", "new repository-relative JSON/YAML output (existing files are preserved)")
 	base := flag.String("base", "", "exact baseline commit SHA for version comparison and documentation")
 	head := flag.String("head", "", "exact checked-out commit SHA for version comparison and documentation")
@@ -90,6 +96,11 @@ func main() {
 	digest := flag.String("version-sha256", "", "exact version source SHA256")
 	explicit := flag.Bool("explicit-user-decision", false, "version apply requires explicit decision")
 	flag.Parse()
+
+	if *approvalEvidence != "" && (*selected != "policy-rules" || *operation != "update" || *dryRun) {
+		emit(map[string]any{"status": "FAIL", "problem": "POLICY_UPDATE_EVIDENCE_REQUIRES_UPDATE", "execution_authorized": false})
+		os.Exit(2)
+	}
 
 	names := make([]string, 0, len(validators))
 	for name := range validators {
@@ -155,13 +166,23 @@ func main() {
 	}
 	if *selected == "policy-rules" || *selected == "responsibility-authority" {
 		if *selected == "policy-rules" && *operation == "update" {
-			if *family != "" || *output != "" || *target != "" || *dryRun {
+			if *family != "" || *output != "" || *target != "" {
 				emit(map[string]any{"status": "FAIL", "problem": "POLICY_UPDATE_REQUIRES_BOUND_REQUEST_ONLY", "execution_authorized": false})
 				os.Exit(2)
 			}
-			// This standalone CLI has no registered trusted approval provider.
-			// Trusted owner integrations call update.Run with their own verifier.
-			report, code := policy_update.Run(context.Background(), *root, *input, nil)
+			if *dryRun {
+				report, code := policy_update.Preview(*root, *input)
+				emit(report)
+				os.Exit(code)
+			}
+			authorize, err := policy_update.DirectUserAuthorizer(
+				policyUpdateApprovalPublicKey, policyUpdateApprovalReplayDirectory, *root, *approvalEvidence)
+			if err != nil {
+				emit(map[string]any{"status": "FAIL", "problem": err.Error(),
+					"execution_authorized": false, "lifecycle_transition_authorized": false, "normative_approval": false})
+				os.Exit(2)
+			}
+			report, code := policy_update.Run(context.Background(), *root, *input, authorize)
 			emit(report)
 			os.Exit(code)
 		}
