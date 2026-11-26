@@ -164,3 +164,66 @@ func TestDelegatedApprovalThroughDeveloperCLI(t *testing.T) {
 		})
 	}
 }
+
+func TestDelegatedOperationalPolicyThroughDeveloperCLI(t *testing.T) {
+	repository, err := filepath.Abs("../../../../..")
+	if err != nil {
+		t.Fatal(err)
+	}
+	committed := func(path string) []byte {
+		t.Helper()
+		cmd := exec.Command("git", "-C", repository, "show", "--no-textconv", "HEAD:"+path)
+		raw, err := cmd.Output()
+		if err != nil {
+			t.Fatal(err)
+		}
+		return raw
+	}
+	plan := committed(update.DelegatedPlanPath)
+	var record struct {
+		Approval struct {
+			Requests []update.Request `json:"authorized_update_requests"`
+		} `json:"approval"`
+	}
+	if err := json.Unmarshal(plan, &record); err != nil {
+		t.Fatal(err)
+	}
+	var req update.Request
+	for _, candidate := range record.Approval.Requests {
+		if candidate.ApprovalRef == "WU15-OPERATING-VERIFICATION-DUPLICATE-RULE-CLEANUP-20261127" {
+			req = candidate
+			break
+		}
+	}
+	if req.Target == "" {
+		t.Fatal("recorded operational verification request missing")
+	}
+	// Use the exact original policy revision even after the canonical update
+	// is committed; the evidence record is intentionally reproducible.
+	raw := committed(req.Target)
+	root, _, _ := policyFixture(t, "developer")
+	put(t, root, req.Target, raw)
+	put(t, root, update.DelegatedPlanPath, plan)
+	put(t, root, "update-request.json", marshal(t, req))
+	gitFixture(t, root, "init", "-q")
+	gitFixture(t, root, "config", "user.name", "PTSIP operating verification")
+	gitFixture(t, root, "config", "user.email", "fixture@example.invalid")
+	gitFixture(t, root, "config", "commit.gpgsign", "false")
+	gitFixture(t, root, "add", "--", update.DelegatedPlanPath)
+	gitFixture(t, root, "commit", "-qm", "exact committed delegated request")
+	binary := buildDeveloperCLI(t)
+	preview, code := runDeveloperCLI(t, binary, root, "--dry-run")
+	if code != 0 || preview.Status != "PREPARED_NOT_AUTHORIZED" {
+		t.Fatalf("operating preview: %+v", preview)
+	}
+	report, code := runDeveloperCLI(t, binary, root)
+	updated := read(t, root, req.Target)
+	if code != 0 || report.Status != "UPDATED" || bytes.Equal(raw, updated) ||
+		report.Result.DigestAfter != preview.Approval.SourceAfter {
+		t.Fatalf("operating policy update: %+v", report)
+	}
+	if _, err := check.CheckUnifiedDocument(root, document(t, updated)); err != nil {
+		t.Fatal(err)
+	}
+	t.Logf("operating policy %s: %s -> %s", req.Target, report.Result.DigestBefore, report.Result.DigestAfter)
+}

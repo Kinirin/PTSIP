@@ -1,5 +1,10 @@
 name: tooling-test
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.ptsip/engine/developer/policy/contract/update/**'
+      - 'developer/tests/policy/contract/update/**'
   workflow_dispatch:
     inputs:
       mode:
@@ -223,7 +228,7 @@ jobs:
 
   developer-schema-contracts:
     name: "Developer schema contracts / ${{ matrix.runner }}"
-    if: ${{ inputs.mode == 'developer-schema-contracts' }}
+    if: ${{ github.event_name == 'push' || inputs.mode == 'developer-schema-contracts' }}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 20
     strategy:
@@ -296,7 +301,7 @@ jobs:
           echo "Executing existing ptsip-validation-runtime pytest directory without asserting registry conformance."
           python -m pytest -q src/tests/ptsip/engine_runtime_validation
   mode-selection:
-    if: ${{ inputs.mode != 'ptsip-validation-runtime' && inputs.mode != 'developer-schema-contracts' && inputs.mode != 'ptsip-common-contract' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode != 'ptsip-validation-runtime' && inputs.mode != 'developer-schema-contracts' && inputs.mode != 'ptsip-common-contract' }}
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.mode.outputs.matrix }}

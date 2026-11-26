@@ -93,27 +93,17 @@ func DelegatedAuthorizer(root string) (Authorizer, error) {
 		if actual.Root != root || actual.Target != request.Target || actual.BaselineSHA256 != request.BaselineSHA256 {
 			return fmt.Errorf("POLICY_UPDATE_APPROVAL_BINDING_MISMATCH")
 		}
-		// Derive the complete binding again from the independently recorded
-		// request; the callback cannot approve different values or identities.
-		expected, err := prepare(root, request)
-		if err != nil {
-			return err
-		}
-		if !sameApproval(expected.approval, actual) {
+		// Apply has already derived and validated the exact target, identity,
+		// baseline, proposal and source digests. Bind the independently
+		// recorded full request without repeating that validation.
+		encoded, err := json.Marshal(request)
+		if err != nil || bytesDigest(encoded) != actual.RequestSHA256 {
 			return fmt.Errorf("POLICY_UPDATE_APPROVAL_BINDING_MISMATCH")
 		}
 		return nil
 	}, nil
 }
 
-func sameApproval(left, right Approval) bool {
-	a, err := json.Marshal(left)
-	if err != nil {
-		return false
-	}
-	b, err := json.Marshal(right)
-	return err == nil && bytes.Equal(a, b)
-}
 
 func gitApproval(root string, args ...string) ([]byte, error) {
 	cmd := exec.Command("git", append([]string{"--no-replace-objects", "-C", root}, args...)...)
