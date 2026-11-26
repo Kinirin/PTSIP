@@ -179,7 +179,13 @@ func TestDelegatedOperationalPolicyThroughDeveloperCLI(t *testing.T) {
 		}
 		return raw
 	}
-	plan := committed(update.DelegatedPlanPath)
+	// The verified original approval is immutable regression input.
+	planCmd := exec.Command("git", "-C", repository, "show", "--no-textconv", "3dcd2b1a86059fb40d4dd0ce6b7a635b94a4bfb4:"+update.DelegatedPlanPath)
+	plan, err := planCmd.Output()
+	if err != nil {
+		// A shallow checkout may use the committed current plan record.
+		plan = committed(update.DelegatedPlanPath)
+	}
 	var record struct {
 		Approval struct {
 			Requests []update.Request `json:"authorized_update_requests"`

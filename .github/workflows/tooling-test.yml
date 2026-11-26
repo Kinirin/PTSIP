@@ -272,28 +272,6 @@ jobs:
           go -C .ptsip/engine/developer run . --validator schema-check --root ../../..
           go -C src/ptsip/common_contract test ./cmd/ptsip-common-contract -run '^TestUnifiedPolicySource' -count=1
 
-      - name: Verify authorized WU-15 operating request on exact checkout
-        if: ${{ matrix.runner == 'ubuntu-24.04' && github.event_name == 'push' }}
-        shell: pwsh
-        run: |
-          $ErrorActionPreference = 'Stop'
-          $plan = Get-Content -Raw -LiteralPath 'developer/planning/0.3.8/go-policy-source-digest-sync.plan.json' | ConvertFrom-Json -AsHashtable
-          $request = @($plan.approval.authorized_update_requests | Where-Object { $_.approval_ref -eq 'WU15-OPERATING-VERIFICATION-DUPLICATE-RULE-CLEANUP-20261127' })
-          if ($request.Count -ne 1) { throw 'Exact WU-15 request missing or ambiguous' }
-          $request = $request[0]
-          $raw = $request | ConvertTo-Json -Depth 100 -Compress
-          $raw | go -C .ptsip/engine/developer run -mod=readonly . --root "$env:GITHUB_WORKSPACE" --validator policy-rules --operation update --input -
-          if ($LASTEXITCODE -ne 0) { throw 'Operating policy update failed' }
-          go -C .ptsip/engine/developer run -mod=readonly . --root "$env:GITHUB_WORKSPACE" --validator contract-entry --target $request.target
-          if ($LASTEXITCODE -ne 0) { throw 'Independent policy verification failed' }
-          $bytes = [System.IO.File]::ReadAllBytes((Join-Path $env:GITHUB_WORKSPACE $request.target))
-          $encoded = [Convert]::ToBase64String($bytes)
-          for ($offset = 0; $offset -lt $encoded.Length; $offset += 2000) {
-            $length = [Math]::Min(2000, $encoded.Length - $offset)
-            Write-Output ("WU15_VERIFIED_POLICY_BYTES {0} {1}" -f $offset, $encoded.Substring($offset, $length))
-          }
-          Write-Output ("WU15_VERIFIED_POLICY_LENGTH {0}" -f $encoded.Length)
-
   ptsip-validation-runtime:
     name: "Installed PTSIP VALIDATION smoke / ${{ matrix.runner }}"
     if: ${{ inputs.mode == 'ptsip-validation-runtime' }}
