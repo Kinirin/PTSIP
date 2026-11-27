@@ -659,7 +659,7 @@
       "history_conflict": "FAIL_IF_EXISTING_HISTORY_VERSION_HAS_DIFFERENT_SEMANTIC_CONTENT",
       "historical_field_rewrite": "FORBIDDEN_AFTER_NEW_ARCHIVE_CREATION",
       "first_unification_no_schema_contract_version_change": "DO_NOT_GENERATE_SYNTHETIC_HISTORY_OR_ARTIFICIAL_PATCH",
-      "new_history_path_mapping": "OWNER_DEFINED_MACHINE_READABLE_CONTRACT_REQUIRED;ALL_CURRENT_DOMAIN_ROOTS_USER_APPROVED;EXACT_RESOURCE_AND_EVIDENCE_LEAF_MAPPING_PLAN_DERIVED",
+      "new_history_path_mapping": "USER_APPROVED_JSON_DOMAIN_MAPPING_20261127;EXACT_RESOURCE_AND_EVIDENCE_LEAF_MAPPING_PLAN_DERIVED",
       "engine_historical_legacy_archive_deletion": "NOT_AUTHORIZED",
       "approved_history_directory_mapping_20261124": {
         "source": "USER_EXPLICIT_CHAT_2026_11_24",
@@ -752,7 +752,7 @@
         "approval_ref": "authority/latest_implementation_approval"
       },
       "implementation_completion_requirement_20261125": {
-        "state": "SPECIFICATION_AND_PUBLICATION_BOUND_HISTORY_IMPLEMENTED;ALL_CURRENT_DOMAIN_ROOTS_APPROVED;LIVE_LEAF_MAPPING_AND_REFERENCE_VERIFIER_OPEN",
+        "state": "SPECIFICATION_AND_PUBLICATION_BOUND_HISTORY_IMPLEMENTED;JSON_DOMAIN_MAPPING_DESIGN_APPROVED;RUNTIME_MAPPING_AND_REFERENCE_VERIFIER_OPEN",
         "owner": "src/ptsip/ptsip_specification/",
         "existing_policy_binding": {
           "policy_ref": "src/policy/CNTR/SFP-CNTR-0009.yaml",
@@ -765,9 +765,10 @@
           "Implement publication-evidence-bound history materialization for changed actually published schema and engine contracts under approved history root/domain mappings; use exact published revision, original IDs, versions and digests, version-disambiguated archive identity, immutable existing history; fail closed on conflicting content or unresolved exact mapping.",
           "Separate current version sync from publication-triggered history; workflow success alone is not publication. No synthetic history for initial declaration cutover, no retroactive fabrication, no publishing as part of implementation.",
           "Integrate the existing release publication-evidence owner with this history function only under its existing authority; validate positive and negative paths including repeated invocation, absent/forged evidence, unchanged contracts, duplicate archive IDs and preserved reference resolution.",
-          "Keep product tests in src/tests/ptsip or existing registered product test locations; developer tests in developer/tests; verify installed Wheel access and exact-source artifacts."
+          "Keep product tests in src/tests/ptsip or existing registered product test locations; developer tests in developer/tests; verify installed Wheel access and exact-source artifacts.",
+          "Materialize the approved history_mapping_contract_20261127 JSON domain mapping in the specification-owned runtime contract; replace the hardcoded validHistoryTarget domain switch with validated mapping consumption, preserving relative-path, exact directory and JSON leaf checks. Do not infer or expand approved domains. Derive exact registered resource and evidence leaf bindings separately. Keep PrepareHistory read-only and ensure missing approved parent directories are handled safely by the materialization owner; preserve existing history immutability and actual-publication gates. Extend registered tests for all ten domains, rejection of unmapped domains and invalid paths, missing approved directories, and repeated or conflicting history creation."
         ],
-        "unresolved_mapping": "Published artifact observation and fixture history generation implemented. All current schema and six engine history domain roots are now user-approved. Derive exact resource/archive/evidence leaf bindings from registered exact-source inventory and integrate the release-owned file/anchor reference verifier, including RBAC and all six engines. No actual history or publication operation performed.",
+        "unresolved_mapping": "User approved the exact JSON domain mapping and JSON consumption design on 2026-11-27. Runtime mapping contract, validHistoryTarget integration, safe approved directory handling, exact resource/archive/evidence leaf bindings from registered exact-source inventory, and release-owned file/anchor reference verification remain to be implemented. No actual history or publication operation performed.",
         "revision_gate": {
           "state": "USER_AUDITED_IMPLEMENTATION_APPROVED",
           "implementation_authorized_for_new_revision": true,
@@ -776,6 +777,32 @@
           "approval_source": "USER_EXPLICIT_CHAT_2026_11_26",
           "audited_revision": "372394a981d4cc53797ce4d3c240d9678dd77df4"
         }
+      },
+      "history_mapping_contract_20261127": {
+        "history_root": "src/ptsip/schemas/history/",
+        "domains": {
+          "profile": "profile/",
+          "policy": "policy/",
+          "plan": "plan/",
+          "rbac": "rbac/",
+          "engines/context": "engines/context/",
+          "engines/storage": "engines/storage/",
+          "engines/discovery": "engines/discovery/",
+          "engines/validation": "engines/validation/",
+          "engines/execution": "engines/execution/",
+          "engines/projection": "engines/projection/"
+        }
+      },
+      "history_mapping_contract_approval_20261127": {
+        "source": "USER_EXPLICIT_CHAT_2026_11_27",
+        "audited_revision": "aeda45a370561a81ad283fc93406d9bcf7a06be5",
+        "state": "JSON_MAPPING_DESIGN_APPROVED",
+        "plan_mutation_authorized": true,
+        "scope": "APPROVED_DOMAIN_ROOT_MAPPING_AND_JSON_CONSUMPTION_DESIGN",
+        "contract_ref": "#/user_directed_requirements/VC-12/history_mapping_contract_20261127",
+        "runtime_owner": "src/ptsip/ptsip_specification/",
+        "implementation_approval": "PRESERVE_EXISTING_APPROVED_VC12_SCOPE",
+        "publication_authorized": false
       }
     },
     {
