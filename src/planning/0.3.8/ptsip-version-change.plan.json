@@ -396,7 +396,7 @@
     {
       "id": "VC-06",
       "status": "USER_DIRECTED",
-      "responsibility": "REMOVE_LEGACY_PYPROJECT_PACKAGE_DATA_AND_SOURCE_AUTHORITY",
+      "responsibility": "TRANSFER_PRODUCT_ASSET_SUPPLY_TO_CANONICAL_OWNERS_AND_RETIRE_LEGACY_SPECDATA_DOMAIN",
       "target": "pyproject.toml",
       "delete_package_data_tables": [
         "tool.setuptools.package-data",
@@ -407,8 +407,8 @@
       "pyproject_as_preexisting_canonical_composition_source": "FORBIDDEN",
       "distribution_scope": "NOT_PYPI_ONLY",
       "non_version_packaging_metadata_disposition": "PRESERVE_NON_VERSION_BUILD_AND_DISTRIBUTION_METADATA_IN_CURRENT_CONSUMER_FORMAT_UNTIL_VERIFIED_REPLACEMENT",
-      "replacement_asset_inclusion_and_distribution_readiness": "OWNER_DIRECTED_TABLE_REMOVAL_NOW;GO_ASSET_CLOSURE_SOURCE_ARCHIVE_AND_INSTALLED_PARITY_REQUIRED_BEFORE_COMPLETION_OR_RELEASE",
-      "current_result": "A setuptools base-Wheel comparison from fabaa455 with both tables removed lost six specdata resources, including the legacy registry and its referenced schemas. The current Go assets and candidate build do not establish replacement parity for them. Preserve the tables until each affected runtime resource is covered or retired under WU-08.\nUser explicitly directed immediate removal of the two setuptools declarations. The prior sequencing requirement to retain those tables until parity is superseded for source editing only; the six missing resources remain an open defect and require verified replacement or retirement before completion or release. No successful build is claimed.",
+      "replacement_asset_inclusion_and_distribution_readiness": "CANONICAL_OWNER_SUPPLY_ONLY;ZERO_SUPPORTED_SPECDATA_DEPENDENCY_IN_INTEGRATED_WHEEL_AND_SOURCE_ARCHIVE;INSTALLED_FUNCTIONAL_PARITY_REQUIRED_BEFORE_COMPLETION_OR_RELEASE",
+      "current_result": "A setuptools base-Wheel comparison from fabaa455 with both tables removed lost six specdata resources, including the legacy registry and its referenced schemas. The current Go assets and candidate build do not establish replacement parity for them. Preserve the tables until each affected runtime resource is covered or retired under WU-08.\nUser explicitly directed immediate removal of the two setuptools declarations. The prior sequencing requirement to retain those tables until parity is superseded for source editing only; the six missing resources remain an open defect and require verified replacement or retirement before completion or release. No successful build is claimed.\n2026-11-27 USER EXPLICIT: supply responsibility must change, not supplement legacy specdata delivery. The prior six absent resources are consumer-closure analysis inputs, not a required legacy file inventory. At f644d9c, nine specdata files remain tracked, source.go broadly admits them, MANIFEST.in selects three, and source_compat/reader.go directly reads two pinned historical inputs. Four evidence schemas and two historical source-profile target locations are explicitly unresolved or denied in the schema-centralization plan; do not revive denied locations or invent a new owner. Integrated artifacts must ultimately contain no specdata domain, with supported functionality verified via approved owners or authorized retirement. No artifact or source deletion verification claimed.",
       "asset_delivery_design_ref": "#/approved_implementation_design/asset_delivery",
       "implementation_approval": {
         "state": "APPROVED",
@@ -426,6 +426,20 @@
         "publication_authorized": false,
         "verification": "PENDING",
         "known_missing_resource_count": 6
+      },
+      "latest_supply_responsibility_direction_20261127": {
+        "source": "USER_EXPLICIT_CHAT_2026_11_27",
+        "base_revision": "f644d9c2864e9269abea3da5ee1c00f8842d9668",
+        "disposition": "TRANSFER_NOT_SUPPLEMENT",
+        "retired_domain": "src/ptsip/specdata/",
+        "legacy_domain_as_supply_source": "FORBIDDEN_FOR_TARGET_DESIGN",
+        "wheel": "EXCLUDE_LEGACY_DOMAIN_AFTER_CONSUMER_CLOSURE",
+        "source_archive": "EXCLUDE_LEGACY_DOMAIN_AFTER_CONSUMER_CLOSURE",
+        "replacement_rule": "REUSE_EXISTING_APPROVED_OWNER_CONTRACTS_OR_REPLACE_REQUIRED_FUNCTIONALITY;NO_BLIND_COPY_OR_NEW_FALLBACK",
+        "unresolved_owner_and_target": "RESPECT_SCHEMA_CENTRALIZATION_EXPLICIT_DENIALS_AND_ESCALATE_UNRESOLVED_POLICY",
+        "source_removal": "AFTER_VERIFIED_CONSUMER_CLOSURE_UNDER_WU08",
+        "distinct_auxiliary_packages": "PRESERVE_EXISTING_DISTINCT_DELIVERY_AUTHORITY;RECONCILE_ANY_LEGACY_PATH_CONSUMERS_WITHIN_THEIR_OWN_SCOPE",
+        "publication_authorized": false
       }
     },
     {
@@ -1146,7 +1160,27 @@
       "frontend_role": "PEP 517 transport and retained package metadata only. Materialize its package version from src/VERSION; verify wheel name, dist-info path, METADATA and RECORD against the builder's same source and fail on disagreement.",
       "remove_tables_after": "SUPERSEDED_FOR_SOURCE_EDIT_BY_USER_EXPLICIT_CHAT_2026_11_26;REMOVE_TWO_DECLARATIONS_NOW;MACHINE_PROVEN_REPLACEMENT_ARCHIVE_AND_INSTALLED_RUNTIME_COVERAGE_OR_EXPLICIT_RETIREMENT_REQUIRED_BEFORE_COMPLETION_AND_RELEASE",
       "preserve_package_history_semantics": "Integrated product distribution and auxiliary Profile or Tool packages keep their distinct declared inventories; do not widen standalone delivery or activation.",
-      "retire_legacy_specdata_when": "Honor the schema-centralization plan's per-asset consumer closure. Keep the withdrawn duplicate retired and preserve unresolved sources until verified replacement or authorized retirement."
+      "retire_legacy_specdata_when": "TRANSFER_REQUIRED_FUNCTIONALITY_TO_APPROVED_CANONICAL_OWNERS;VERIFY_ZERO_SUPPORTED_CONSUMERS_AND_REMOVE_LEGACY_DOMAIN;DO_NOT_SUPPLEMENT_OR_REPACKAGE_SPECDATA;RESPECT_WU08_INDIVIDUAL_CLOSURE",
+      "legacy_domain_supply_transition": {
+        "state": "OWNER_DIRECTION_APPROVED_CONSUMER_AND_TARGET_RECONCILIATION_PENDING",
+        "inventory_source": "EXACT_TRACKED_TREE_AND_ACTUAL_CONSUMERS",
+        "legacy_domain": "src/ptsip/specdata/",
+        "builder_owner": "src/build/",
+        "target_supply_sources": [
+          "src/ptsip/schemas/config.json",
+          "src/ptsip/common_contract/registry/manifest.json",
+          "src/ptsip/engines/index.json",
+          "EXISTING_APPROVED_FEATURE_OWNED_CONTRACTS"
+        ],
+        "steps": [
+          "Trace actual supported producers, readers, validation and release consumers of all nine remaining files; distinguish historical records and excluded Python consumers from active native behavior.",
+          "Replace active consumers with existing approved owner resources where equivalent; resolve denied or missing ownership independently before moving or generating new contracts.",
+          "Rewire integrated wheel and source archive asset selection, MANIFEST.in and build verification to remove the complete specdata supply domain after consumer closure; do not restage missing legacy assets.",
+          "Verify exact-source asset inventory, installed functionality, and zero legacy-domain members across both artifacts; retire source files per WU-08."
+        ],
+        "source_tree_retirement": "WU08_VERIFIED_CONSUMER_CLOSURE",
+        "release": "NOT_AUTHORIZED"
+      }
     },
     "release_composition": {
       "owner_route": ".ptsip/contracts/release/index.json#platforms[Common].contracts.composition",
